@@ -3,10 +3,32 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+    <include layout="@layout/common_actionbar"></include>
+
+
+    <android.support.v4.view.ViewPager android:layout_width="match_parent"
+                                       android:layout_height="120dp"
+                                       android:id="@+id/viewpager">
+    </android.support.v4.view.ViewPager>
+
 
     <TextView
-            android:layout_width="wrap_content"
-            android:text="this is 1 "
-            android:layout_height="wrap_content"/>
+            android:id="@+id/btn_order" android:layout_margin="10dp" android:text="我的订单"
+            android:layout_width="match_parent" android:layout_height="100dp" style="@style/appstyle_basic_text"/>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="100dp"
+                  android:orientation="horizontal">
+
+        <TextView android:layout_width="match_parent" android:layout_height="match_parent"
+                  style="@style/appstyle_basic_text"
+                  android:id="@+id/btn_weixiubaoyang" android:layout_weight="1" android:layout_margin="10dp"
+                  android:text="预约维修保养"
+                />
+        <TextView android:id="@+id/btn_tobemember" android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:layout_weight="1" android:layout_margin="10dp" android:text="@string/bemember"
+                  style="@style/appstyle_basic_text"/>
+
+    </LinearLayout>
 
 </LinearLayout>

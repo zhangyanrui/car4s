@@ -22,21 +22,27 @@
                 style="@style/appstyle_common_tabhost_tab_rdp"
                 android:checked="true"
                 android:drawableTop="@mipmap/ic_tab_1"
-                android:text="tab1"/>
+                android:text="首页"/>
 
         <RadioButton
                 android:id="@+id/rdo_tab_2"
                 style="@style/appstyle_common_tabhost_tab_rdp"
                 android:drawableTop="@mipmap/ic_tab_2"
-                android:text="tab2"/>
+                android:text="订单"/>
 
         <RadioButton
                 android:id="@+id/rdo_tab_3"
                 android:visibility="visible"
                 style="@style/appstyle_common_tabhost_tab_rdp"
                 android:drawableTop="@mipmap/ic_tab_3"
-                android:text="tab3"/>
+                android:text="我的"/>
 
+        <RadioButton
+                android:id="@+id/rdo_tab_4"
+                android:visibility="visible"
+                style="@style/appstyle_common_tabhost_tab_rdp"
+                android:drawableTop="@mipmap/ic_tab_1"
+                android:text="设置"/>
 
     </RadioGroup>
 

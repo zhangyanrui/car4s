@@ -30,7 +30,7 @@ public class AppContext extends Application {
     }
 
     public void initImageLoader() {
-        File cacheDir = StorageUtils.getOwnCacheDirectory(this, AppConfig.DIR_IMAGELOADER_CACHE); // SD¿¨»º´æÂ·¾¶
+        File cacheDir = StorageUtils.getOwnCacheDirectory(this, AppConfig.DIR_IMAGELOADER_CACHE); //
         UnlimitedDiscCache AppDiskCache = new UnlimitedDiscCache(cacheDir);
         Executor executor = DefaultConfigurationFactory.createExecutor(3, 3, QueueProcessingType.FIFO);
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).threadPriority(Thread.MAX_PRIORITY - 2)

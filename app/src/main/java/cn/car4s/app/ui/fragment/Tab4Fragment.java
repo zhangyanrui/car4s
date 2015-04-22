@@ -1,8 +1,6 @@
 package cn.car4s.app.ui.fragment;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +14,12 @@ import cn.car4s.app.ui.activity.IBase;
  * Email: xuebo.chang@langtaojin.com
  * Time: 2015/4/22.
  */
-public class Tab2Fragment extends BaseFragment implements IBase {
+public class Tab4Fragment extends BaseFragment implements IBase {
     View rootview;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootview = inflater.inflate(R.layout.fragment_tab2, null);
+        rootview = inflater.inflate(R.layout.fragment_tab4, null);
         initUI();
         initData();
         return rootview;
@@ -31,12 +29,7 @@ public class Tab2Fragment extends BaseFragment implements IBase {
     public void initUI() {
         rootview.findViewById(R.id.btn_actionbar_back).setVisibility(View.GONE);
         rootview.findViewById(R.id.btn_actionbar_conform).setVisibility(View.GONE);
-        ((TextView) rootview.findViewById(R.id.tv_actionbar_title)).setText(getString(R.string.tab2));
-
-        RecyclerView recyclerView = (RecyclerView) rootview.findViewById(R.id.recyclerview);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        ((TextView) rootview.findViewById(R.id.tv_actionbar_title)).setText(getString(R.string.tab4));
     }
 
     @Override

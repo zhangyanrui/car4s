@@ -3,10 +3,77 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+    <include layout="@layout/common_actionbar"></include>
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <TextView
-            android:layout_width="wrap_content"
-            android:text="this is 3 "
-            android:layout_height="wrap_content"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:orientation="vertical">
+
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="50dp"
+                          android:orientation="horizontal">
+                <TextView style="@style/appstyle_basic_text" android:text="昵称" android:layout_weight="1"
+                          android:gravity="left|center_vertical" android:padding="10dp"
+                          android:layout_height="match_parent"/>
+
+                <ImageView android:layout_width="50dp" android:layout_height="50dp" android:layout_marginRight="10dp"
+                           android:layout_marginLeft="10dp"
+                           android:layout_alignParentRight="true"/>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="50dp"
+                          android:orientation="horizontal">
+                <TextView style="@style/appstyle_basic_text" android:text="联系方式" android:layout_weight="1"
+                          android:gravity="left|center_vertical" android:padding="10dp"
+                          android:layout_height="match_parent" />
+
+                <ImageView android:layout_width="50dp" android:layout_height="50dp" android:layout_marginRight="10dp"
+                           android:layout_marginLeft="10dp"
+                           android:layout_alignParentRight="true"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="50dp"
+                          android:orientation="horizontal">
+                <TextView style="@style/appstyle_basic_text" android:text="地址" android:layout_weight="1"
+                          android:gravity="left|center_vertical" android:padding="10dp"
+                          android:layout_height="match_parent" />
+
+                <ImageView android:layout_width="50dp" android:layout_height="50dp" android:layout_marginRight="10dp"
+                           android:layout_marginLeft="10dp"
+                           android:layout_alignParentRight="true"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="50dp"
+                          android:orientation="horizontal">
+                <TextView style="@style/appstyle_basic_text" android:text="车型" android:layout_weight="1"
+                          android:gravity="left|center_vertical" android:padding="10dp"
+                          android:layout_height="match_parent" />
+
+                <ImageView android:layout_width="50dp" android:layout_height="50dp" android:layout_marginRight="10dp"
+                           android:layout_marginLeft="10dp"
+                           android:layout_alignParentRight="true"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="50dp"
+                          android:orientation="horizontal">
+                <TextView style="@style/appstyle_basic_text" android:text="积分" android:layout_weight="1"
+                          android:gravity="left|center_vertical" android:padding="10dp"
+                          android:layout_height="match_parent" />
+
+                <ImageView android:layout_width="50dp" android:layout_height="50dp" android:layout_marginRight="10dp"
+                           android:layout_marginLeft="10dp"
+                           android:layout_alignParentRight="true"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="50dp"
+                          android:orientation="horizontal">
+                <TextView style="@style/appstyle_basic_text" android:text="积分规则" android:layout_weight="1"
+                          android:gravity="left|center_vertical" android:padding="10dp"
+                          android:layout_height="match_parent" />
+
+                <ImageView android:layout_width="50dp" android:layout_height="50dp" android:layout_marginRight="10dp"
+                           android:layout_marginLeft="10dp"
+                           android:layout_alignParentRight="true"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
