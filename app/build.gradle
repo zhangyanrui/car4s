@@ -31,9 +31,19 @@ android {
     }
 }
 
+/**
+ * view◊¢»Î:butterknife
+ * Õ¯¬Á«Î«Û£∫okhttp + retrofit
+ * Õº∆¨º”‘ÿ£∫universalimageloader
+ * db:
+ */
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "com.android.support:support-v4:21.0.0"
     compile "com.android.support:recyclerview-v7:21.0.0"
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
+    compile 'com.jakewharton:butterknife:6.1.0'
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+    compile 'com.squareup.okhttp:okhttp:2.0.0'
 }
