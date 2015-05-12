@@ -1,6 +1,7 @@
 package cn.car4s.app;
 
 import android.app.Application;
+import android.content.Context;
 import android.graphics.Bitmap;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -22,12 +23,19 @@ import java.util.concurrent.Executor;
  */
 public class AppContext extends Application {
     public static DisplayImageOptions display_imageloader;
+    public static Context appContext;
+
+    public static Context getInstance() {
+        return appContext;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        appContext = this;
         initImageLoader();
     }
+
 
     public void initImageLoader() {
         File cacheDir = StorageUtils.getOwnCacheDirectory(this, AppConfig.DIR_IMAGELOADER_CACHE); //
