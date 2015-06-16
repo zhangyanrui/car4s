@@ -28,9 +28,12 @@ public class Tab1Fragment extends BaseFragment implements IBase {
 
     @Override
     public void initUI() {
-        rootview.findViewById(R.id.btn_actionbar_back).setVisibility(View.GONE);
-        rootview.findViewById(R.id.btn_actionbar_conform).setVisibility(View.GONE);
-        ((TextView) rootview.findViewById(R.id.tv_actionbar_title)).setText(getString(R.string.tab1));
+        TextView mActionbarBack = (TextView) rootview.findViewById(R.id.btn_actionbar_back);
+        mActionbarBack.setText("选择网店");
+        mActionbarBack.setVisibility(View.VISIBLE);
+        TextView mActionbarConfirm = (TextView) rootview.findViewById(R.id.btn_actionbar_conform);
+        mActionbarConfirm.setVisibility(View.VISIBLE);
+        ((TextView) rootview.findViewById(R.id.tv_actionbar_title)).setText("指尖创业");
 
         TextView btn_order = (TextView) rootview.findViewById(R.id.btn_order);
         TextView btn_weixiubaoyang = (TextView) rootview.findViewById(R.id.btn_weixiubaoyang);
@@ -50,6 +53,10 @@ public class Tab1Fragment extends BaseFragment implements IBase {
         public void onClick(View view) {
 
             switch (view.getId()) {
+                case R.id.btn_actionbar_back:
+                    break;
+                case R.id.btn_actionbar_conform:
+                    break;
                 case R.id.btn_order:
                     ((FragmentTabHost) getActivity().findViewById(android.R.id.tabhost)).setCurrentTabByTag("tab2");
                     break;

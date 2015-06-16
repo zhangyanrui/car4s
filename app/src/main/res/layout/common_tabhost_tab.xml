@@ -39,7 +39,7 @@
 
         <RadioButton
                 android:id="@+id/rdo_tab_4"
-                android:visibility="visible"
+                android:visibility="gone"
                 style="@style/appstyle_common_tabhost_tab_rdp"
                 android:drawableTop="@mipmap/ic_tab_1"
                 android:text="设置"/>

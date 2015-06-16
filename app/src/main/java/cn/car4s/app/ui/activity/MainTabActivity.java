@@ -30,7 +30,7 @@ public class MainTabActivity extends BaseActivity implements IBase {
         tabhost.addTab(tabhost.newTabSpec("tab1").setIndicator("1"), Tab1Fragment.class, null);
         tabhost.addTab(tabhost.newTabSpec("tab2").setIndicator("2"), Tab2Fragment.class, null);
         tabhost.addTab(tabhost.newTabSpec("tab3").setIndicator("3"), Tab3Fragment.class, null);
-        tabhost.addTab(tabhost.newTabSpec("tab4").setIndicator("4"), Tab4Fragment.class, null);
+//        tabhost.addTab(tabhost.newTabSpec("tab4").setIndicator("4"), Tab4Fragment.class, null);
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.rap_tab_radiogroup);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
