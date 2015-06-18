@@ -1,13 +1,14 @@
 package cn.car4s.app.ui.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import cn.car4s.app.R;
 import cn.car4s.app.ui.activity.IBase;
+import cn.car4s.app.util.DeviceUtil;
 
 /**
  * Description:
@@ -35,12 +36,14 @@ public class Tab1Fragment extends BaseFragment implements IBase {
         mActionbarConfirm.setVisibility(View.VISIBLE);
         ((TextView) rootview.findViewById(R.id.tv_actionbar_title)).setText("指尖创业");
 
-        TextView btn_order = (TextView) rootview.findViewById(R.id.btn_order);
-        TextView btn_weixiubaoyang = (TextView) rootview.findViewById(R.id.btn_weixiubaoyang);
-        TextView btn_tobemember = (TextView) rootview.findViewById(R.id.btn_tobemember);
-        btn_order.setOnClickListener(onClickListener);
-        btn_weixiubaoyang.setOnClickListener(onClickListener);
-        btn_tobemember.setOnClickListener(onClickListener);
+        ImageView btn_shengqian = (ImageView) rootview.findViewById(R.id.btn_shengqian);
+        ImageView btn_zhengqian = (ImageView) rootview.findViewById(R.id.btn_zhengqian);
+        ImageView btn_tiqian = (ImageView) rootview.findViewById(R.id.btn_tiqian);
+        btn_shengqian.setOnClickListener(onClickListener);
+        btn_zhengqian.setOnClickListener(onClickListener);
+        btn_tiqian.setOnClickListener(onClickListener);
+        ImageView viewpager = (ImageView) rootview.findViewById(R.id.viewpager);
+        viewpager.getLayoutParams().height = (int) (DeviceUtil.getWidth() * 374 / 640);
     }
 
     @Override
@@ -57,12 +60,11 @@ public class Tab1Fragment extends BaseFragment implements IBase {
                     break;
                 case R.id.btn_actionbar_conform:
                     break;
-                case R.id.btn_order:
-                    ((FragmentTabHost) getActivity().findViewById(android.R.id.tabhost)).setCurrentTabByTag("tab2");
+                case R.id.btn_shengqian:
                     break;
-                case R.id.btn_weixiubaoyang:
+                case R.id.btn_zhengqian:
                     break;
-                case R.id.btn_tobemember:
+                case R.id.btn_tiqian:
                     break;
             }
         }
