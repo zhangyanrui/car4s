@@ -27,8 +27,6 @@ public class Tab4Fragment extends BaseFragment implements IBase {
 
     @Override
     public void initUI() {
-        rootview.findViewById(R.id.btn_actionbar_back).setVisibility(View.GONE);
-        rootview.findViewById(R.id.btn_actionbar_conform).setVisibility(View.GONE);
         ((TextView) rootview.findViewById(R.id.tv_actionbar_title)).setText(getString(R.string.tab4));
     }
 

@@ -2,7 +2,6 @@ package cn.car4s.app.ui.activity;
 
 import android.os.Bundle;
 import android.webkit.WebView;
-import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -15,12 +14,9 @@ import cn.car4s.app.R;
  * Time: 2015/5/13.
  */
 public class WebviewActivity extends BaseActivity implements IBase {
-    @InjectView(R.id.btn_actionbar_back)
-    ImageView btnActionbarBack;
+
     @InjectView(R.id.tv_actionbar_title)
     TextView tvActionbarTitle;
-    @InjectView(R.id.btn_actionbar_conform)
-    ImageView btnActionbarConform;
     @InjectView(R.id.webview)
     WebView webview;
 

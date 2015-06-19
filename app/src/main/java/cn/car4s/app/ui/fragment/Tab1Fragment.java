@@ -9,6 +9,7 @@ import android.widget.TextView;
 import cn.car4s.app.R;
 import cn.car4s.app.ui.activity.IBase;
 import cn.car4s.app.util.DeviceUtil;
+import cn.car4s.app.util.DialogUtil;
 
 /**
  * Description:
@@ -29,11 +30,14 @@ public class Tab1Fragment extends BaseFragment implements IBase {
 
     @Override
     public void initUI() {
-        TextView mActionbarBack = (TextView) rootview.findViewById(R.id.btn_actionbar_back);
+        TextView mActionbarBack = (TextView) rootview.findViewById(R.id.btn_actionbar_back_text);
         mActionbarBack.setText("选择网店");
         mActionbarBack.setVisibility(View.VISIBLE);
-        TextView mActionbarConfirm = (TextView) rootview.findViewById(R.id.btn_actionbar_conform);
+        mActionbarBack.setOnClickListener(onClickListener);
+        ImageView mActionbarConfirm = (ImageView) rootview.findViewById(R.id.btn_actionbar_conform_img);
         mActionbarConfirm.setVisibility(View.VISIBLE);
+        mActionbarConfirm.setImageResource(R.mipmap.ic_fragment1_tel);
+        mActionbarConfirm.setOnClickListener(onClickListener);
         ((TextView) rootview.findViewById(R.id.tv_actionbar_title)).setText("指尖创业");
 
         ImageView btn_shengqian = (ImageView) rootview.findViewById(R.id.btn_shengqian);
@@ -56,9 +60,10 @@ public class Tab1Fragment extends BaseFragment implements IBase {
         public void onClick(View view) {
 
             switch (view.getId()) {
-                case R.id.btn_actionbar_back:
+                case R.id.btn_actionbar_back_text:
                     break;
-                case R.id.btn_actionbar_conform:
+                case R.id.btn_actionbar_conform_img:
+                    DialogUtil.buildTelDialog(getActivity());
                     break;
                 case R.id.btn_shengqian:
                     break;

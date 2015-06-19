@@ -24,11 +24,9 @@ public class ChoosePositionActivity extends BaseActivity implements IBase {
 
     @Override
     public void initUI() {
-        TextView mActionbarBack = (TextView) findViewById(R.id.btn_actionbar_back);
+        TextView mActionbarBack = (TextView) findViewById(R.id.btn_actionbar_back_text);
         mActionbarBack.setText("返回");
         mActionbarBack.setVisibility(View.VISIBLE);
-        TextView mActionbarConfirm = (TextView) findViewById(R.id.btn_actionbar_conform);
-        mActionbarConfirm.setVisibility(View.GONE);
         ((TextView) findViewById(R.id.tv_actionbar_title)).setText("当前网店：");
         PreferencesUtil.getPreferences(AppConfig.SP_KEY_CHOOSEPOSITION, "");
     }
