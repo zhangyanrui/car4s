@@ -30,10 +30,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activity.WebviewActivity">
-
-
-        </activity>
+        <activity android:name=".ui.activity.WebviewActivity"></activity>
+        <activity android:name=".ui.activity.LoginActivity"></activity>
         <activity android:name=".ui.activity.SchemeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

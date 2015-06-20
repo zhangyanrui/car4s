@@ -2,4 +2,5 @@
 <resources>
     <color name="maintab_red">#FE5102</color>
     <color name="actionbar_red">#FF8609</color>
+    <color name="transparent">#00000000</color>
 </resources>

@@ -7,4 +7,5 @@ package cn.car4s.app.util;
  * Time: 2015/5/13.
  */
 public class LogUtil {
+
 }

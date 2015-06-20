@@ -9,4 +9,6 @@ import java.io.Serializable;
  * Time: 2015/4/22.
  */
 public class BaseBean implements Serializable {
+    public int id;
+    public String action;
 }

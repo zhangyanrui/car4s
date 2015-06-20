@@ -1,5 +1,6 @@
 package cn.car4s.app.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import cn.car4s.app.R;
 import cn.car4s.app.ui.activity.IBase;
+import cn.car4s.app.ui.activity.LoginActivity;
 
 /**
  * Description:
@@ -22,6 +24,10 @@ public class Tab2Fragment extends BaseFragment implements IBase {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootview = inflater.inflate(R.layout.fragment_tab2, null);
+
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+
         initUI();
         initData();
         return rootview;
