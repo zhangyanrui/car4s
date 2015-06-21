@@ -11,15 +11,16 @@
                   android:orientation="vertical">
 
 
-        <EditText style="@style/appstyle_login_edittext"
-                  android:id="@+id/edt_login_mobile"
-                  android:drawableLeft="@mipmap/ic_loginactivity_mobile" android:textColorHint="@android:color/white"/>
+        <EditText style="@style/appstyle_login_edittext" android:inputType="number"
+                  android:id="@+id/edt_login_mobile" android:hint="手机号"
+                  android:drawableLeft="@mipmap/ic_loginactivity_mobile"/>
+        <LinearLayout style="@style/appstyle_login_horizal_line"></LinearLayout>
 
 
-        <EditText style="@style/appstyle_login_edittext"
-                  android:id="@+id/edt_login_pwd"
-                  android:drawableLeft="@mipmap/ic_loginactivity_pwd" android:textColorHint="@android:color/white"/>
-
+        <EditText style="@style/appstyle_login_edittext" android:inputType="textPassword"
+                  android:id="@+id/edt_login_pwd" android:hint="密码"
+                  android:drawableLeft="@mipmap/ic_loginactivity_pwd"/>
+        <LinearLayout style="@style/appstyle_login_horizal_line"></LinearLayout>
         <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:orientation="horizontal">

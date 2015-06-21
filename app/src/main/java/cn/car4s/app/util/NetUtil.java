@@ -1,7 +1,11 @@
 package cn.car4s.app.util;
 
 import android.os.Handler;
+import android.util.Log;
 import cn.car4s.app.AppContext;
+import cn.car4s.app.api.HttpCallback;
+import cn.car4s.app.bean.NetReturnBean;
+import com.google.gson.Gson;
 import com.squareup.okhttp.*;
 
 import java.io.IOException;
@@ -33,14 +37,16 @@ public class NetUtil {
         return response.body().string();
     }
 
+    static NetReturnBean bean;
 
-    public static void doPostMap(String url, Map<String, String> map, final Callback callback) throws IOException {
+    public static void doPostMap(String url, Map<String, String> map, final HttpCallback callback) {
         FormEncodingBuilder builder = new FormEncodingBuilder();
         for (Map.Entry<String, String> entry : map.entrySet()) {
             builder.add(entry.getKey(), entry.getValue());
         }
         RequestBody body = builder.build();
         final Request request = new Request.Builder().url(url).post(body).build();
+
         Callback asyncCallback = new Callback() {
 
 
@@ -50,27 +56,36 @@ public class NetUtil {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        callback.onFailure(request, e);
+                        ToastUtil.showToastShort(e.toString());
+//                        callback.onFailure(request, e);
                     }
                 });
             }
 
             @Override
             public void onResponse(final Response response) throws IOException {
+                String result = null;
+                if (response != null) {
+                    result = response.body().string();
+                }
+                Log.e("onResponse", "" + result);
+                bean = new Gson().fromJson(result, NetReturnBean.class);
+                if (bean == null) return;
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        try {
-                            callback.onResponse(response);
-                        } catch (IOException e) {
-                            e.printStackTrace();
+//                        ToastUtil.showToastShort(bean.Message);
+                        if ("0".equals(bean.Code)) {
+                            callback.onResponse(bean);
+                        } else {
+                            ToastUtil.showToastShort(bean.Message);
                         }
-
                     }
                 });
             }
         };
         okHttpClient.newCall(request).enqueue(asyncCallback);
     }
+
 
 }

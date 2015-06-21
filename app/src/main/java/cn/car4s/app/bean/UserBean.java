@@ -1,10 +1,9 @@
 package cn.car4s.app.bean;
 
 import cn.car4s.app.AppConfig;
+import cn.car4s.app.api.HttpCallback;
 import cn.car4s.app.util.NetUtil;
-import com.squareup.okhttp.Callback;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,13 +17,26 @@ public class UserBean extends BaseBean {
 
     public String PhoneNumber;
     public String PassWord;
+    public String CodeNumber;
+    public String ReferralCode;
 
     public UserBean(String phoneNumber, String passWord) {
         PhoneNumber = phoneNumber;
         PassWord = passWord;
     }
 
-    public void login(Callback callback) throws IOException {
+    public UserBean(String phoneNumber) {
+        PhoneNumber = phoneNumber;
+    }
+
+    public UserBean(String phoneNumber, String passWord, String codeNumber, String referralCode) {
+        PhoneNumber = phoneNumber;
+        PassWord = passWord;
+        CodeNumber = codeNumber;
+        ReferralCode = referralCode;
+    }
+
+    public void login(HttpCallback callback) {
         Map map = new HashMap();
         map.put("action", "Login");
         map.put("PhoneNumber", this.PhoneNumber + "");
@@ -32,5 +44,31 @@ public class UserBean extends BaseBean {
         NetUtil.doPostMap(AppConfig.APP_SERVER, map, callback);
     }
 
+
+    public void register(HttpCallback callback) {
+        Map map = new HashMap();
+        map.put("action", "Register");
+        map.put("PhoneNumber", this.PhoneNumber + "");
+        map.put("PassWord", this.PassWord + "");
+        map.put("CodeNumber", this.CodeNumber + "");
+        map.put("ReferralCode", this.ReferralCode + "");
+        NetUtil.doPostMap(AppConfig.APP_SERVER, map, callback);
+    }
+
+    public void getYanzhegnma(HttpCallback callback) {
+        Map map = new HashMap();
+        map.put("action", "GetCode");
+        map.put("PhoneNumber", this.PhoneNumber + "");
+        NetUtil.doPostMap(AppConfig.APP_SERVER, map, callback);
+    }
+
+    public void resetPwd(HttpCallback callback) {
+        Map map = new HashMap();
+        map.put("action", "ResetPassword");
+        map.put("PhoneNumber", this.PhoneNumber + "");
+        map.put("PassWord", this.PassWord + "");
+        map.put("CodeNumber", this.CodeNumber + "");
+        NetUtil.doPostMap(AppConfig.APP_SERVER, map, callback);
+    }
 
 }

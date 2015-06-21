@@ -1,13 +1,17 @@
 package cn.car4s.app.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
+import cn.car4s.app.bean.WebviewBean;
 import cn.car4s.app.ui.activity.IBase;
+import cn.car4s.app.ui.activity.WebviewActivity;
 import cn.car4s.app.util.DeviceUtil;
 import cn.car4s.app.util.DialogUtil;
 
@@ -68,6 +72,10 @@ public class Tab1Fragment extends BaseFragment implements IBase {
                 case R.id.btn_shengqian:
                     break;
                 case R.id.btn_zhengqian:
+                    mIntent = new Intent(getActivity(), WebviewActivity.class);
+                    WebviewBean bean = new WebviewBean("挣钱", "http://baike.baidu.com/subview/555/5133091.htm", true);
+                    mIntent.putExtra(AppConfig.INTENT_PARA_KEY_BEAN, bean);
+                    startActivity(mIntent);
                     break;
                 case R.id.btn_tiqian:
                     break;

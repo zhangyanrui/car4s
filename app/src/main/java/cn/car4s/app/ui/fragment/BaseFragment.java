@@ -1,5 +1,6 @@
 package cn.car4s.app.ui.fragment;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 /**
@@ -9,4 +10,5 @@ import android.support.v4.app.Fragment;
  * Time: 2015/4/22.
  */
 public class BaseFragment extends Fragment {
+    public Intent mIntent;
 }

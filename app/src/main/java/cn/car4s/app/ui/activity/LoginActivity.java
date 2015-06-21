@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,11 +13,11 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
+import cn.car4s.app.api.HttpCallback;
+import cn.car4s.app.bean.NetReturnBean;
 import cn.car4s.app.bean.UserBean;
 import cn.car4s.app.util.ToastUtil;
-import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
@@ -82,6 +81,7 @@ public class LoginActivity extends BaseActivity implements IBase {
                     break;
                 case R.id.btn_forgetpwd:
                     intent = new Intent(LoginActivity.this, ResetPwdActivity.class);
+                    intent.putExtra("usertype", 1);
                     startActivityForResult(intent, AppConfig.REQUEST_CODE_RESETPWD);
                     break;
                 case R.id.btn_register:
@@ -95,28 +95,23 @@ public class LoginActivity extends BaseActivity implements IBase {
                         ToastUtil.showToastShort("您的输入有误，请重新输入");
                     } else {
                         UserBean bean = new UserBean(phone, pwd);
-                        try {
-                            bean.login(callback);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
+                        bean.login(callback);
                     }
                     break;
             }
         }
     };
-    Callback callback = new Callback() {
+
+    HttpCallback callback = new HttpCallback() {
         @Override
         public void onFailure(Request request, IOException e) {
-            ToastUtil.showToastShort(e.toString());
+
         }
 
         @Override
-        public void onResponse(Response response) throws IOException {
-            if (response != null) {
-                ToastUtil.showToastShort(response.body().string());
-            }
+        public void onResponse(NetReturnBean bean) {
+
+
         }
     };
 
