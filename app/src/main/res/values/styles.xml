@@ -32,6 +32,9 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/textsize_normal</item>
     </style>
+    <style name="appstyle_basic_text_black" parent="appstyle_basic_text">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
 
     <style name="appstyle_login_edittext">
         <item name="android:gravity">center_vertical</item>
@@ -51,11 +54,16 @@
     </style>
 
 
-    <style name="appstyle_login_horizal_line">
+    <style name="appstyle_basic_horizal_line">
         <item name="android:orientation">horizontal</item>
-        <item name="android:background">@android:color/white</item>
+        <item name="android:background">@android:color/black</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">0.5dp</item>
+    </style>
+
+
+    <style name="appstyle_login_horizal_line" parent="appstyle_basic_horizal_line">
+        <item name="android:background">@android:color/white</item>
         <item name="android:layout_marginLeft">20dp</item>
         <item name="android:layout_marginRight">20dp</item>
     </style>

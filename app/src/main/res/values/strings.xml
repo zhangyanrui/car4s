@@ -8,6 +8,7 @@
     <string name="bemember">成为会员(会员)\n邀请好友(非会员)</string>
 
 
-    <string name="order_weixiaofei">未完成订单</string>
-    <string name="order_all">全部订单</string>
+    <string name="order_weishiyong">未使用订单</string>
+    <string name="order_yiwancheng">已完成订单</string>
+    <string name="order_xianxia">线下订单</string>
 </resources>

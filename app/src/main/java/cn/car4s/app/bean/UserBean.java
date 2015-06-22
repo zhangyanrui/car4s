@@ -19,6 +19,8 @@ public class UserBean extends BaseBean {
     public String PassWord;
     public String CodeNumber;
     public String ReferralCode;
+    public String feedBackText;
+
 
     public UserBean(String phoneNumber, String passWord) {
         PhoneNumber = phoneNumber;
@@ -71,4 +73,12 @@ public class UserBean extends BaseBean {
         NetUtil.doPostMap(AppConfig.APP_SERVER, map, callback);
     }
 
+
+    public void feedback(HttpCallback callback) {
+        Map map = new HashMap();
+        map.put("action", "AddFeedback");
+        map.put("PhoneNumber", this.PhoneNumber + "");
+        map.put("text", this.feedBackText + "");
+        NetUtil.doPostMap(AppConfig.APP_SERVER, map, callback);
+    }
 }
