@@ -25,11 +25,11 @@ public class SettingBean extends BaseBean {
 
     static List<SettingBean> listData = null;
 
-    public static List<SettingBean> createSettingData() {
+    public static List<SettingBean> createSettingData(UserBean mUserbean) {
         if (listData == null) {
             listData = new ArrayList<SettingBean>();
-            SettingBean bean = new SettingBean(R.mipmap.setting_myjifen, 0, "可用积分", "");
-            SettingBean bean2 = new SettingBean(R.mipmap.setting_myjifen, 0, "冻结积分", "");
+            SettingBean bean = new SettingBean(R.mipmap.setting_myjifen, 0, "可用积分", mUserbean.AvailablePoint);
+            SettingBean bean2 = new SettingBean(R.mipmap.setting_myjifen, 0, "冻结积分", mUserbean.FreezingPoint);
             SettingBean bean3 = new SettingBean(R.mipmap.setting_feedback, R.mipmap.setting_goto, "意见反馈", "");
             SettingBean bean4 = new SettingBean(R.mipmap.setting_aboutus, R.mipmap.setting_goto, "关于我们", "");
             listData.add(bean);

@@ -1,6 +1,5 @@
 package cn.car4s.app.api;
 
-import cn.car4s.app.bean.NetReturnBean;
 import com.squareup.okhttp.Request;
 
 import java.io.IOException;
@@ -15,5 +14,5 @@ public interface HttpCallback {
 
     void onFailure(Request request, IOException e);
 
-    void onResponse(NetReturnBean bean);
+    void onResponse(String result);
 }

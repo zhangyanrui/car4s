@@ -37,7 +37,8 @@ public class NetUtil {
         return response.body().string();
     }
 
-    static NetReturnBean bean;
+    static NetReturnBean bean = null;
+    static String result = null;
 
     public static void doPostMap(String url, Map<String, String> map, final HttpCallback callback) {
         FormEncodingBuilder builder = new FormEncodingBuilder();
@@ -64,7 +65,6 @@ public class NetUtil {
 
             @Override
             public void onResponse(final Response response) throws IOException {
-                String result = null;
                 if (response != null) {
                     result = response.body().string();
                 }
@@ -76,7 +76,7 @@ public class NetUtil {
                     public void run() {
 //                        ToastUtil.showToastShort(bean.Message);
                         if ("0".equals(bean.Code)) {
-                            callback.onResponse(bean);
+                            callback.onResponse(result);
                         } else {
                             ToastUtil.showToastShort(bean.Message);
                         }

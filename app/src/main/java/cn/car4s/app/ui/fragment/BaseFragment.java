@@ -2,6 +2,7 @@ package cn.car4s.app.ui.fragment;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import cn.car4s.app.bean.UserBean;
 
 /**
  * Description:
@@ -11,4 +12,5 @@ import android.support.v4.app.Fragment;
  */
 public class BaseFragment extends Fragment {
     public Intent mIntent;
+    public UserBean mUserbean;
 }

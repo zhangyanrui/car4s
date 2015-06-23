@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,8 +15,8 @@ import butterknife.InjectView;
 import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
 import cn.car4s.app.api.HttpCallback;
-import cn.car4s.app.bean.NetReturnBean;
 import cn.car4s.app.bean.UserBean;
+import cn.car4s.app.util.PreferencesUtil;
 import cn.car4s.app.util.ToastUtil;
 import com.squareup.okhttp.Request;
 
@@ -68,6 +69,10 @@ public class LoginActivity extends BaseActivity implements IBase {
         mForgetPwd.setOnClickListener(onClickListener);
         mBtnRegister.setOnClickListener(onClickListener);
         mBtnLogin.setOnClickListener(onClickListener);
+
+
+        mEdtMobile.setText(AppConfig.TEST_ID);
+        mEdtPwd.setText(AppConfig.TEST_PWD);
     }
 
 
@@ -109,9 +114,11 @@ public class LoginActivity extends BaseActivity implements IBase {
         }
 
         @Override
-        public void onResponse(NetReturnBean bean) {
-
-
+        public void onResponse(String result) {
+            Log.e("--->", "" + result);
+            PreferencesUtil.putPreferences(AppConfig.SP_KEY_USERINFO, result);
+            setResult(Activity.RESULT_OK);
+            finish();
         }
     };
 

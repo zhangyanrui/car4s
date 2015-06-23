@@ -22,7 +22,7 @@ import java.util.concurrent.Executor;
  * Time: 2015/4/22.
  */
 public class AppContext extends Application {
-    public static DisplayImageOptions display_imageloader;
+    public static DisplayImageOptions display_imageloader, display_avaster_imageloader;
     public static Context appContext;
 
     public static Context getInstance() {
@@ -50,6 +50,12 @@ public class AppContext extends Application {
                 .showImageOnLoading(android.R.color.transparent)
                 .showImageForEmptyUri(android.R.color.transparent)
                 .showImageOnFail(android.R.color.transparent)
+                .cacheInMemory(true).cacheOnDisk(true).bitmapConfig(Bitmap.Config.ARGB_8888)
+                .considerExifParams(true).build();
+        display_avaster_imageloader = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.mipmap.setting_head_default)
+                .showImageForEmptyUri(R.mipmap.setting_head_default)
+                .showImageOnFail(R.mipmap.setting_head_default)
                 .cacheInMemory(true).cacheOnDisk(true).bitmapConfig(Bitmap.Config.ARGB_8888)
                 .considerExifParams(true).build();
     }

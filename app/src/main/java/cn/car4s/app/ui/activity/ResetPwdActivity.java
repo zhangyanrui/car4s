@@ -12,7 +12,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cn.car4s.app.R;
 import cn.car4s.app.api.HttpCallback;
-import cn.car4s.app.bean.NetReturnBean;
 import cn.car4s.app.bean.UserBean;
 import cn.car4s.app.util.ToastUtil;
 import com.squareup.okhttp.Request;
@@ -128,7 +127,7 @@ public class ResetPwdActivity extends BaseActivity implements IBase {
         }
 
         @Override
-        public void onResponse(NetReturnBean bean) {
+        public void onResponse(String bean) {
 
 
         }
@@ -140,7 +139,7 @@ public class ResetPwdActivity extends BaseActivity implements IBase {
         }
 
         @Override
-        public void onResponse(NetReturnBean bean) {
+        public void onResponse(String bean) {
 
 
         }
@@ -152,7 +151,7 @@ public class ResetPwdActivity extends BaseActivity implements IBase {
         }
 
         @Override
-        public void onResponse(NetReturnBean bean) {
+        public void onResponse(String bean) {
 
 
         }

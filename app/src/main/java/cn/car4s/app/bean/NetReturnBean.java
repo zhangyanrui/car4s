@@ -12,4 +12,8 @@ public class NetReturnBean extends BaseBean {
     public String Message;
     public Object Data;
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

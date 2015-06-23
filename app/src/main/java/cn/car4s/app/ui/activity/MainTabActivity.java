@@ -1,14 +1,17 @@
 package cn.car4s.app.ui.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTabHost;
 import android.widget.RadioGroup;
+import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
+import cn.car4s.app.bean.UserBean;
 import cn.car4s.app.ui.fragment.Tab1Fragment;
 import cn.car4s.app.ui.fragment.Tab2Fragment;
 import cn.car4s.app.ui.fragment.Tab3Fragment;
-import cn.car4s.app.ui.fragment.Tab4Fragment;
 
 public class MainTabActivity extends BaseActivity implements IBase {
     private FragmentManager fm;
@@ -40,10 +43,18 @@ public class MainTabActivity extends BaseActivity implements IBase {
                         tabhost.setCurrentTabByTag("tab1");
                         break;
                     case R.id.rdo_tab_2:
-                        tabhost.setCurrentTabByTag("tab2");
+                        if (UserBean.checkUserLoginStatus())
+                            tabhost.setCurrentTabByTag("tab2");
+                        else {
+                            UserBean.toLogin(MainTabActivity.this, AppConfig.REQUEST_CODE_LOGIN_FROMTAB2);
+                        }
                         break;
                     case R.id.rdo_tab_3:
-                        tabhost.setCurrentTabByTag("tab3");
+                        if (UserBean.checkUserLoginStatus())
+                            tabhost.setCurrentTabByTag("tab3");
+                        else {
+                            UserBean.toLogin(MainTabActivity.this, AppConfig.REQUEST_CODE_LOGIN_FROMTAB3);
+                        }
                         break;
                     case R.id.rdo_tab_4:
                         tabhost.setCurrentTabByTag("tab4");
@@ -51,6 +62,17 @@ public class MainTabActivity extends BaseActivity implements IBase {
                 }
             }
         });
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AppConfig.REQUEST_CODE_LOGIN_FROMTAB2 && resultCode == Activity.RESULT_OK) {
+            tabhost.setCurrentTabByTag("tab2");
+        } else if (requestCode == AppConfig.REQUEST_CODE_LOGIN_FROMTAB3 && resultCode == Activity.RESULT_OK) {
+            tabhost.setCurrentTabByTag("tab3");
+        }
     }
 
     @Override
