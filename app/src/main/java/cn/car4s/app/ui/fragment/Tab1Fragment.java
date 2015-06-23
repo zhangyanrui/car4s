@@ -1,7 +1,9 @@
 package cn.car4s.app.ui.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +12,12 @@ import android.widget.TextView;
 import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
 import cn.car4s.app.bean.WebviewBean;
+import cn.car4s.app.ui.activity.ChoosePositionActivity;
 import cn.car4s.app.ui.activity.IBase;
 import cn.car4s.app.ui.activity.WebviewActivity;
 import cn.car4s.app.util.DeviceUtil;
 import cn.car4s.app.util.DialogUtil;
+import cn.car4s.app.util.PreferencesUtil;
 
 /**
  * Description:
@@ -32,10 +36,11 @@ public class Tab1Fragment extends BaseFragment implements IBase {
         return rootview;
     }
 
+    TextView mActionbarBack;
+
     @Override
     public void initUI() {
-        TextView mActionbarBack = (TextView) rootview.findViewById(R.id.btn_actionbar_back_text);
-        mActionbarBack.setText("选择网店");
+         mActionbarBack = (TextView) rootview.findViewById(R.id.btn_actionbar_back_text);
         mActionbarBack.setVisibility(View.VISIBLE);
         mActionbarBack.setOnClickListener(onClickListener);
         ImageView mActionbarConfirm = (ImageView) rootview.findViewById(R.id.btn_actionbar_conform_img);
@@ -54,9 +59,16 @@ public class Tab1Fragment extends BaseFragment implements IBase {
         viewpager.getLayoutParams().height = (int) (DeviceUtil.getWidth() * 374 / 640);
     }
 
+    String pos_name;
+
     @Override
     public void initData() {
-
+        pos_name = PreferencesUtil.getPreferences(AppConfig.SP_KEY_CHOOSEPOSITION_NAME, "");
+        if (TextUtils.isEmpty(pos_name)) {
+            mActionbarBack.setText("选择网点");
+        } else {
+            mActionbarBack.setText("网点：" + pos_name);
+        }
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -65,6 +77,8 @@ public class Tab1Fragment extends BaseFragment implements IBase {
 
             switch (view.getId()) {
                 case R.id.btn_actionbar_back_text:
+                    mIntent = new Intent(getActivity(), ChoosePositionActivity.class);
+                    Tab1Fragment.this.startActivityForResult(mIntent, AppConfig.REQUEST_CODE_CHOOSE_POS);
                     break;
                 case R.id.btn_actionbar_conform_img:
                     DialogUtil.buildTelDialog(getActivity());
@@ -82,4 +96,12 @@ public class Tab1Fragment extends BaseFragment implements IBase {
             }
         }
     };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AppConfig.REQUEST_CODE_CHOOSE_POS && resultCode == Activity.RESULT_OK) {
+            initData();
+        }
+    }
 }

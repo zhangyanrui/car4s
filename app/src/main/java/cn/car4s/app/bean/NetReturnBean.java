@@ -16,4 +16,8 @@ public class NetReturnBean extends BaseBean {
     public String toString() {
         return super.toString();
     }
+
+
+
+
 }

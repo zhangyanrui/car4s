@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import cn.car4s.app.AppConfig;
+import cn.car4s.app.api.ApiService;
 import cn.car4s.app.api.HttpCallback;
 import cn.car4s.app.ui.activity.LoginActivity;
 import cn.car4s.app.util.NetUtil;
@@ -73,7 +74,7 @@ public class UserBean extends BaseBean {
         map.put("action", "Login");
         map.put("PhoneNumber", this.PhoneNumber + "");
         map.put("PassWord", this.PassWord + "");
-        NetUtil.doPostMap(AppConfig.APP_SERVER, map, callback);
+        NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_USER, map, callback);
     }
 
 
@@ -84,14 +85,14 @@ public class UserBean extends BaseBean {
         map.put("PassWord", this.PassWord + "");
         map.put("CodeNumber", this.CodeNumber + "");
         map.put("ReferralCode", this.ReferralCode + "");
-        NetUtil.doPostMap(AppConfig.APP_SERVER, map, callback);
+        NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_USER, map, callback);
     }
 
     public void getYanzhegnma(HttpCallback callback) {
         Map map = new HashMap();
         map.put("action", "GetCode");
         map.put("PhoneNumber", this.PhoneNumber + "");
-        NetUtil.doPostMap(AppConfig.APP_SERVER, map, callback);
+        NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_USER, map, callback);
     }
 
     public void resetPwd(HttpCallback callback) {
@@ -100,7 +101,7 @@ public class UserBean extends BaseBean {
         map.put("PhoneNumber", this.PhoneNumber + "");
         map.put("PassWord", this.PassWord + "");
         map.put("CodeNumber", this.CodeNumber + "");
-        NetUtil.doPostMap(AppConfig.APP_SERVER, map, callback);
+        NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_USER, map, callback);
     }
 
 
@@ -109,7 +110,7 @@ public class UserBean extends BaseBean {
         map.put("action", "AddFeedback");
         map.put("PhoneNumber", this.PhoneNumber + "");
         map.put("text", this.feedBackText + "");
-        NetUtil.doPostMap(AppConfig.APP_SERVER, map, callback);
+        NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_USER, map, callback);
     }
 
     public static boolean checkUserLoginStatus() {
