@@ -40,6 +40,7 @@
         <activity android:name=".ui.activity.ResetPwdActivity"></activity>
         <activity android:name=".ui.activity.FeedbackActivity"></activity>
         <activity android:name=".ui.activity.ChoosePositionActivity"></activity>
+        <activity android:name=".ui.activity.PayDemoActivity"></activity>
         <activity android:name=".ui.activity.SchemeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -50,7 +51,7 @@
                 <data android:scheme="jcnalex"/>
             </intent-filter>
         </activity>
-
+        <!--sharesdk -->
         <activity
                 android:name="com.mob.tools.MobUIShell"
                 android:theme="@android:style/Theme.Translucent.NoTitleBar"
@@ -65,8 +66,6 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-
-
         <!--微信分享回调 -->
         <activity
                 android:name=".wxapi.WXEntryActivity"
@@ -74,6 +73,15 @@
                 android:configChanges="keyboardHidden|orientation|screenSize"
                 android:exported="true"
                 android:screenOrientation="portrait"/>
+        <!-- alipay sdk begin -->
+        <activity
+                android:name="com.alipay.sdk.app.H5PayActivity"
+                android:configChanges="orientation|keyboardHidden|navigation"
+                android:exported="false"
+                android:screenOrientation="behind"
+                android:windowSoftInputMode="adjustResize|stateHidden">
+        </activity>
+        <!-- alipay sdk end -->
     </application>
 
 </manifest>

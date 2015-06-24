@@ -14,6 +14,7 @@ import cn.car4s.app.R;
 import cn.car4s.app.bean.WebviewBean;
 import cn.car4s.app.ui.activity.ChoosePositionActivity;
 import cn.car4s.app.ui.activity.IBase;
+import cn.car4s.app.ui.activity.PayDemoActivity;
 import cn.car4s.app.ui.activity.WebviewActivity;
 import cn.car4s.app.util.DeviceUtil;
 import cn.car4s.app.util.DialogUtil;
@@ -40,7 +41,7 @@ public class Tab1Fragment extends BaseFragment implements IBase {
 
     @Override
     public void initUI() {
-         mActionbarBack = (TextView) rootview.findViewById(R.id.btn_actionbar_back_text);
+        mActionbarBack = (TextView) rootview.findViewById(R.id.btn_actionbar_back_text);
         mActionbarBack.setVisibility(View.VISIBLE);
         mActionbarBack.setOnClickListener(onClickListener);
         ImageView mActionbarConfirm = (ImageView) rootview.findViewById(R.id.btn_actionbar_conform_img);
@@ -92,6 +93,8 @@ public class Tab1Fragment extends BaseFragment implements IBase {
                     startActivity(mIntent);
                     break;
                 case R.id.btn_tiqian:
+                    mIntent = new Intent(getActivity(), PayDemoActivity.class);
+                    startActivity(mIntent);
                     break;
             }
         }
