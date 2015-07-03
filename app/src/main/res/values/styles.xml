@@ -35,6 +35,13 @@
     <style name="appstyle_basic_text_black" parent="appstyle_basic_text">
         <item name="android:textColor">@android:color/black</item>
     </style>
+    <style name="appstyle_product_text" parent="appstyle_basic_text_black">
+        <item name="android:textSize">@dimen/textsize_small</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center_vertical|left</item>
+    </style>
 
     <style name="appstyle_login_edittext">
         <item name="android:gravity">center_vertical</item>

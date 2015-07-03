@@ -10,6 +10,7 @@ public class ApiService {
 
     public static final String INTERFACE_USER = "Interface_User.aspx";
     public static final String INTERFACE_SYS_PARA = "Interface_Sys_Para.aspx";
+    public static final String INTERFACE_PRODUCT = "Interface_Order.aspx";
 
 
 }

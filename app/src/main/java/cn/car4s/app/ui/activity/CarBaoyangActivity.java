@@ -3,17 +3,20 @@ package cn.car4s.app.ui.activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cn.car4s.app.R;
-import cn.car4s.app.bean.ShengqianGridBean;
-import cn.car4s.app.ui.adapter.ShengqianAdapter;
+import cn.car4s.app.api.HttpCallback;
+import cn.car4s.app.bean.ProductBean;
+import cn.car4s.app.ui.adapter.ProductAdapter;
 import cn.car4s.app.ui.widget.RecyclerItemClickListener;
-import cn.car4s.app.util.ToastUtil;
+import com.squareup.okhttp.Request;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +34,8 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
     @InjectView(R.id.recyclerview)
     RecyclerView recyclerView;
 
-    List<ShengqianGridBean> list = new ArrayList<ShengqianGridBean>();
-    ShengqianAdapter adapter;
+    List<ProductBean> list = new ArrayList<ProductBean>();
+    ProductAdapter adapter;
     RecyclerItemClickListener itemlistener;
 
     @Override
@@ -40,8 +43,8 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carbaoyang);
         ButterKnife.inject(this);
-        initData();
         initUI();
+        initData();
     }
 
     @Override
@@ -55,23 +58,37 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        adapter = new ShengqianAdapter(list, this);
+        adapter = new ProductAdapter(list, this);
         recyclerView.setAdapter(adapter);
         itemlistener = new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                ShengqianGridBean bean = list.get(position);
-                if (bean.isSelcted) {
-
-                } else {
-                    ToastUtil.showToastShort("暂未开放");
-                }
+//                ShengqianGridBean bean = list.get(position);
+//                if (bean.isSelcted) {
+//
+//                } else {
+//                    ToastUtil.showToastShort("暂未开放");
+//                }
             }
         });
         recyclerView.addOnItemTouchListener(itemlistener);
-        list.addAll(ShengqianGridBean.createSettingData());
-        adapter.notifyDataSetChanged();
     }
+
+    HttpCallback callback = new HttpCallback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+
+        }
+
+        @Override
+        public void onResponse(String result) {
+            Log.e("--->", "" + result);
+            list.addAll(ProductBean.getData(result));
+            adapter.notifyDataSetChanged();
+
+        }
+    };
+
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -85,8 +102,15 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
         }
     };
 
+    private ProductBean mProductBean = null;
+
     @Override
     public void initData() {
+        mProductBean = new ProductBean(0, 0, 1, true);
+        loadData();
+    }
 
+    public void loadData() {
+        mProductBean.getProductList(callback, mProductBean);
     }
 }
