@@ -12,10 +12,7 @@ import android.widget.TextView;
 import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
 import cn.car4s.app.bean.WebviewBean;
-import cn.car4s.app.ui.activity.ChoosePositionActivity;
-import cn.car4s.app.ui.activity.IBase;
-import cn.car4s.app.ui.activity.PayDemoActivity;
-import cn.car4s.app.ui.activity.WebviewActivity;
+import cn.car4s.app.ui.activity.*;
 import cn.car4s.app.util.DeviceUtil;
 import cn.car4s.app.util.DialogUtil;
 import cn.car4s.app.util.PreferencesUtil;
@@ -85,6 +82,8 @@ public class Tab1Fragment extends BaseFragment implements IBase {
                     DialogUtil.buildTelDialog(getActivity());
                     break;
                 case R.id.btn_shengqian:
+                    mIntent = new Intent(getActivity(), ShengqianActivity.class);
+                    startActivity(mIntent);
                     break;
                 case R.id.btn_zhengqian:
                     mIntent = new Intent(getActivity(), WebviewActivity.class);

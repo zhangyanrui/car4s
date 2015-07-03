@@ -37,10 +37,12 @@
 
         <activity android:name=".ui.activity.WebviewActivity"></activity>
         <activity android:name=".ui.activity.LoginActivity"></activity>
+        <activity android:name=".ui.activity.ShengqianActivity"></activity>
         <activity android:name=".ui.activity.ResetPwdActivity"></activity>
         <activity android:name=".ui.activity.FeedbackActivity"></activity>
         <activity android:name=".ui.activity.ChoosePositionActivity"></activity>
         <activity android:name=".ui.activity.PayDemoActivity"></activity>
+        <activity android:name=".ui.activity.CarBaoyangActivity"></activity>
         <activity android:name=".ui.activity.SchemeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

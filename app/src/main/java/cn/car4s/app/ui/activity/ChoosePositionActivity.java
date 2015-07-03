@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -42,16 +43,20 @@ public class ChoosePositionActivity extends BaseActivity implements IBase {
     }
 
     ImageView mActionbarBack;
+
     @Override
     public void initUI() {
-        ImageView mActionbarBack=(ImageView) findViewById(R.id.btn_actionbar_back_img);
-        mActionbarBack .setVisibility(View.VISIBLE);
+        ImageView mActionbarBack = (ImageView) findViewById(R.id.btn_actionbar_back_img);
+        mActionbarBack.setVisibility(View.VISIBLE);
         mActionbarBack.setImageResource(R.mipmap.ic_loginactivity_back);
         mActionbarBack.setOnClickListener(onClickListener);
 
         String name = PreferencesUtil.getPreferences(AppConfig.SP_KEY_CHOOSEPOSITION_NAME, "");
         String id = PreferencesUtil.getPreferences(AppConfig.SP_KEY_CHOOSEPOSITION_ID, "");
-        ((TextView) findViewById(R.id.tv_actionbar_title)).setText("当前网店：" + name);
+        if (TextUtils.isEmpty(name)) {
+            ((TextView) findViewById(R.id.tv_actionbar_title)).setText("请选择网点");
+        } else
+            ((TextView) findViewById(R.id.tv_actionbar_title)).setText("当前网店：" + name);
 
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
