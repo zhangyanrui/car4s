@@ -63,6 +63,7 @@ public class ShengqianActivity extends BaseActivity implements IBase {
                 ShengqianGridBean bean = list.get(position);
                 if (bean.isSelcted) {
                     mIntent = new Intent(ShengqianActivity.this, CarBaoyangActivity.class);
+                    mIntent.putExtra("type", 2);
                     startActivity(mIntent);
                 } else {
                     ToastUtil.showToastShort("暂未开放");

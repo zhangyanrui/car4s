@@ -67,7 +67,6 @@ public class ProductBean extends BaseBean {
             jsonObject = new JSONObject(json);
             JSONArray array = jsonObject.getJSONArray("Data");
             list = new Gson().fromJson(array.toString(), list_type);
-            Log.e("--->", "" + list.get(0).ProductID);
         } catch (JSONException e) {
             e.printStackTrace();
         }

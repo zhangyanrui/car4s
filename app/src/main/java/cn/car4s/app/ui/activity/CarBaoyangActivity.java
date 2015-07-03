@@ -1,11 +1,14 @@
 package cn.car4s.app.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -34,14 +37,29 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
     @InjectView(R.id.recyclerview)
     RecyclerView recyclerView;
 
+    @InjectView(R.id.btn_chooseCarbrand)
+    RelativeLayout mBtnChooseCarbrand;
+    @InjectView(R.id.layout_top_dabao)
+    LinearLayout mLayoutTopDabao;
+    @InjectView(R.id.layout_top_baoyang)
+    LinearLayout mLayoutTopBaoyang;
+    @InjectView(R.id.btn_dabao)
+    TextView mBtnDabao;
+    @InjectView(R.id.btn_xiaobao)
+    TextView mBtnXiaobao;
+
+
     List<ProductBean> list = new ArrayList<ProductBean>();
     ProductAdapter adapter;
     RecyclerItemClickListener itemlistener;
+
+    private int mType;//2hot  0dabao  1xiaobao
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carbaoyang);
+        mType = getIntent().getIntExtra("type", 2);
         ButterKnife.inject(this);
         initUI();
         initData();
@@ -52,8 +70,16 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
         mActionbarBack.setVisibility(View.VISIBLE);
         mActionbarBack.setImageResource(R.mipmap.ic_loginactivity_back);
         mActionbarBack.setOnClickListener(onClickListener);
-        mActionbarTitle.setText("汽车保养");
-
+        if (mType == 0) {
+            mActionbarTitle.setText("大保");
+            mLayoutTopDabao.setVisibility(View.VISIBLE);
+        } else if (mType == 1) {
+            mActionbarTitle.setText("小保");
+            mLayoutTopDabao.setVisibility(View.VISIBLE);
+        } else if (mType == 2) {
+            mActionbarTitle.setText("汽车保养");
+            mLayoutTopBaoyang.setVisibility(View.VISIBLE);
+        }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -72,6 +98,10 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
             }
         });
         recyclerView.addOnItemTouchListener(itemlistener);
+
+        mBtnChooseCarbrand.setOnClickListener(onClickListener);
+        mBtnDabao.setOnClickListener(onClickListener);
+        mBtnXiaobao.setOnClickListener(onClickListener);
     }
 
     HttpCallback callback = new HttpCallback() {
@@ -98,6 +128,18 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
                 case R.id.btn_actionbar_back_img:
                     finish();
                     break;
+                case R.id.btn_dabao:
+                    mIntent = new Intent(CarBaoyangActivity.this, CarBaoyangActivity.class);
+                    mIntent.putExtra("type", 0);
+                    startActivity(mIntent);
+                    break;
+                case R.id.btn_xiaobao:
+                    mIntent = new Intent(CarBaoyangActivity.this, CarBaoyangActivity.class);
+                    mIntent.putExtra("type", 1);
+                    startActivity(mIntent);
+                    break;
+                case R.id.btn_chooseCarbrand:
+                    break;
             }
         }
     };
@@ -106,7 +148,10 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
 
     @Override
     public void initData() {
-        mProductBean = new ProductBean(0, 0, 1, true);
+        if (mType == 2)
+            mProductBean = new ProductBean(mType, 0, 1, true);
+        else
+            mProductBean = new ProductBean(mType, 0, 1, false);
         loadData();
     }
 
