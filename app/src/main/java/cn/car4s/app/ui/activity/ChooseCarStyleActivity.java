@@ -5,17 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
 import cn.car4s.app.api.HttpCallback;
 import cn.car4s.app.bean.CarBrandBean;
-import cn.car4s.app.ui.adapter.CarBrandAdapter;
-import cn.car4s.app.ui.widget.SideBar;
+import cn.car4s.app.bean.CarSerisBean;
+import cn.car4s.app.ui.adapter.CarSersisAdapter;
 import com.squareup.okhttp.Request;
 
 import java.io.IOException;
@@ -28,19 +28,20 @@ import java.util.List;
  * Email: xuebo.chang@langtaojin.com
  * Time: 2015/4/22.
  */
-public class ChooseCarbrandActivity extends BaseActivity implements IBase {
-    List<CarBrandBean> list = new ArrayList<CarBrandBean>();
-    CarBrandAdapter adapter;
+public class ChooseCarStyleActivity extends BaseActivity implements IBase {
+    List<CarSerisBean> list = new ArrayList<CarSerisBean>();
+    CarSersisAdapter adapter;
     @InjectView(R.id.pinnedlv_show)
     ListView recyclerView;
-    @InjectView(R.id.sidebar_show)
-    SideBar indexBar;
+
+    CarBrandBean mBrandbean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choose_carbrand);
+        setContentView(R.layout.activity_choose_carstyle);
         ButterKnife.inject(this);
+        mBrandbean = (CarBrandBean) getIntent().getSerializableExtra("bean");
         initUI();
         initData();
     }
@@ -54,11 +55,20 @@ public class ChooseCarbrandActivity extends BaseActivity implements IBase {
         mActionbarBack.setImageResource(R.mipmap.ic_loginactivity_back);
         mActionbarBack.setOnClickListener(onClickListener);
 
-        ((TextView) findViewById(R.id.tv_actionbar_title)).setText("选择品牌");
+        ((TextView) findViewById(R.id.tv_actionbar_title)).setText("车型选择");
 
-        adapter = new CarBrandAdapter(list, this);
+        adapter = new CarSersisAdapter(list, this);
         recyclerView.setAdapter(adapter);
-        indexBar.setListView(recyclerView);
+        recyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                CarSerisBean bean = list.get(i);
+                mIntent = new Intent();
+                mIntent.putExtra("bean", bean);
+                setResult(Activity.RESULT_OK, mIntent);
+                finish();
+            }
+        });
     }
 
 
@@ -76,7 +86,7 @@ public class ChooseCarbrandActivity extends BaseActivity implements IBase {
 
     @Override
     public void initData() {
-        new CarBrandBean().getCarbrand(callback);
+        new CarSerisBean().getCarSersis(callback, mBrandbean);
     }
 
     HttpCallback callback = new HttpCallback() {
@@ -88,17 +98,9 @@ public class ChooseCarbrandActivity extends BaseActivity implements IBase {
         @Override
         public void onResponse(String result) {
             Log.e("--->", "" + result);
-            list.addAll(CarBrandBean.getData(result));
+            list.addAll(CarSerisBean.getData(result));
             adapter.notifyDataSetChanged();
         }
     };
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == AppConfig.REQUEST_CODE_CHOOSECAR) {
-            setResult(Activity.RESULT_OK, data);
-            finish();
-        }
-    }
 }

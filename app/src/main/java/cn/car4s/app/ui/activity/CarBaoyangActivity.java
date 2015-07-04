@@ -1,5 +1,6 @@
 package cn.car4s.app.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,8 +13,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
 import cn.car4s.app.api.HttpCallback;
+import cn.car4s.app.bean.CarSerisBean;
 import cn.car4s.app.bean.ProductBean;
 import cn.car4s.app.ui.adapter.ProductAdapter;
 import cn.car4s.app.ui.widget.RecyclerItemClickListener;
@@ -47,6 +50,8 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
     TextView mBtnDabao;
     @InjectView(R.id.btn_xiaobao)
     TextView mBtnXiaobao;
+    @InjectView(R.id.tv_top_carseris)
+    TextView mTextTopCarseris;
 
 
     List<ProductBean> list = new ArrayList<ProductBean>();
@@ -113,9 +118,11 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
         @Override
         public void onResponse(String result) {
             Log.e("--->", "" + result);
+            if (mCurrentPage == 1) {
+                list.clear();
+            }
             list.addAll(ProductBean.getData(result));
             adapter.notifyDataSetChanged();
-
         }
     };
 
@@ -139,23 +146,39 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
                     startActivity(mIntent);
                     break;
                 case R.id.btn_chooseCarbrand:
+                    mIntent = new Intent(CarBaoyangActivity.this, ChooseCarbrandActivity.class);
+                    startActivityForResult(mIntent, AppConfig.REQUEST_CODE_CHOOSECAR);
                     break;
             }
         }
     };
 
     private ProductBean mProductBean = null;
+    private int mCurrentPage = 1;
 
     @Override
     public void initData() {
         if (mType == 2)
-            mProductBean = new ProductBean(mType, 0, 1, true);
+            mProductBean = new ProductBean(mType, 0, mCurrentPage, true);
         else
-            mProductBean = new ProductBean(mType, 0, 1, false);
-        loadData();
+            mProductBean = new ProductBean(mType, 0, mCurrentPage, false);
+        loadData(true);
     }
 
-    public void loadData() {
+    public void loadData(boolean isRefresh) {
+        if (isRefresh)
+            mCurrentPage = 1;
         mProductBean.getProductList(callback, mProductBean);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == AppConfig.REQUEST_CODE_CHOOSECAR) {
+            CarSerisBean carSerisBean = (CarSerisBean) data.getSerializableExtra("bean");
+            mTextTopCarseris.setText(carSerisBean.SeriesName);
+            mProductBean.mCarbrandType = Integer.parseInt(carSerisBean.SeriesID);
+            loadData(true);
+        }
     }
 }

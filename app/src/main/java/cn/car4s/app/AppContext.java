@@ -3,6 +3,7 @@ package cn.car4s.app;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
+import cn.car4s.app.util.DeviceUtil;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DefaultConfigurationFactory;
@@ -10,6 +11,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import java.io.File;
@@ -22,7 +24,7 @@ import java.util.concurrent.Executor;
  * Time: 2015/4/22.
  */
 public class AppContext extends Application {
-    public static DisplayImageOptions display_imageloader, display_avaster_imageloader;
+    public static DisplayImageOptions display_imageloader, display_avaster_imageloader, display_round_imageloader;
     public static Context appContext;
 
     public static Context getInstance() {
@@ -57,6 +59,14 @@ public class AppContext extends Application {
                 .showImageForEmptyUri(R.mipmap.setting_head_default)
                 .showImageOnFail(R.mipmap.setting_head_default)
                 .cacheInMemory(true).cacheOnDisk(true).bitmapConfig(Bitmap.Config.ARGB_8888)
+                .displayer(new RoundedBitmapDisplayer(DeviceUtil.getPxFromDip(50)))
+                .considerExifParams(true).build();
+        display_round_imageloader = new DisplayImageOptions.Builder()
+                .showImageOnLoading(android.R.color.transparent)
+                .showImageForEmptyUri(android.R.color.transparent)
+                .showImageOnFail(android.R.color.transparent)
+                .cacheInMemory(true).cacheOnDisk(true).bitmapConfig(Bitmap.Config.ARGB_8888)
+                .displayer(new RoundedBitmapDisplayer(DeviceUtil.getPxFromDip(50)))
                 .considerExifParams(true).build();
     }
 }

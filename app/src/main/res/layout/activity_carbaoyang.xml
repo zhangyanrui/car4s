@@ -40,9 +40,14 @@
                       android:id="@+id/tv_title" android:textSize="@dimen/textsize_small"
                       android:textColor="@color/darker_gray"
                       android:layout_marginRight="20dp"/>
+            <TextView style="@style/appstyle_basic_text_black" android:text=""
+                      android:id="@+id/tv_top_carseris" android:textSize="@dimen/textsize_small"
+                      android:textColor="@color/darker_gray" android:layout_toLeftOf="@+id/goicon"
+                      android:layout_marginRight="20dp"/>
 
             <ImageView android:layout_width="15dp" android:layout_height="30dp"
                        android:layout_margin="10dp" android:src="@mipmap/setting_goto"
+                       android:id="@+id/goicon"
                        android:layout_alignParentRight="true"/>
 
             <LinearLayout style="@style/appstyle_basic_horizal_line" android:layout_alignParentBottom="true"
@@ -58,7 +63,7 @@
 
             <TextView style="@style/appstyle_basic_text_black" android:text="产品列表" android:layout_marginLeft="20dp"
                       android:textSize="@dimen/textsize_small" android:textColor="@color/darker_gray"
-                      android:layout_marginRight="20dp"/>
+                      android:layout_marginRight="10dp"/>
 
             <ImageView android:layout_width="15dp" android:layout_height="30dp"
                        android:layout_margin="10dp" android:visibility="gone"

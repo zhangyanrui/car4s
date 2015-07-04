@@ -27,6 +27,7 @@ public class AppConfig {
     public static final int REQUEST_CODE_CHOOSE_POS = 102;
     public static final int REQUEST_CODE_LOGIN_FROMTAB2 = 103;
     public static final int REQUEST_CODE_LOGIN_FROMTAB3 = 104;
+    public static final int REQUEST_CODE_CHOOSECAR = 105;
 
 
     public static final String INTENT_PARA_KEY_BEAN = "serizal_bean";

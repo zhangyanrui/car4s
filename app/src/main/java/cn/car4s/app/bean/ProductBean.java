@@ -1,6 +1,5 @@
 package cn.car4s.app.bean;
 
-import android.util.Log;
 import cn.car4s.app.AppConfig;
 import cn.car4s.app.api.ApiService;
 import cn.car4s.app.api.HttpCallback;
@@ -49,10 +48,13 @@ public class ProductBean extends BaseBean {
         Map map = new HashMap();
         map.put("action", "GetProduct");
         map.put("Token", "");
-        map.put("RecommendFlag", "T");
+        if (bean.isHot) {
+            map.put("RecommendFlag", "T");
+        } else {
+            map.put("SeriesID", "" + bean.mCarbrandType);
+            map.put("ProductType", "" + bean.mProductType);
+        }
         map.put("PageCode", "" + bean.mPageNo);
-        map.put("SeriesID", "" + bean.mCarbrandType);
-        map.put("ProductType", "" + bean.mProductType);
         NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_PRODUCT, map, callback);
     }
 
