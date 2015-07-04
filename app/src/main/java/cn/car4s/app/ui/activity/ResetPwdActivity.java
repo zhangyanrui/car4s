@@ -128,8 +128,8 @@ public class ResetPwdActivity extends BaseActivity implements IBase {
 
         @Override
         public void onResponse(String bean) {
-
-
+            ToastUtil.showToastShort("注册成功");
+            finish();
         }
     };
     HttpCallback callbackResetPwd = new HttpCallback() {
@@ -140,8 +140,8 @@ public class ResetPwdActivity extends BaseActivity implements IBase {
 
         @Override
         public void onResponse(String bean) {
-
-
+            ToastUtil.showToastShort("操作成功");
+            finish();
         }
     };
     HttpCallback callbackGetyanzhengma = new HttpCallback() {

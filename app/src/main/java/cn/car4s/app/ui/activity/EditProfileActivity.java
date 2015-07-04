@@ -28,7 +28,7 @@ import java.io.IOException;
  * Email: xuebo.chang@langtaojin.com
  * Time: 2015/4/22.
  */
-public class LoginActivity extends BaseActivity implements IBase {
+public class EditProfileActivity extends BaseActivity implements IBase {
     @InjectView(R.id.btn_actionbar_back_img)
     ImageView mActionbarBack;
     @InjectView(R.id.tv_actionbar_title)
@@ -53,7 +53,7 @@ public class LoginActivity extends BaseActivity implements IBase {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_editprofile);
         ButterKnife.inject(this);
         initUI();
         initData();
@@ -85,12 +85,12 @@ public class LoginActivity extends BaseActivity implements IBase {
                     finish();
                     break;
                 case R.id.btn_forgetpwd:
-                    intent = new Intent(LoginActivity.this, ResetPwdActivity.class);
+                    intent = new Intent(EditProfileActivity.this, ResetPwdActivity.class);
                     intent.putExtra("usertype", 1);
                     startActivityForResult(intent, AppConfig.REQUEST_CODE_RESETPWD);
                     break;
                 case R.id.btn_register:
-                    intent = new Intent(LoginActivity.this, ResetPwdActivity.class);
+                    intent = new Intent(EditProfileActivity.this, ResetPwdActivity.class);
                     startActivityForResult(intent, AppConfig.REQUEST_CODE_REGISTER);
                     break;
                 case R.id.btn_login:

@@ -2,7 +2,6 @@ package cn.car4s.app.bean;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import cn.car4s.app.AppConfig;
 import cn.car4s.app.api.ApiService;
 import cn.car4s.app.api.HttpCallback;
@@ -128,7 +127,6 @@ public class UserBean extends BaseBean {
     public static UserBean getLocalUserinfo() {
         UserBean bean = null;
         String json = PreferencesUtil.getPreferences(AppConfig.SP_KEY_USERINFO, "");
-        Log.e("--->", "" + json);
         try {
             JSONObject jsonObject = new JSONObject(json);
             JSONArray array = jsonObject.getJSONArray("Data");
@@ -137,7 +135,6 @@ public class UserBean extends BaseBean {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.e("--->", "" + bean.AreaID);
         return bean;
     }
 }

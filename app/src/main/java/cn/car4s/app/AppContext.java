@@ -68,5 +68,6 @@ public class AppContext extends Application {
                 .cacheInMemory(true).cacheOnDisk(true).bitmapConfig(Bitmap.Config.ARGB_8888)
                 .displayer(new RoundedBitmapDisplayer(DeviceUtil.getPxFromDip(50)))
                 .considerExifParams(true).build();
+
     }
 }

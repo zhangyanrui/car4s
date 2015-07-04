@@ -58,6 +58,14 @@ public class ProductBean extends BaseBean {
         NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_PRODUCT, map, callback);
     }
 
+    //    action	GetProductDetail
+//    ProductID	产品ID
+    public void getProductDetial(HttpCallback callback, ProductBean bean) {
+        Map map = new HashMap();
+        map.put("action", "GetProductDetail");
+        map.put("ProductID", "" + bean.ProductID);
+        NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_PRODUCT, map, callback);
+    }
 
     static Type list_type = new TypeToken<List<ProductBean>>() {
     }.getType();
@@ -82,6 +90,7 @@ public class ProductBean extends BaseBean {
     public String DiscountPrice;
     public String ProductType;
     public String Description;
+    public String AvailablePoint;
 
 //    "ProductID": "19",
 //            "ProductName": "总部套餐",
@@ -90,6 +99,40 @@ public class ProductBean extends BaseBean {
 //            "DiscountPrice": "988.00",
 //            "ProductType": "大保",
 //            "Description": "范德萨发发发"
+
+
+    public List<ProductDetialBean> ProductDetailList;
+
+//    {
+//        "Code":"0",
+//            "Message":"成功",
+//            "ProductID":"19",
+//            "ProductName":"总部套餐",
+//            "SalesPrice":"1234.00",
+//            "DiscountPrice":"988.00",
+//            "ProductDetailList":[
+//        {
+//            "ProductDetailID":"102",
+//                "PartsName":"密封垫圈",
+//                "PartsUnit":"瓶",
+//                "Count":"1.00",
+//                "Price":"7.14",
+//                "TotalPrice":"7.14",
+//                "ProductPicPath":"http://localhost:60943/FileUpload/ProductDetailImg/201506111531479556.JPG",
+//                "Remark":"gffg"
+//        },
+//        {
+//            "ProductDetailID":"101",
+//                "PartsName":"密封圈",
+//                "PartsUnit":"瓶",
+//                "Count":"1.00",
+//                "Price":"5.29",
+//                "TotalPrice":"5.29",
+//                "ProductPicPath":"",
+//                "Remark":""
+//        }
+//        ]
+//    }
 
 
 }

@@ -45,6 +45,8 @@
         <activity android:name=".ui.activity.CarBaoyangActivity"></activity>
         <activity android:name=".ui.activity.ChooseCarbrandActivity"></activity>
         <activity android:name=".ui.activity.ChooseCarStyleActivity"></activity>
+        <activity android:name=".ui.activity.ProductDetailActivity"></activity>
+        <activity android:name=".ui.activity.ChooseStationActivity"></activity>
         <activity android:name=".ui.activity.SchemeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

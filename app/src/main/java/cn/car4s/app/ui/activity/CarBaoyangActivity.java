@@ -94,12 +94,11 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
         itemlistener = new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-//                ShengqianGridBean bean = list.get(position);
-//                if (bean.isSelcted) {
-//
-//                } else {
-//                    ToastUtil.showToastShort("暂未开放");
-//                }
+                ProductBean bean = list.get(position);
+                mIntent = new Intent(CarBaoyangActivity.this, ProductDetailActivity.class);
+                mIntent.putExtra("bean", bean);
+                startActivity(mIntent);
+
             }
         });
         recyclerView.addOnItemTouchListener(itemlistener);

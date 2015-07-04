@@ -5,6 +5,7 @@ import android.util.Log;
 import cn.car4s.app.AppContext;
 import cn.car4s.app.api.HttpCallback;
 import cn.car4s.app.bean.NetReturnBean;
+import cn.car4s.app.bean.UserBean;
 import com.google.gson.Gson;
 import com.squareup.okhttp.*;
 
@@ -46,7 +47,8 @@ public class NetUtil {
             builder.add(entry.getKey(), entry.getValue());
         }
         RequestBody body = builder.build();
-        final Request request = new Request.Builder().url(url).post(body).build();
+
+        final Request request = new Request.Builder().url(url).post(body).addHeader("Token", UserBean.getLocalUserinfo() == null ? "" : UserBean.getLocalUserinfo().Token).build();
 
         Callback asyncCallback = new Callback() {
 

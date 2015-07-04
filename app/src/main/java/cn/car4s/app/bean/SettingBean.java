@@ -26,6 +26,7 @@ public class SettingBean extends BaseBean {
     static List<SettingBean> listData = null;
 
     public static List<SettingBean> createSettingData(UserBean mUserbean) {
+        listData = null;
         if (listData == null) {
             listData = new ArrayList<SettingBean>();
             SettingBean bean = new SettingBean(R.mipmap.setting_myjifen, 0, "可用积分", mUserbean.AvailablePoint);
@@ -36,6 +37,20 @@ public class SettingBean extends BaseBean {
             listData.add(bean2);
             listData.add(bean3);
             listData.add(bean4);
+        }
+        return listData;
+    }
+
+    public static List<SettingBean> createSettingDataDetial() {
+        listData = null;
+        if (listData == null) {
+            listData = new ArrayList<SettingBean>();
+            SettingBean bean = new SettingBean(R.mipmap.ic_detial_shijian, 0, "快保网店", "");
+            SettingBean bean2 = new SettingBean(R.mipmap.ic_detial_shijian, 0, "服务时间", "");
+            SettingBean bean3 = new SettingBean(R.mipmap.ic_detial_jishi, R.mipmap.setting_goto, "技师", "");
+            listData.add(bean);
+            listData.add(bean2);
+            listData.add(bean3);
         }
         return listData;
     }
