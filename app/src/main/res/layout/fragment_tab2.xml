@@ -12,14 +12,12 @@
                   android:textColor="@android:color/black"/>
         <TextView style="@style/appstyle_basic_text" android:layout_weight="1" android:text="@string/order_yiwancheng"
                   android:textColor="@android:color/black"/>
-        <TextView style="@style/appstyle_basic_text" android:layout_weight="1" android:text="@string/order_xianxia"
-                  android:textColor="@android:color/black"/>
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView android:layout_width="match_parent" android:id="@+id/recyclerview"
-                                            android:layout_height="match_parent" android:layout_marginTop="10dp">
-
-    </android.support.v7.widget.RecyclerView>
+    <cn.car4s.app.ui.widget.xlistview.XListView android:layout_width="match_parent"
+                                                android:id="@+id/listview"
+                                                android:layout_height="match_parent">
+    </cn.car4s.app.ui.widget.xlistview.XListView>
 
 </LinearLayout>

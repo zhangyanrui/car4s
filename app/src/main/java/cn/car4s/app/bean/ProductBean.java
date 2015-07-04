@@ -91,6 +91,8 @@ public class ProductBean extends BaseBean {
     public String ProductType;
     public String Description;
     public String AvailablePoint;
+    public String FreezingPoint;
+    public String PointRatio;
 
 //    "ProductID": "19",
 //            "ProductName": "总部套餐",

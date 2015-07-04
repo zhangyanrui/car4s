@@ -97,6 +97,7 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
                 ProductBean bean = list.get(position);
                 mIntent = new Intent(CarBaoyangActivity.this, ProductDetailActivity.class);
                 mIntent.putExtra("bean", bean);
+                mIntent.putExtra("serisid", serisId);
                 startActivity(mIntent);
 
             }
@@ -170,12 +171,15 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
         mProductBean.getProductList(callback, mProductBean);
     }
 
+    int serisId;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == AppConfig.REQUEST_CODE_CHOOSECAR) {
             CarSerisBean carSerisBean = (CarSerisBean) data.getSerializableExtra("bean");
             mTextTopCarseris.setText(carSerisBean.SeriesName);
+            serisId = Integer.parseInt(carSerisBean.SeriesID);
             mProductBean.mCarbrandType = Integer.parseInt(carSerisBean.SeriesID);
             loadData(true);
         }

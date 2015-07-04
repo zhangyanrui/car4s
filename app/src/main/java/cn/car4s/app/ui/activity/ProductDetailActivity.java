@@ -5,9 +5,12 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +19,9 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
+import cn.car4s.app.alipay.AlipayBean;
+import cn.car4s.app.alipay.AlipayUtil;
+import cn.car4s.app.alipay.PayResult;
 import cn.car4s.app.api.HttpCallback;
 import cn.car4s.app.bean.*;
 import cn.car4s.app.ui.adapter.DialogTimeAdapter;
@@ -30,6 +36,7 @@ import com.squareup.okhttp.Request;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -79,12 +86,22 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
     List<ProductDetialBean> list = new ArrayList<ProductDetialBean>();
     ProductDetialAdapter adapter;
 
+    int mSerisId;
+    int mType;//0 detial;1,dingdan 2,edit 3查看完成的订单
+    String mOrderIdIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_productdetial);
         ButterKnife.inject(this);
         mproductBean = (ProductBean) getIntent().getSerializableExtra("bean");
+        mSerisId = getIntent().getIntExtra("serisid", 1);
+        mType = getIntent().getIntExtra("type", 0);
+        if (mType == 1) {
+            mType = 2;
+        }
+        mOrderIdIntent = getIntent().getStringExtra("orderid");
         initUI();
         initData();
     }
@@ -115,10 +132,10 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 Float fprice = Float.parseFloat(mproductBean.DiscountPrice);
-                Float fjifen = Float.parseFloat(mproductBean.AvailablePoint);
+//                Float fjifen = Float.parseFloat(mproductBean.AvailablePoint);
                 if (b) {
                     BigDecimal b1 = new BigDecimal(Float.toString(fprice));
-                    BigDecimal b2 = new BigDecimal(Float.toString(fjifen));
+                    BigDecimal b2 = new BigDecimal(Float.toString(jifendiqian));
                     Float less = b1.subtract(b2).floatValue();
                     if (less < 0) {
                         less = 0f;
@@ -177,25 +194,36 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
                     startActivityForResult(mIntent, 200);
                     break;
                 case R.id.commit://
-                    if (TextUtils.isEmpty(mlayoutwangdian.getBean().desc)) {
-                        ToastUtil.showToastShort("请先选择网店");
-                        return;
-                    } else if (TextUtils.isEmpty(mlayoutShijian.getBean().desc)) {
-                        ToastUtil.showToastShort("请先选择时间");
-                        return;
-                    } else if (TextUtils.isEmpty(mlayoutjishi.getBean().desc)) {
-                        ToastUtil.showToastShort("请先选择技师");
-                        return;
+                    if (mType == 0) {//get order
+                        if (TextUtils.isEmpty(mlayoutwangdian.getBean().desc)) {
+                            ToastUtil.showToastShort("请先选择网店");
+                            return;
+                        } else if (TextUtils.isEmpty(mlayoutShijian.getBean().desc)) {
+                            ToastUtil.showToastShort("请先选择时间");
+                            return;
+                        } else if (TextUtils.isEmpty(mlayoutjishi.getBean().desc)) {
+                            ToastUtil.showToastShort("请先选择技师");
+                            return;
+                        }
+                        OrderBean commitBean = new OrderBean(stationBean.StationId, "" + mSerisId, sb.toString(), mSelectedTimeId, jishiBean.UserID, "" + mproductBean.ProductID, checkbox.isChecked(), "" + jifen);
+                        commitBean.addorder(callbackAddorder, commitBean);
+                    } else if (mType == 1) {//pay
+                        AlipayBean alipayBean = new AlipayBean(orderBean.ProductName, orderBean.Description, orderBean.ReceiveMoney, orderBean.OrderCode, orderBean.LastPaymentTime);
+                        AlipayUtil.pay(ProductDetailActivity.this, mHandler, alipayBean);
+                    } else if (mType == 2) {//pay
+                        OrderBean tempbean = new OrderBean();
+                        tempbean.OrderID = orderBean.OrderID;
+                        tempbean.ServiceData = sb.toString();
+                        tempbean.ServiceTime = mSelectedTimeId;
+                        tempbean.TechnicianID = jishiBean.UserID;
+                        tempbean.updateOrder(callbackUpdateOrder, tempbean);
                     }
-                    OrderBean commitBean = new OrderBean(stationBean.StationId, "" + mproductBean.mCarbrandType, sb.toString(), mSelectedTimeId, jishiBean.UserID, "" + mproductBean.ProductID);
-                    commitBean.addorder(callbackAddorder, commitBean);
                     break;
 
             }
         }
     };
     int year, month, day;
-    int hour, minute;
     StringBuilder sb;
     private DatePickerDialog.OnDateSetListener Datelistener = new DatePickerDialog.OnDateSetListener() {
         /**params：view：该事件关联的组件
@@ -267,7 +295,32 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
     };
     private String mSelectedTimeId;
 
+    HttpCallback callbackGetOrderdetial = new HttpCallback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
 
+        }
+
+        @Override
+        public void onResponse(String result) {
+            orderBean = new Gson().fromJson(result, OrderBean.class);
+            changeToOrder();
+        }
+    };
+    HttpCallback callbackStation = new HttpCallback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+
+        }
+
+        @Override
+        public void onResponse(String result) {
+            Log.e("--->", "this is" + result);
+//            stationBean.ServiceTimeList=result
+//            list.addAll(StationBean.getData(result));
+//            adapter.notifyDataSetChanged();
+        }
+    };
     HttpCallback callback = new HttpCallback() {
         @Override
         public void onFailure(Request request, IOException e) {
@@ -280,6 +333,17 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
             updateUI(resultbean);
         }
     };
+    HttpCallback callbackUpdateOrder = new HttpCallback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+
+        }
+
+        @Override
+        public void onResponse(String result) {
+
+        }
+    };
     HttpCallback callbackAddorder = new HttpCallback() {
         @Override
         public void onFailure(Request request, IOException e) {
@@ -289,8 +353,92 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
         @Override
         public void onResponse(String result) {
             LogUtil.e("--->", "" + result);
+            orderBean = new Gson().fromJson(result, OrderBean.class);
+            mType = 1;
+            changeToOrder();
         }
     };
+    OrderBean orderBean;
+
+    public void changeToOrder() {
+        mChanpin.setText("产品:" + orderBean.ProductName);
+        mYuanjia.setText("原价:" + orderBean.SalesPrice);
+        mXianjia.setText("现价:" + orderBean.DiscountPrice);
+        mAllprice.setText("实际应付款: " + orderBean.ReceiveMoney);
+        if (TextUtils.isEmpty(orderBean.AvailablePoint) || "0".equals(orderBean.AvailablePoint)) {
+            layout_zhekou.setVisibility(View.GONE);
+        } else {
+            layout_zhekou.setVisibility(View.VISIBLE);
+            String label = "使用卡内" + orderBean.PointDedCount + "积分抵扣" + orderBean.PointDedMoney + "元(1积分="
+                    + rate + "元,可用积分" + orderBean.AvailablePoint + ",冻结积分" + orderBean.FreezingPoint + ")";
+            mZhekouDesc.setText(label);
+        }
+        list.clear();
+        list.addAll(orderBean.ProductDetailList);
+        recyclerView.getLayoutParams().height = DeviceUtil.getPxFromDip(80) * list.size();
+        adapter.notifyDataSetChanged();
+
+        switch (mType) {
+            case 0:
+                break;
+            case 1:
+                mActionbarTitle.setText("订单详情");
+                mcommit.setText("立即支付");
+                mlayoutwangdian.setOnClickListener(null);
+                mlayoutShijian.setOnClickListener(null);
+                mlayoutjishi.setOnClickListener(null);
+                mlayoutwangdian.getBean().resouseRight = 0;
+                mlayoutwangdian.getBean().desc = orderBean.StationName;
+                mlayoutwangdian.setData(mlayoutwangdian.getBean());
+                mlayoutShijian.getBean().resouseRight = 0;
+                mlayoutShijian.getBean().desc = orderBean.ServiceData + " " + orderBean.ServiceTime;
+                mlayoutShijian.setData(mlayoutShijian.getBean());
+                mlayoutjishi.getBean().resouseRight = 0;
+                mlayoutjishi.getBean().desc = orderBean.TechnicianName;
+                mlayoutjishi.setData(mlayoutjishi.getBean());
+                checkbox.setClickable(false);
+                break;
+            case 2:
+                mActionbarTitle.setText("编辑订单");
+                mcommit.setText("修改");
+                stationBean = new StationBean();
+                stationBean.StationId = orderBean.StationID;
+                new StationBean().getStation(callbackStation);
+                mlayoutwangdian.getBean().desc = orderBean.StationName;
+                mlayoutwangdian.setData(mlayoutwangdian.getBean());
+                mlayoutShijian.getBean().desc = orderBean.ServiceData + " " + orderBean.ServiceTime;
+                sb = new StringBuilder(orderBean.ServiceData);
+                mSelectedTimeId = orderBean.ServiceTimeID;
+                mlayoutShijian.setData(mlayoutShijian.getBean());
+                mlayoutjishi.getBean().desc = orderBean.TechnicianName;
+                jishiBean = new JishiBean();
+                jishiBean.UserID = orderBean.TechnicianID;
+                mlayoutjishi.setData(mlayoutjishi.getBean());
+                checkbox.setClickable(false);
+                break;
+            case 3:
+                mActionbarTitle.setText("订单详情");
+                mcommit.setVisibility(View.GONE);
+                mlayoutwangdian.setOnClickListener(null);
+                mlayoutShijian.setOnClickListener(null);
+                mlayoutjishi.setOnClickListener(null);
+                mlayoutwangdian.getBean().resouseRight = 0;
+                mlayoutwangdian.getBean().desc = orderBean.StationName;
+                mlayoutwangdian.setData(mlayoutwangdian.getBean());
+                mlayoutShijian.getBean().resouseRight = 0;
+                mlayoutShijian.getBean().desc = orderBean.ServiceData + " " + orderBean.ServiceTime;
+                mlayoutShijian.setData(mlayoutShijian.getBean());
+                mlayoutjishi.getBean().resouseRight = 0;
+                mlayoutjishi.getBean().desc = orderBean.TechnicianName;
+                mlayoutjishi.setData(mlayoutjishi.getBean());
+                checkbox.setClickable(false);
+                break;
+        }
+    }
+
+    private float rate = 1f;//jifen/rmb=1;
+    float jifen;
+    float jifendiqian;
 
     public void updateUI(ProductBean bean) {
         mproductBean = bean;
@@ -298,11 +446,26 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
         mYuanjia.setText("原价:" + bean.SalesPrice);
         mXianjia.setText("现价:" + bean.DiscountPrice);
         mAllprice.setText("实际应付款: " + bean.DiscountPrice);
-        if (TextUtils.isEmpty(bean.AvailablePoint) || "0".equals(bean.AvailablePoint)) {
+        if (TextUtils.isEmpty(bean.AvailablePoint) || "0.00".equals(bean.AvailablePoint)) {
             layout_zhekou.setVisibility(View.GONE);
         } else {
             layout_zhekou.setVisibility(View.VISIBLE);
-            mZhekouDesc.setText("您有积分" + bean.AvailablePoint + "，可以抵扣" + bean.AvailablePoint + "元");
+            rate = Float.parseFloat(bean.PointRatio);
+            DecimalFormat decimalFormat = new DecimalFormat(".00");
+            jifen = Float.parseFloat(bean.AvailablePoint);
+            jifendiqian = jifen * rate;
+            jifendiqian = Float.parseFloat(decimalFormat.format(jifendiqian));
+            String label;
+            if (jifendiqian < Float.parseFloat(bean.DiscountPrice)) {
+                label = "使用卡内" + jifen + "积分抵扣" + jifendiqian + "元(1积分="
+                        + rate + "元,可用积分" + bean.AvailablePoint + ",冻结积分" + bean.FreezingPoint + ")";
+            } else {
+                jifen = Float.parseFloat(bean.DiscountPrice) / rate;
+                jifendiqian = Float.parseFloat(bean.DiscountPrice);
+                label = "使用卡内" + jifen + "积分抵扣" + decimalFormat.format(jifendiqian) + "元(1积分="
+                        + rate + "元,可用积分" + bean.AvailablePoint + ",冻结积分" + bean.FreezingPoint + ")";
+            }
+            mZhekouDesc.setText(label);
         }
         list.clear();
         list.addAll(bean.ProductDetailList);
@@ -331,8 +494,50 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
 
     @Override
     public void initData() {
-        mproductBean.getProductDetial(callback, mproductBean);
+        if (mType == 0)
+            mproductBean.getProductDetial(callback, mproductBean);
+        else {
+            new OrderBean().getOrderDetial(callbackGetOrderdetial, mOrderIdIntent);
+        }
     }
 
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1: {
+                    PayResult payResult = new PayResult((String) msg.obj);
+
+                    // 支付宝返回此次支付结果及加签，建议对支付宝签名信息拿签约时支付宝提供的公钥做验签
+                    String resultInfo = payResult.getResult();
+
+                    String resultStatus = payResult.getResultStatus();
+
+                    // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
+                    if (TextUtils.equals(resultStatus, "9000")) {
+                        Toast.makeText(ProductDetailActivity.this, "支付成功",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        // 判断resultStatus 为非“9000”则代表可能支付失败
+                        // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
+                        if (TextUtils.equals(resultStatus, "8000")) {
+                            Toast.makeText(ProductDetailActivity.this, "支付结果确认中",
+                                    Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
+                            Toast.makeText(ProductDetailActivity.this, "支付失败",
+                                    Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+
+        ;
+    };
 
 }

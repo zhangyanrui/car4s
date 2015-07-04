@@ -53,7 +53,12 @@ public class SettingLayoutSmall extends LinearLayout {
     public void setData(SettingBean bean) {
         this.bean = bean;
         left.setImageResource(bean.resourseLeft);
-        right.setImageResource(bean.resouseRight);
+        if (bean.resouseRight == 0) {
+            right.setVisibility(INVISIBLE);
+        } else {
+            right.setVisibility(VISIBLE);
+            right.setImageResource(bean.resouseRight);
+        }
         tv_title.setText(bean.title);
         tv_descption.setText(bean.desc);
     }

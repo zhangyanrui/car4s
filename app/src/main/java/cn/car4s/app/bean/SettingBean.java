@@ -45,8 +45,8 @@ public class SettingBean extends BaseBean {
         listData = null;
         if (listData == null) {
             listData = new ArrayList<SettingBean>();
-            SettingBean bean = new SettingBean(R.mipmap.ic_detial_shijian, 0, "快保网店", "");
-            SettingBean bean2 = new SettingBean(R.mipmap.ic_detial_shijian, 0, "服务时间", "");
+            SettingBean bean = new SettingBean(R.mipmap.ic_detial_shijian, R.mipmap.setting_goto, "快保网店", "");
+            SettingBean bean2 = new SettingBean(R.mipmap.ic_detial_shijian, R.mipmap.setting_goto, "服务时间", "");
             SettingBean bean3 = new SettingBean(R.mipmap.ic_detial_jishi, R.mipmap.setting_goto, "技师", "");
             listData.add(bean);
             listData.add(bean2);
