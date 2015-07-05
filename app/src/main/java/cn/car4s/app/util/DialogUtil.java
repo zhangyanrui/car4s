@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import cn.car4s.app.R;
 
 /**
@@ -31,6 +32,8 @@ public class DialogUtil {
         }
         window.setContentView(view);
         dialog.setCanceledOnTouchOutside(outsideCancelable);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return dialog;
     }
 
@@ -82,4 +85,6 @@ public class DialogUtil {
         dialog_share_menu_cancel.setOnClickListener(onClickListener);
         dialog_share_menu_cancel.setTag(dialog);
     }
+
+
 }

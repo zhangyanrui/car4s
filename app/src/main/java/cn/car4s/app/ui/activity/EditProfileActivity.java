@@ -1,20 +1,30 @@
 package cn.car4s.app.ui.activity;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
+import cn.car4s.app.api.HttpCallback;
 import cn.car4s.app.bean.SettingBean;
 import cn.car4s.app.bean.UserBean;
 import cn.car4s.app.ui.widget.SettingLayout;
+import cn.car4s.app.ui.widget.SettingLayoutSmall;
+import cn.car4s.app.util.DialogUtil;
 import cn.car4s.app.util.PreferencesUtil;
+import com.squareup.okhttp.Request;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -49,10 +59,10 @@ public class EditProfileActivity extends BaseActivity implements IBase {
         mBtnLogin.setOnClickListener(onClickListener);
 
 
-        SettingLayout mLayoutKeyongjifen = (SettingLayout) findViewById(R.id.setting_keyongjifen);
-        SettingLayout mLayoutdongjiejifen = (SettingLayout) findViewById(R.id.setting_dongjiejifen);
-        SettingLayout mLayoutfeedback = (SettingLayout) findViewById(R.id.setting_feedback);
-        SettingLayout mLayoutAboutus = (SettingLayout) findViewById(R.id.setting_aboutus);
+        SettingLayoutSmall mLayoutKeyongjifen = (SettingLayoutSmall) findViewById(R.id.setting_keyongjifen);
+        SettingLayoutSmall mLayoutdongjiejifen = (SettingLayoutSmall) findViewById(R.id.setting_dongjiejifen);
+        SettingLayoutSmall mLayoutfeedback = (SettingLayoutSmall) findViewById(R.id.setting_feedback);
+        SettingLayoutSmall mLayoutAboutus = (SettingLayoutSmall) findViewById(R.id.setting_aboutus);
 
         List<SettingBean> listData = SettingBean.createEditUser(mUserbean);
         mLayoutKeyongjifen.setData(listData.get(0));
@@ -80,20 +90,71 @@ public class EditProfileActivity extends BaseActivity implements IBase {
                     setResult(Activity.RESULT_OK, null);
                     finish();
                     break;
-                case R.id.setting_keyongjifen://loginout
-
+                case R.id.setting_keyongjifen://
+                    showNameDialog();
                     break;
-                case R.id.setting_dongjiejifen://loginout
+                case R.id.setting_dongjiejifen://
                     break;
-                case R.id.setting_feedback://loginout
+                case R.id.setting_feedback://
                     break;
-                case R.id.setting_aboutus://loginout
+                case R.id.setting_aboutus://
                     break;
 
 
             }
         }
     };
+    HttpCallback callbackUpdate = new HttpCallback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+
+        }
+
+        @Override
+        public void onResponse(String result) {
+            Log.e("--->", "" + result);
+            mUserbean.refresh(callbackRefresh, mUserbean.Token);
+        }
+    };
+    HttpCallback callbackRefresh = new HttpCallback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+
+        }
+
+        @Override
+        public void onResponse(String result) {
+            Log.e("--->", "" + result);
+            PreferencesUtil.putPreferences(AppConfig.SP_KEY_USERINFO, result);
+            initData();
+            initUI();
+        }
+    };
+
+    public void showNameDialog() {
+        View view = View.inflate(this, R.layout.dialog_edit, null);
+        final Dialog dialog = DialogUtil.buildDialog(this, view, Gravity.CENTER, R.style.BottomDialogAnimation, true);
+        final EditText dialog_edt = (EditText) view.findViewById(R.id.edt);
+        View dialog_upload_sure = view.findViewById(R.id.dialog_upload_sure);
+        dialog_upload_sure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                String name = dialog_edt.getText().toString().trim();
+                if (!TextUtils.isEmpty(name)) {
+                    mUserbean.UserName = name;
+                    mUserbean.updateProfile(callbackUpdate, mUserbean);
+                }
+            }
+        });
+        View dialog_upload_cancel = view.findViewById(R.id.dialog_upload_cancel);
+        dialog_upload_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
 
 
     @Override

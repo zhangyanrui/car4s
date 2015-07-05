@@ -11,32 +11,32 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <cn.car4s.app.ui.widget.SettingLayout
+        <cn.car4s.app.ui.widget.SettingLayoutSmall
                 android:layout_width="match_parent"
                 android:id="@+id/setting_keyongjifen"
                 android:layout_height="51dp">
 
-        </cn.car4s.app.ui.widget.SettingLayout>
+        </cn.car4s.app.ui.widget.SettingLayoutSmall>
 
-        <cn.car4s.app.ui.widget.SettingLayout
+        <cn.car4s.app.ui.widget.SettingLayoutSmall
                 android:layout_width="match_parent"
                 android:id="@+id/setting_dongjiejifen"
                 android:layout_height="51dp">
 
-        </cn.car4s.app.ui.widget.SettingLayout>
+        </cn.car4s.app.ui.widget.SettingLayoutSmall>
 
-        <cn.car4s.app.ui.widget.SettingLayout
+        <cn.car4s.app.ui.widget.SettingLayoutSmall
                 android:layout_width="match_parent"
                 android:id="@+id/setting_feedback"
                 android:layout_height="51dp">
 
-        </cn.car4s.app.ui.widget.SettingLayout>
+        </cn.car4s.app.ui.widget.SettingLayoutSmall>
 
-        <cn.car4s.app.ui.widget.SettingLayout
+        <cn.car4s.app.ui.widget.SettingLayoutSmall
                 android:layout_width="match_parent"
                 android:id="@+id/setting_aboutus"
                 android:layout_height="51dp">
-        </cn.car4s.app.ui.widget.SettingLayout>
+        </cn.car4s.app.ui.widget.SettingLayoutSmall>
 
 
         <TextView style="@style/appstyle_basic_text" android:text="退出登陆" android:layout_width="match_parent"
