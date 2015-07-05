@@ -58,5 +58,13 @@
                     android:id="@+id/edit"
                     android:layout_gravity="right"/>
         </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:gravity="right" android:id="@+id/layout_pingjia"
+                      android:orientation="horizontal">
+            <Button style="@style/appstyle_basic_text_black" android:text="评价"
+                    android:layout_margin="10dp" android:layout_width="100dp"
+                    android:id="@+id/pingjia"
+                    android:layout_gravity="right"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -56,11 +56,13 @@ public class OrderAdapter extends BaseAdapter {
             viewholder.layout_all = (LinearLayout) view.findViewById(R.id.layout_all);
             viewholder.layout_zhifu = (LinearLayout) view.findViewById(R.id.layout_zhifu);
             viewholder.layout_bianji = (LinearLayout) view.findViewById(R.id.layout_bianji);
+            viewholder.layout_pingjia = (LinearLayout) view.findViewById(R.id.layout_pingjia);
             viewholder.desc2 = (TextView) view.findViewById(R.id.tv_desc2);
             viewholder.tv_timeshengyu = (TextView) view.findViewById(R.id.tv_timeshengyu);
             viewholder.edit = (TextView) view.findViewById(R.id.edit);
             viewholder.cancel = (TextView) view.findViewById(R.id.cancel);
             viewholder.jiesuan = (TextView) view.findViewById(R.id.jiesuan);
+            viewholder.pingjia = (TextView) view.findViewById(R.id.pingjia);
             view.setTag(viewholder);
         } else {
             viewholder = (Viewholder) view.getTag();
@@ -69,12 +71,19 @@ public class OrderAdapter extends BaseAdapter {
         OrderBean bean = (OrderBean) object;
         viewholder.layout_zhifu.setVisibility(View.GONE);
         viewholder.layout_bianji.setVisibility(View.GONE);
+        viewholder.layout_pingjia.setVisibility(View.GONE);
         if ("2".equals(bean.OrderStatus)) {
             viewholder.layout_zhifu.setVisibility(View.VISIBLE);
             viewholder.tv_timeshengyu.setVisibility(View.VISIBLE);
+            viewholder.title.setBackgroundResource(R.drawable.shape_jish_notbusy);
         } else if ("1".equals(bean.OrderStatus)) {
             viewholder.layout_bianji.setVisibility(View.VISIBLE);
             viewholder.tv_timeshengyu.setVisibility(View.GONE);
+            viewholder.title.setBackgroundResource(R.drawable.shape_jish_notbusy);
+        } else if ("0".equals(bean.OrderStatus)) {
+            viewholder.layout_pingjia.setVisibility(View.VISIBLE);
+            viewholder.tv_timeshengyu.setVisibility(View.GONE);
+            viewholder.title.setBackgroundResource(R.drawable.shape_jish_busy);
         }
         viewholder.title.setText("套餐: " + bean.ProductName);
         viewholder.desc1.setText("下单时间: " + bean.OrderTime);
@@ -104,6 +113,14 @@ public class OrderAdapter extends BaseAdapter {
 
             }
         });
+        viewholder.pingjia.setTag(bean);
+        viewholder.pingjia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OrderBean bean1 = (OrderBean) view.getTag();
+                orderDo.pingjia(bean1);
+            }
+        });
 
         return view;
     }
@@ -115,6 +132,8 @@ public class OrderAdapter extends BaseAdapter {
         public void zhifu(OrderBean bean);
 
         public void edit(OrderBean bean);
+
+        public void pingjia(OrderBean bean);
     }
 
     static class Viewholder {
@@ -125,8 +144,10 @@ public class OrderAdapter extends BaseAdapter {
         TextView edit;
         TextView cancel;
         TextView jiesuan;
+        TextView pingjia;
         LinearLayout layout_all;
         LinearLayout layout_zhifu;
         LinearLayout layout_bianji;
+        LinearLayout layout_pingjia;
     }
 }

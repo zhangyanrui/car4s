@@ -178,6 +178,16 @@ public class OrderBean extends BaseBean {
         map.put("PageCode", "" + page);
         NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_PRODUCT, map, callback);
     }
+//    action	GetOrderList_Sub	必填
+//    Token	用户密钥	必填	header
+//    PageCode	页码	页码,默认1,每页20条
+
+    public void getorderListXianxia(HttpCallback callback, int page) {
+        Map map = new HashMap();
+        map.put("action", "GetOrderList_Sub");
+        map.put("PageCode", "" + page);
+        NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_PRODUCT, map, callback);
+    }
 
     static Type list_type = new TypeToken<List<OrderBean>>() {
     }.getType();
