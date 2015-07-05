@@ -1,6 +1,7 @@
 package cn.car4s.app.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.car4s.app.R;
 import cn.car4s.app.bean.OrderBean;
+import cn.car4s.app.ui.activity.ProductDetailActivity;
 
 import java.util.List;
 
@@ -68,7 +70,7 @@ public class OrderAdapter extends BaseAdapter {
             viewholder = (Viewholder) view.getTag();
         }
         Object object = list.get(i);
-        OrderBean bean = (OrderBean) object;
+        final OrderBean bean = (OrderBean) object;
         viewholder.layout_zhifu.setVisibility(View.GONE);
         viewholder.layout_bianji.setVisibility(View.GONE);
         viewholder.layout_pingjia.setVisibility(View.GONE);
@@ -84,6 +86,18 @@ public class OrderAdapter extends BaseAdapter {
             viewholder.layout_pingjia.setVisibility(View.VISIBLE);
             viewholder.tv_timeshengyu.setVisibility(View.GONE);
             viewholder.title.setBackgroundResource(R.drawable.shape_jish_busy);
+            viewholder.layout_all.setTag(bean);
+            viewholder.layout_all.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    OrderBean bean1 = (OrderBean) view.getTag();
+
+                    Intent intent = new Intent(context, ProductDetailActivity.class);
+                    intent.putExtra("type", 3);
+                    intent.putExtra("orderid", bean1.OrderID);
+                    context.startActivity(intent);
+                }
+            });
         }
         viewholder.title.setText("套餐: " + bean.ProductName);
         viewholder.desc1.setText("下单时间: " + bean.OrderTime);
@@ -121,6 +135,7 @@ public class OrderAdapter extends BaseAdapter {
                 orderDo.pingjia(bean1);
             }
         });
+
 
         return view;
     }

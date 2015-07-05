@@ -3,24 +3,18 @@ package cn.car4s.app.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
-import cn.car4s.app.api.HttpCallback;
+import cn.car4s.app.bean.SettingBean;
 import cn.car4s.app.bean.UserBean;
-import cn.car4s.app.util.PreferencesUtil;
-import cn.car4s.app.util.ToastUtil;
-import com.squareup.okhttp.Request;
+import cn.car4s.app.ui.widget.SettingLayout;
 
-import java.io.IOException;
+import java.util.List;
 
 /**
  * Description:
@@ -33,46 +27,42 @@ public class EditProfileActivity extends BaseActivity implements IBase {
     ImageView mActionbarBack;
     @InjectView(R.id.tv_actionbar_title)
     TextView mActionbarTitle;
-    @InjectView(R.id.layout_actionbar_all)
-    RelativeLayout mActionbarBackLayoutall;
-
-
-    @InjectView(R.id.edt_login_mobile)
-    EditText mEdtMobile;
-    @InjectView(R.id.edt_login_pwd)
-    EditText mEdtPwd;
-    @InjectView(R.id.btn_forgetpwd)
-    TextView mForgetPwd;
-    @InjectView(R.id.btn_register)
-    TextView mBtnRegister;
     @InjectView(R.id.btn_login)
     TextView mBtnLogin;
-
-    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editprofile);
         ButterKnife.inject(this);
-        initUI();
         initData();
+        initUI();
     }
 
     @Override
     public void initUI() {
-        mActionbarBackLayoutall.setBackgroundColor(getResources().getColor(R.color.transparent));
         mActionbarBack.setVisibility(View.VISIBLE);
         mActionbarBack.setImageResource(R.mipmap.ic_loginactivity_back);
         mActionbarBack.setOnClickListener(onClickListener);
-        mActionbarTitle.setText("登陆");
-        mForgetPwd.setOnClickListener(onClickListener);
-        mBtnRegister.setOnClickListener(onClickListener);
+        mActionbarTitle.setText("我的信息");
         mBtnLogin.setOnClickListener(onClickListener);
 
 
-        mEdtMobile.setText(AppConfig.TEST_ID);
-        mEdtPwd.setText(AppConfig.TEST_PWD);
+        SettingLayout mLayoutKeyongjifen = (SettingLayout) findViewById(R.id.setting_keyongjifen);
+        SettingLayout mLayoutdongjiejifen = (SettingLayout) findViewById(R.id.setting_dongjiejifen);
+        SettingLayout mLayoutfeedback = (SettingLayout) findViewById(R.id.setting_feedback);
+        SettingLayout mLayoutAboutus = (SettingLayout) findViewById(R.id.setting_aboutus);
+
+        List<SettingBean> listData = SettingBean.createEditUser(mUserbean);
+        mLayoutKeyongjifen.setData(listData.get(0));
+        mLayoutdongjiejifen.setData(listData.get(1));
+        mLayoutfeedback.setData(listData.get(2));
+        mLayoutAboutus.setData(listData.get(3));
+
+        mLayoutKeyongjifen.setOnClickListener(onClickListener);
+        mLayoutdongjiejifen.setOnClickListener(onClickListener);
+        mLayoutfeedback.setOnClickListener(onClickListener);
+        mLayoutAboutus.setOnClickListener(onClickListener);
     }
 
 
@@ -84,41 +74,21 @@ public class EditProfileActivity extends BaseActivity implements IBase {
                 case R.id.btn_actionbar_back_img:
                     finish();
                     break;
-                case R.id.btn_forgetpwd:
-                    intent = new Intent(EditProfileActivity.this, ResetPwdActivity.class);
-                    intent.putExtra("usertype", 1);
-                    startActivityForResult(intent, AppConfig.REQUEST_CODE_RESETPWD);
+                case R.id.btn_login://loginout
+                    finish();
                     break;
-                case R.id.btn_register:
-                    intent = new Intent(EditProfileActivity.this, ResetPwdActivity.class);
-                    startActivityForResult(intent, AppConfig.REQUEST_CODE_REGISTER);
+                case R.id.setting_keyongjifen://loginout
+
                     break;
-                case R.id.btn_login:
-                    String phone = mEdtMobile.getText().toString().trim();
-                    String pwd = mEdtPwd.getText().toString().trim();
-                    if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(pwd)) {
-                        ToastUtil.showToastShort("您的输入有误，请重新输入");
-                    } else {
-                        UserBean bean = new UserBean(phone, pwd);
-                        bean.login(callback);
-                    }
+                case R.id.setting_dongjiejifen://loginout
                     break;
+                case R.id.setting_feedback://loginout
+                    break;
+                case R.id.setting_aboutus://loginout
+                    break;
+
+
             }
-        }
-    };
-
-    HttpCallback callback = new HttpCallback() {
-        @Override
-        public void onFailure(Request request, IOException e) {
-
-        }
-
-        @Override
-        public void onResponse(String result) {
-            Log.e("--->", "" + result);
-            PreferencesUtil.putPreferences(AppConfig.SP_KEY_USERINFO, result);
-            setResult(Activity.RESULT_OK);
-            finish();
         }
     };
 
@@ -137,6 +107,6 @@ public class EditProfileActivity extends BaseActivity implements IBase {
 
     @Override
     public void initData() {
-
+        mUserbean = UserBean.getLocalUserinfo();
     }
 }

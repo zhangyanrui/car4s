@@ -57,4 +57,30 @@ public class SettingBean extends BaseBean {
         return listData;
     }
 
+
+    public static List<SettingBean> createEditUser(UserBean mUserbean) {
+        listData = null;
+        if (listData == null) {
+            listData = new ArrayList<SettingBean>();
+            SettingBean bean = new SettingBean(0, R.mipmap.setting_goto, "姓名", mUserbean.UserName);
+            //0:男;1:女;-1:未填写
+            String sex;
+            if ("0".equals(mUserbean.Sex)) {
+                sex = "男";
+            } else if ("1".equals(mUserbean.Sex)) {
+                sex = "女";
+            } else {
+                sex = "";
+            }
+            SettingBean bean2 = new SettingBean(0, R.mipmap.setting_goto, "性别", sex);
+            SettingBean bean3 = new SettingBean(0, R.mipmap.setting_goto, "出生日期", mUserbean.Birthday);
+            SettingBean bean4 = new SettingBean(0, R.mipmap.setting_goto, "地址", mUserbean.Address);
+            listData.add(bean);
+            listData.add(bean2);
+            listData.add(bean3);
+            listData.add(bean4);
+        }
+        return listData;
+    }
+
 }

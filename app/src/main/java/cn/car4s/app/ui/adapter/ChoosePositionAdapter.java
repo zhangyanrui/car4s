@@ -50,7 +50,7 @@ public class ChoosePositionAdapter extends RecyclerView.Adapter {
         holder.textView.setText("" + bean.StationAreaName);
 
         if (bean.StationAreaID.equals(selectedId)) {
-            holder.imageView.setImageResource(R.color.actionbar_red);
+            holder.imageView.setImageResource(R.mipmap.setting_goto);
         } else {
             holder.imageView.setImageResource(R.color.transparent);
         }

@@ -7,4 +7,6 @@
     <color name="darker_gray">#aaa</color>
     <color name="color_blue">#4876FF</color>
     <color name="color_green">#ff00ddff</color>
+    <color name="color_white">#FFFFFF</color>
+    <color name="color_black">#000000</color>
 </resources>

@@ -31,7 +31,6 @@ public class SettingLayout extends LinearLayout {
 
     public SettingLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         this.context = context;
         initView();
     }
@@ -47,6 +46,9 @@ public class SettingLayout extends LinearLayout {
     }
 
     public void setData(SettingBean bean) {
+        if (bean.resourseLeft == 0) {
+            left.setVisibility(GONE);
+        }
         left.setImageResource(bean.resourseLeft);
         right.setImageResource(bean.resouseRight);
         tv_title.setText(bean.title);

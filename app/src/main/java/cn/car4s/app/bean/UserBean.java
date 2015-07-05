@@ -9,6 +9,7 @@ import cn.car4s.app.ui.activity.LoginActivity;
 import cn.car4s.app.util.NetUtil;
 import cn.car4s.app.util.PreferencesUtil;
 import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,6 +61,9 @@ public class UserBean extends BaseBean {
 
     public UserBean(String phoneNumber) {
         PhoneNumber = phoneNumber;
+    }
+
+    public UserBean() {
     }
 
     public UserBean(String phoneNumber, String passWord, String codeNumber, String referralCode) {
@@ -137,5 +141,55 @@ public class UserBean extends BaseBean {
             e.printStackTrace();
         }
         return bean;
+    }
+
+    public static UserBean saveLocalUserinfo(UserBean userBean) {
+        UserBean bean = null;
+        String json = PreferencesUtil.getPreferences(AppConfig.SP_KEY_USERINFO, "");
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray array = jsonObject.getJSONArray("Data");
+            JSONObject temp = array.getJSONObject(0);
+            bean = new Gson().fromJson(temp.toString(), UserBean.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return bean;
+    }
+
+//    action	UpdateUserMessage	必填
+//    Token	用户密钥	必填
+//    UserName	用户名
+//    Sex	性别	(0:男/1:女/-1:空)
+//    Birthday	生日	1990-01-01
+//    Address	地址
+//    ProvinceID	省份
+//    CityID	城市
+//    AreaID	区域
+//    HeadPicturePath	图片地址
+
+
+    public void updateProfile(HttpCallback callback, UserBean bean) {
+        Map map = new HashMap();
+        map.put("action", "UpdateUserMessage");
+        map.put("UserName", bean.UserName + "");
+        map.put("Sex", bean.Sex + "");
+        map.put("Birthday", bean.Birthday + "");
+        map.put("Address", bean.Address + "");
+        map.put("ProvinceID", bean.ProvinceID + "");
+        map.put("CityID", bean.CityID + "");
+        map.put("AreaID", bean.AreaID + "");
+        map.put("HeadPicturePath", bean.HeadPicturePath + "");
+        NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_USER, map, callback);
+    }
+//    action	UploadHeadPicture	必填	post
+//    Token	用户密钥	必填	header
+//    头像图片	必填	body
+
+    public void updateAvaster(AsyncHttpResponseHandler callback, String path) {
+        Map map = new HashMap();
+        map.put("action", "UploadHeadPicture");
+        NetUtil.uploadImg(AppConfig.APP_SERVER + ApiService.INTERFACE_USER, path, callback);
+//        NetUtil.doPostMultipart(AppConfig.APP_SERVER + ApiService.INTERFACE_USER, path, callback);
     }
 }

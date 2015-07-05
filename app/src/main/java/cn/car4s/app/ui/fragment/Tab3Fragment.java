@@ -1,7 +1,11 @@
 package cn.car4s.app.ui.fragment;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +14,23 @@ import android.widget.TextView;
 import cn.car4s.app.AppConfig;
 import cn.car4s.app.AppContext;
 import cn.car4s.app.R;
+import cn.car4s.app.api.HttpCallback;
 import cn.car4s.app.bean.SettingBean;
 import cn.car4s.app.bean.UserBean;
 import cn.car4s.app.bean.WebviewBean;
-import cn.car4s.app.ui.activity.FeedbackActivity;
-import cn.car4s.app.ui.activity.IBase;
-import cn.car4s.app.ui.activity.WebviewActivity;
+import cn.car4s.app.ui.activity.*;
 import cn.car4s.app.ui.widget.SettingLayout;
+import cn.car4s.app.util.DialogUtil;
+import cn.car4s.app.util.LogUtil;
+import cn.car4s.app.util.UtilImage;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.okhttp.Request;
+import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -37,6 +49,8 @@ public class Tab3Fragment extends BaseFragment implements IBase {
         initUI();
         return rootview;
     }
+
+    ImageView useravaster;
 
     @Override
     public void initUI() {
@@ -58,7 +72,9 @@ public class Tab3Fragment extends BaseFragment implements IBase {
         mLayoutXianxian.setData(listData.get(4));
 
 
-        ImageView useravaster = (ImageView) rootview.findViewById(R.id.img_tab3_useravaster);
+        useravaster = (ImageView) rootview.findViewById(R.id.img_tab3_useravaster);
+        ImageLoader.getInstance().displayImage(mUserbean.HeadPicturePath, useravaster, AppContext.display_avaster_imageloader);
+        useravaster.setOnClickListener(onClickListener);
         TextView username = (TextView) rootview.findViewById(R.id.tv_tab3_username);
         TextView btn_editprofile = (TextView) rootview.findViewById(R.id.btn_tab3_editprofile);
         ImageLoader.getInstance().displayImage(mUserbean.HeadPicturePath, useravaster, AppContext.display_avaster_imageloader);
@@ -87,10 +103,91 @@ public class Tab3Fragment extends BaseFragment implements IBase {
                     startActivity(mIntent);
                     break;
                 case R.id.btn_tab3_editprofile:
-
+                    mIntent = new Intent(getActivity(), EditProfileActivity.class);
+                    startActivity(mIntent);
                     break;
 
+                case R.id.img_tab3_useravaster:
+                    DialogUtil.showUploadDialog(getActivity(), DialogListener);
+                    break;
             }
+        }
+    };
+    String mUploadPicPath;
+
+    View.OnClickListener DialogListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Object o = v.getTag();
+            if (o != null && o instanceof Dialog) {
+                ((Dialog) o).cancel();
+            }
+            switch (v.getId()) {
+                case R.id.dialog_upload_take:
+                    mUploadPicPath = UtilImage.callCamera(getActivity());
+                    break;
+                case R.id.dialog_upload_abulmb:
+                    Intent intent = new Intent(getActivity(), SelectPhotoActivity.class);
+                    intent.putExtra("issns", false);
+                    intent.putExtra("maxCount", 1);
+                    startActivityForResult(intent, SelectPhotoActivity.SHOW_LIB);
+                    break;
+            }
+        }
+    };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LogUtil.e("--->", "---");
+        if (resultCode == 200 && requestCode == SelectPhotoActivity.SHOW_LIB) {
+            mUploadPicPath = data.getStringExtra("loadimagepath");
+            new UserBean().updateAvaster(callback, mUploadPicPath);
+        }
+        if (requestCode == UtilImage.SHOW_CAM && resultCode == Activity.RESULT_OK) {
+            UtilImage.rotateAndReplaceOldImageFile(mUploadPicPath);
+            new UserBean().updateAvaster(callback, mUploadPicPath);
+        }
+
+    }
+
+    String headurl;
+    AsyncHttpResponseHandler callback = new AsyncHttpResponseHandler() {
+        @Override
+        public void onSuccess(int i, Header[] headers, byte[] bytes) {
+            LogUtil.e("---->", "onSuccess");
+            String jsonResult = new String(bytes);
+            if (!TextUtils.isEmpty(jsonResult)) {
+                JSONObject object = null;
+                try {
+                    object = new JSONObject(jsonResult);
+                    headurl = object.getString("HeadPicturePath");
+                    ImageLoader.getInstance().displayImage(headurl, useravaster, AppContext.display_avaster_imageloader);
+                    LogUtil.e("---->", "onSuccess " + headurl);
+                    mUserbean.HeadPicturePath = headurl;
+                    mUserbean.updateProfile(callbackUpdate, mUserbean);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+
+        @Override
+        public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+            LogUtil.e("---->", "onFailure");
+        }
+    };
+
+    HttpCallback callbackUpdate = new HttpCallback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+
+        }
+
+        @Override
+        public void onResponse(String result) {
+            Log.e("--->", "" + result);
         }
     };
 }

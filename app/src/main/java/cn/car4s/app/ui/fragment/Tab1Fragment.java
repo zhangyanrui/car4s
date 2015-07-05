@@ -92,8 +92,8 @@ public class Tab1Fragment extends BaseFragment implements IBase {
                     startActivity(mIntent);
                     break;
                 case R.id.btn_tiqian:
-                    mIntent = new Intent(getActivity(), PayDemoActivity.class);
-                    startActivity(mIntent);
+//                    mIntent = new Intent(getActivity(), PayDemoActivity.class);
+//                    startActivity(mIntent);
                     break;
             }
         }

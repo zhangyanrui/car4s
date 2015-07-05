@@ -5,8 +5,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import cn.car4s.app.R;
 
 /**
  * Description:
@@ -58,4 +60,26 @@ public class DialogUtil {
         dialog.show();
     }
 
+
+    public static void showUploadDialog(Context context,
+                                        View.OnClickListener onClickListener) {
+        View view = View.inflate(context, R.layout.dialog_upload_menu, null);
+        View layout_dialog_allwidth = view
+                .findViewById(R.id.layout_dialog_allwidth);
+        layout_dialog_allwidth.getLayoutParams().width = UtilPhone.getScreenWidth(context);
+        Dialog dialog = buildDialog(context, view, Gravity.BOTTOM,
+                R.style.BottomDialogAnimation, true);
+        View dialog_share_menu_friends = view
+                .findViewById(R.id.dialog_upload_take);
+        dialog_share_menu_friends.setOnClickListener(onClickListener);
+        dialog_share_menu_friends.setTag(dialog);
+        View dialog_share_menu_circle = view
+                .findViewById(R.id.dialog_upload_abulmb);
+        dialog_share_menu_circle.setOnClickListener(onClickListener);
+        dialog_share_menu_circle.setTag(dialog);
+        View dialog_share_menu_cancel = view
+                .findViewById(R.id.dialog_upload_cancel);
+        dialog_share_menu_cancel.setOnClickListener(onClickListener);
+        dialog_share_menu_cancel.setTag(dialog);
+    }
 }
