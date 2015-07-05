@@ -34,7 +34,7 @@ public class MainTabActivity extends BaseActivity implements IBase {
         tabhost.addTab(tabhost.newTabSpec("tab2").setIndicator("2"), Tab2Fragment.class, null);
         tabhost.addTab(tabhost.newTabSpec("tab3").setIndicator("3"), Tab3Fragment.class, null);
 //        tabhost.addTab(tabhost.newTabSpec("tab4").setIndicator("4"), Tab4Fragment.class, null);
-        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.rap_tab_radiogroup);
+        radioGroup = (RadioGroup) findViewById(R.id.rap_tab_radiogroup);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
@@ -47,6 +47,7 @@ public class MainTabActivity extends BaseActivity implements IBase {
                             tabhost.setCurrentTabByTag("tab2");
                         else {
                             UserBean.toLogin(MainTabActivity.this, AppConfig.REQUEST_CODE_LOGIN_FROMTAB2);
+                            change();
                         }
                         break;
                     case R.id.rdo_tab_3:
@@ -54,6 +55,7 @@ public class MainTabActivity extends BaseActivity implements IBase {
                             tabhost.setCurrentTabByTag("tab3");
                         else {
                             UserBean.toLogin(MainTabActivity.this, AppConfig.REQUEST_CODE_LOGIN_FROMTAB3);
+                            change();
                         }
                         break;
                     case R.id.rdo_tab_4:
@@ -64,14 +66,21 @@ public class MainTabActivity extends BaseActivity implements IBase {
         });
     }
 
+    RadioGroup radioGroup;
+
+    public void change() {
+        radioGroup.check(R.id.rdo_tab_1);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConfig.REQUEST_CODE_LOGIN_FROMTAB2 && resultCode == Activity.RESULT_OK) {
             tabhost.setCurrentTabByTag("tab2");
+            radioGroup.check(R.id.rdo_tab_2);
         } else if (requestCode == AppConfig.REQUEST_CODE_LOGIN_FROMTAB3 && resultCode == Activity.RESULT_OK) {
             tabhost.setCurrentTabByTag("tab3");
+            radioGroup.check(R.id.rdo_tab_3);
         }
     }
 

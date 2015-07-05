@@ -13,6 +13,7 @@ import cn.car4s.app.R;
 import cn.car4s.app.bean.SettingBean;
 import cn.car4s.app.bean.UserBean;
 import cn.car4s.app.ui.widget.SettingLayout;
+import cn.car4s.app.util.PreferencesUtil;
 
 import java.util.List;
 
@@ -75,6 +76,8 @@ public class EditProfileActivity extends BaseActivity implements IBase {
                     finish();
                     break;
                 case R.id.btn_login://loginout
+                    PreferencesUtil.putPreferences(AppConfig.SP_KEY_USERINFO, "");
+                    setResult(Activity.RESULT_OK, null);
                     finish();
                     break;
                 case R.id.setting_keyongjifen://loginout

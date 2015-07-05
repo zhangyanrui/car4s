@@ -22,6 +22,7 @@ import cn.car4s.app.ui.activity.*;
 import cn.car4s.app.ui.widget.SettingLayout;
 import cn.car4s.app.util.DialogUtil;
 import cn.car4s.app.util.LogUtil;
+import cn.car4s.app.util.PreferencesUtil;
 import cn.car4s.app.util.UtilImage;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -104,7 +105,7 @@ public class Tab3Fragment extends BaseFragment implements IBase {
                     break;
                 case R.id.btn_tab3_editprofile:
                     mIntent = new Intent(getActivity(), EditProfileActivity.class);
-                    startActivity(mIntent);
+                    startActivityForResult(mIntent, AppConfig.REQUEST_CODE_EDITPROFILE);
                     break;
 
                 case R.id.img_tab3_useravaster:
@@ -148,7 +149,15 @@ public class Tab3Fragment extends BaseFragment implements IBase {
             UtilImage.rotateAndReplaceOldImageFile(mUploadPicPath);
             new UserBean().updateAvaster(callback, mUploadPicPath);
         }
-
+        if (requestCode == AppConfig.REQUEST_CODE_EDITPROFILE && resultCode == Activity.RESULT_OK) {
+            initData();
+            if (mUserbean != null) {
+                mUserbean.refresh(callbackRefresh, mUserbean.Token);
+            } else {
+                ((MainTabActivity) getActivity()).change();
+//                UserBean.toLogin(getActivity(), AppConfig.REQUEST_CODE_LOGIN_FROMTAB3);
+            }
+        }
     }
 
     String headurl;
@@ -188,6 +197,21 @@ public class Tab3Fragment extends BaseFragment implements IBase {
         @Override
         public void onResponse(String result) {
             Log.e("--->", "" + result);
+            mUserbean.refresh(callbackRefresh, mUserbean.Token);
+        }
+    };
+    HttpCallback callbackRefresh = new HttpCallback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+
+        }
+
+        @Override
+        public void onResponse(String result) {
+            Log.e("--->", "" + result);
+            PreferencesUtil.putPreferences(AppConfig.SP_KEY_USERINFO, result);
+            initData();
+            initUI();
         }
     };
 }

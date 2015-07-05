@@ -81,6 +81,15 @@ public class UserBean extends BaseBean {
         NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_USER, map, callback);
     }
 
+    //    action	GetUserMessage	必填	post
+//    Token	用户密钥	必填	header
+    public void refresh(HttpCallback callback, String token) {
+        Map map = new HashMap();
+        map.put("action", "GetUserMessage");
+        map.put("Token", token);
+        NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_USER, map, callback);
+    }
+
 
     public void register(HttpCallback callback) {
         Map map = new HashMap();
@@ -143,19 +152,6 @@ public class UserBean extends BaseBean {
         return bean;
     }
 
-    public static UserBean saveLocalUserinfo(UserBean userBean) {
-        UserBean bean = null;
-        String json = PreferencesUtil.getPreferences(AppConfig.SP_KEY_USERINFO, "");
-        try {
-            JSONObject jsonObject = new JSONObject(json);
-            JSONArray array = jsonObject.getJSONArray("Data");
-            JSONObject temp = array.getJSONObject(0);
-            bean = new Gson().fromJson(temp.toString(), UserBean.class);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return bean;
-    }
 
 //    action	UpdateUserMessage	必填
 //    Token	用户密钥	必填
