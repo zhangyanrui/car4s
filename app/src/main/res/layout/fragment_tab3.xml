@@ -57,6 +57,10 @@
                 android:layout_height="51dp">
 
         </cn.car4s.app.ui.widget.SettingLayout>
+        <cn.car4s.app.ui.widget.SettingLayout
+                android:layout_width="match_parent"
+                android:id="@+id/setting_xianxianshu"
+                android:layout_height="51dp"></cn.car4s.app.ui.widget.SettingLayout>
 
         <cn.car4s.app.ui.widget.SettingLayout
                 android:layout_width="match_parent"

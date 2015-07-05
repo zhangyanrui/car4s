@@ -46,6 +46,7 @@ public class Tab3Fragment extends BaseFragment implements IBase {
         SettingLayout mLayoutdongjiejifen = (SettingLayout) rootview.findViewById(R.id.setting_dongjiejifen);
         SettingLayout mLayoutfeedback = (SettingLayout) rootview.findViewById(R.id.setting_feedback);
         SettingLayout mLayoutAboutus = (SettingLayout) rootview.findViewById(R.id.setting_aboutus);
+        SettingLayout mLayoutXianxian = (SettingLayout) rootview.findViewById(R.id.setting_xianxianshu);
         mLayoutfeedback.setOnClickListener(onClickListener);
         mLayoutAboutus.setOnClickListener(onClickListener);
 
@@ -54,6 +55,7 @@ public class Tab3Fragment extends BaseFragment implements IBase {
         mLayoutdongjiejifen.setData(listData.get(1));
         mLayoutfeedback.setData(listData.get(2));
         mLayoutAboutus.setData(listData.get(3));
+        mLayoutXianxian.setData(listData.get(4));
 
 
         ImageView useravaster = (ImageView) rootview.findViewById(R.id.img_tab3_useravaster);

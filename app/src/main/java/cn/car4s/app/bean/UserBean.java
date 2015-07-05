@@ -50,6 +50,7 @@ public class UserBean extends BaseBean {
     public String CodeNumber;
     public String ReferralCode;
     public String feedBackText;
+    public String OfflineCount;
 
 
     public UserBean(String phoneNumber, String passWord) {

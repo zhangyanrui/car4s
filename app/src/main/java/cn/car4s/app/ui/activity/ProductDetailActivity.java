@@ -98,9 +98,6 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
         mproductBean = (ProductBean) getIntent().getSerializableExtra("bean");
         mSerisId = getIntent().getIntExtra("serisid", 1);
         mType = getIntent().getIntExtra("type", 0);
-        if (mType == 1) {
-            mType = 2;
-        }
         mOrderIdIntent = getIntent().getStringExtra("orderid");
         initUI();
         initData();
@@ -316,9 +313,7 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
         @Override
         public void onResponse(String result) {
             Log.e("--->", "this is" + result);
-//            stationBean.ServiceTimeList=result
-//            list.addAll(StationBean.getData(result));
-//            adapter.notifyDataSetChanged();
+            stationBean = StationBean.getData(result).get(0);
         }
     };
     HttpCallback callback = new HttpCallback() {
@@ -341,7 +336,8 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
 
         @Override
         public void onResponse(String result) {
-
+            ToastUtil.showToastShort("修改完成");
+            finish();
         }
     };
     HttpCallback callbackAddorder = new HttpCallback() {

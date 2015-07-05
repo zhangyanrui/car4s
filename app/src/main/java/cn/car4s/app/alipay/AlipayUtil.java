@@ -2,6 +2,7 @@ package cn.car4s.app.alipay;
 
 import android.app.Activity;
 import android.os.Message;
+import android.text.TextUtils;
 import com.alipay.sdk.app.PayTask;
 
 import java.io.UnsupportedEncodingException;
@@ -33,7 +34,7 @@ public class AlipayUtil {
      */
     public static void pay(final Activity context, final android.os.Handler mHandler, AlipayBean bean) {
         // 订单
-        String orderInfo = getOrderInfo(bean.productname, bean.productdesc, bean.price, bean.tradeNo, bean.pay_time);
+        String orderInfo = getOrderInfo(bean.productname, TextUtils.isEmpty(bean.productdesc) ? "-" : bean.productdesc, bean.price, bean.tradeNo, bean.pay_time);
 
         // 对订单做RSA 签名
         String sign = sign(orderInfo);

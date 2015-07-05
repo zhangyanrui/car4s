@@ -33,10 +33,12 @@ public class SettingBean extends BaseBean {
             SettingBean bean2 = new SettingBean(R.mipmap.setting_myjifen, 0, "冻结积分", mUserbean.FreezingPoint);
             SettingBean bean3 = new SettingBean(R.mipmap.setting_feedback, R.mipmap.setting_goto, "意见反馈", "");
             SettingBean bean4 = new SettingBean(R.mipmap.setting_aboutus, R.mipmap.setting_goto, "关于我们", "");
+            SettingBean bean5 = new SettingBean(R.mipmap.setting_myjifen, 0, "线下人数", mUserbean.OfflineCount);
             listData.add(bean);
             listData.add(bean2);
             listData.add(bean3);
             listData.add(bean4);
+            listData.add(bean5);
         }
         return listData;
     }
