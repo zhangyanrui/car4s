@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
 import butterknife.ButterKnife;
@@ -15,20 +16,17 @@ import butterknife.InjectView;
 import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
 import cn.car4s.app.api.HttpCallback;
-import cn.car4s.app.bean.SettingBean;
-import cn.car4s.app.bean.StationAreaBean;
-import cn.car4s.app.bean.UserBean;
+import cn.car4s.app.bean.*;
+import cn.car4s.app.ui.adapter.DialogTimeAdapter;
 import cn.car4s.app.ui.widget.SettingLayoutSmall;
 import cn.car4s.app.util.DialogUtil;
 import cn.car4s.app.util.LogUtil;
 import cn.car4s.app.util.PreferencesUtil;
+import cn.car4s.app.util.ToastUtil;
 import com.squareup.okhttp.Request;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Description:
@@ -62,17 +60,72 @@ public class EditProfile2Activity extends BaseActivity implements IBase {
         SettingLayoutSmall mLayoutKeyongjifen = (SettingLayoutSmall) findViewById(R.id.setting_keyongjifen);
         SettingLayoutSmall mLayoutdongjiejifen = (SettingLayoutSmall) findViewById(R.id.setting_dongjiejifen);
         SettingLayoutSmall mLayoutfeedback = (SettingLayoutSmall) findViewById(R.id.setting_feedback);
-
-        List<SettingBean> listData = SettingBean.createEdit2User(mUserbean);
+        SettingLayoutSmall mLayoutAboutus = (SettingLayoutSmall) findViewById(R.id.setting_aboutus);
+        List<SettingBean> listData = SettingBean.createEdit2User(mCurrentPorvicnebean, mCurrentcitybean, mCurrentareabean, mUserbean);
         mLayoutKeyongjifen.setData(listData.get(0));
         mLayoutdongjiejifen.setData(listData.get(1));
         mLayoutfeedback.setData(listData.get(2));
+        mLayoutAboutus.setData(listData.get(3));
 
         mLayoutKeyongjifen.setOnClickListener(onClickListener);
         mLayoutdongjiejifen.setOnClickListener(onClickListener);
         mLayoutfeedback.setOnClickListener(onClickListener);
+        mLayoutAboutus.setOnClickListener(onClickListener);
     }
 
+    List<Object> mList = new ArrayList<Object>();
+
+    private void updateDate(final int type) {
+        mList.clear();
+        if (type == 0)
+            mList.addAll(provinceBeanList);
+        else if (type == 1) {
+            mList.addAll(mCurrentPorvicnebean.CityList);
+        } else {
+            mList.addAll(mCurrentcitybean.AreaList);
+        }
+        View view = LayoutInflater.from(EditProfile2Activity.this).inflate(R.layout.time_picker, null);
+        final Dialog dialog = DialogUtil.buildDialog(EditProfile2Activity.this, view, Gravity.CENTER, 0, true);
+        ListView listView = (ListView) view.findViewById(R.id.listview);
+        DialogTimeAdapter adapter = new DialogTimeAdapter(mList, EditProfile2Activity.this);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                dialog.dismiss();
+
+                if (type == 0) {
+                    ProvinceBean bean = (ProvinceBean) mList.get(i);
+                    mUserbean.ProvinceID = bean.ProvinceID;
+                    mUserbean.updateProfile(callbackUpdate, mUserbean);
+                } else if (type == 1) {
+                    CityBean bean = (CityBean) mList.get(i);
+                    mUserbean.CityID = bean.CityID;
+                    mUserbean.updateProfile(callbackUpdate, mUserbean);
+                } else if (type == 2) {
+                    CityBean.AreaBean bean = (CityBean.AreaBean) mList.get(i);
+                    mUserbean.AreaID = bean.AreaID;
+                    mUserbean.updateProfile(callbackUpdate, mUserbean);
+                }
+
+            }
+        });
+        TextView cancel = (TextView) view.findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        TextView sure = (TextView) view.findViewById(R.id.sure);
+        sure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -84,10 +137,16 @@ public class EditProfile2Activity extends BaseActivity implements IBase {
                     finish();
                     break;
                 case R.id.setting_keyongjifen://
+                    updateDate(0);
                     break;
                 case R.id.setting_dongjiejifen://
+                    updateDate(1);
                     break;
                 case R.id.setting_feedback://
+                    updateDate(2);
+                    break;
+                case R.id.setting_aboutus://
+                    showNameDialog();
                     break;
             }
         }
@@ -182,7 +241,7 @@ public class EditProfile2Activity extends BaseActivity implements IBase {
             Log.e("--->", "" + result);
             PreferencesUtil.putPreferences(AppConfig.SP_KEY_USERINFO, result);
             initData();
-            initUI();
+//            initUI();
         }
     };
 
@@ -190,6 +249,8 @@ public class EditProfile2Activity extends BaseActivity implements IBase {
         View view = View.inflate(this, R.layout.dialog_edit, null);
         final Dialog dialog = DialogUtil.buildDialog(this, view, Gravity.CENTER, R.style.BottomDialogAnimation, true);
         final EditText dialog_edt = (EditText) view.findViewById(R.id.edt);
+        TextView title = (TextView) view.findViewById(R.id.title);
+        title.setText("请填写您的小区门牌");
         View dialog_upload_sure = view.findViewById(R.id.dialog_upload_sure);
         dialog_upload_sure.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,7 +258,7 @@ public class EditProfile2Activity extends BaseActivity implements IBase {
                 dialog.dismiss();
                 String name = dialog_edt.getText().toString().trim();
                 if (!TextUtils.isEmpty(name)) {
-                    mUserbean.UserName = name;
+                    mUserbean.Address = name;
                     mUserbean.updateProfile(callbackUpdate, mUserbean);
                 }
             }
@@ -260,18 +321,53 @@ public class EditProfile2Activity extends BaseActivity implements IBase {
     @Override
     public void initData() {
         mUserbean = UserBean.getLocalUserinfo();
-        new StationAreaBean().getProviceList(callbackLoadingProvince);
+        new StationAreaBean().getAllArea(callbackLoadingProvince);
     }
 
     HttpCallback callbackLoadingProvince = new HttpCallback() {
         @Override
         public void onFailure(Request request, IOException e) {
-
+            getProCity();
         }
 
         @Override
         public void onResponse(String result) {
             Log.e("--->", "" + result);
+            PreferencesUtil.putPreferences(AppConfig.SP_KEY_PROVICE, result);
+            getProCity();
         }
     };
+
+    public void getProCity() {
+        mProvinceBean = ProvinceBean.getlocalAreaData();
+        if (mProvinceBean == null) {
+            ToastUtil.showToastShort("获取省市信息失败");
+            finish();
+        }
+        provinceBeanList = mProvinceBean.ProvinceList;
+        for (int i = 0; i < provinceBeanList.size(); i++) {
+            ProvinceBean temp = provinceBeanList.get(i);
+            if (mUserbean.ProvinceID.equals(temp.ProvinceID)) {
+                mCurrentPorvicnebean = temp;
+                for (CityBean tempcity : temp.CityList) {
+                    if (mUserbean.CityID.equals(tempcity.CityID)) {
+                        mCurrentcitybean = tempcity;
+                        for (CityBean.AreaBean temparea : tempcity.AreaList) {
+                            if (mUserbean.AreaID.equals(temparea.AreaID)) {
+                                mCurrentareabean = temparea;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        initUI();
+    }
+
+    List<ProvinceBean> provinceBeanList;
+    ProvinceBean mCurrentPorvicnebean;
+    CityBean mCurrentcitybean;
+    CityBean.AreaBean mCurrentareabean;
+
+
 }

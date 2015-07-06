@@ -132,7 +132,7 @@ public class EditProfileActivity extends BaseActivity implements IBase {
                     break;
                 case R.id.setting_aboutus://
                     mIntent = new Intent(EditProfileActivity.this, EditProfile2Activity.class);
-                    startActivity(mIntent);
+                    startActivityForResult(mIntent, AppConfig.REQUEST_CODE_EDITPROFILE);
                     break;
 
 
@@ -295,12 +295,8 @@ public class EditProfileActivity extends BaseActivity implements IBase {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == AppConfig.REQUEST_CODE_RESETPWD && resultCode == Activity.RESULT_OK) {
-
-        }
-
-        if (requestCode == AppConfig.REQUEST_CODE_REGISTER && resultCode == Activity.RESULT_OK) {
-
+        if (requestCode == AppConfig.REQUEST_CODE_EDITPROFILE && resultCode == Activity.RESULT_OK) {
+            mUserbean.refresh(callbackRefresh, mUserbean.Token);
         }
     }
 

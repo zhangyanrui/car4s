@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cn.car4s.app.R;
+import cn.car4s.app.bean.CityBean;
+import cn.car4s.app.bean.ProvinceBean;
 import cn.car4s.app.bean.StationBean;
 
 import java.util.List;
@@ -22,10 +24,10 @@ import java.util.List;
  */
 public class DialogTimeAdapter extends BaseAdapter {
 
-    List<StationBean.TimeChoose> list;
+    List<Object> list;
     Context context;
 
-    public DialogTimeAdapter(List<StationBean.TimeChoose> list, Context context) {
+    public DialogTimeAdapter(List<Object> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -61,8 +63,15 @@ public class DialogTimeAdapter extends BaseAdapter {
         viewholder.textViewdesc.setVisibility(View.GONE);
         viewholder.textView.getLayoutParams().width = RelativeLayout.LayoutParams.MATCH_PARENT;
         viewholder.textView.setGravity(Gravity.CENTER);
-        StationBean.TimeChoose bean = (StationBean.TimeChoose) list.get(i);
-        viewholder.textView.setText(bean.TimeName);
+        Object object = list.get(i);
+        if (object instanceof StationBean.TimeChoose)
+            viewholder.textView.setText(((StationBean.TimeChoose) object).TimeName);
+        if (object instanceof ProvinceBean)
+            viewholder.textView.setText(((ProvinceBean) object).ProvinceName);
+        if (object instanceof CityBean)
+            viewholder.textView.setText(((CityBean) object).CityName);
+        if (object instanceof CityBean.AreaBean)
+            viewholder.textView.setText(((CityBean.AreaBean) object).AreaName);
         return allView;
     }
 

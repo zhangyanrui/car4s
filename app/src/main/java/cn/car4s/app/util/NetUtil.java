@@ -63,7 +63,7 @@ public class NetUtil {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        ToastUtil.showToastShort(e.toString());
+//                        ToastUtil.showToastShort(e.toString());
 //                        callback.onFailure(request, e);
                     }
                 });
@@ -84,7 +84,9 @@ public class NetUtil {
                         if ("0".equals(bean.Code)) {
                             callback.onResponse(result);
                         } else {
-                            ToastUtil.showToastShort(bean.Message);
+                            if (!"1".equals(bean.Code))
+                                ToastUtil.showToastShort(bean.Message);
+                            else callback.onFailure(request, null);
                         }
                     }
                 });

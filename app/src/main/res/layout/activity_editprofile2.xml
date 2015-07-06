@@ -31,7 +31,11 @@
                 android:layout_height="51dp">
 
         </cn.car4s.app.ui.widget.SettingLayoutSmall>
-
+        <cn.car4s.app.ui.widget.SettingLayoutSmall
+                android:layout_width="match_parent"
+                android:id="@+id/setting_aboutus"
+                android:layout_height="51dp">
+        </cn.car4s.app.ui.widget.SettingLayoutSmall>
 
     </LinearLayout>
 

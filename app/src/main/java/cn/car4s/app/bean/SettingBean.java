@@ -83,16 +83,40 @@ public class SettingBean extends BaseBean {
         return listData;
     }
 
-    public static List<SettingBean> createEdit2User(UserBean mUserbean) {
+    public static List<SettingBean> createEdit2User(ProvinceBean provinceBean, CityBean cityBean, CityBean.AreaBean areaBean, UserBean userBean) {
         listData = null;
         if (listData == null) {
             listData = new ArrayList<SettingBean>();
-            SettingBean bean = new SettingBean(0, R.mipmap.setting_goto, "省", mUserbean.ProvinceID);
-            SettingBean bean2 = new SettingBean(0, R.mipmap.setting_goto, "市", mUserbean.CityID);
-            SettingBean bean3 = new SettingBean(0, R.mipmap.setting_goto, "区", mUserbean.AreaID);
+            SettingBean bean;
+            SettingBean bean2;
+            SettingBean bean3;
+            SettingBean bean4;
+            if (provinceBean == null) {
+                bean = new SettingBean(0, R.mipmap.setting_goto, "省", "");
+            } else {
+                bean = new SettingBean(0, R.mipmap.setting_goto, "省", provinceBean.ProvinceName);
+            }
+            if (cityBean == null) {
+                bean2 = new SettingBean(0, R.mipmap.setting_goto, "市", "");
+            } else {
+                bean2 = new SettingBean(0, R.mipmap.setting_goto, "市", cityBean.CityName);
+
+            }
+            if (areaBean == null) {
+                bean3 = new SettingBean(0, R.mipmap.setting_goto, "区", "");
+            } else {
+                bean3 = new SettingBean(0, R.mipmap.setting_goto, "区", areaBean.AreaName);
+            }
+            if (userBean == null) {
+                bean4 = new SettingBean(0, R.mipmap.setting_goto, "门牌号", "");
+            } else {
+                bean4 = new SettingBean(0, R.mipmap.setting_goto, "门牌号", userBean.Address);
+            }
             listData.add(bean);
             listData.add(bean2);
             listData.add(bean3);
+            listData.add(bean4);
+
         }
         return listData;
     }

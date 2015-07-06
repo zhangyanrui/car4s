@@ -52,10 +52,15 @@ public class StationAreaBean extends BaseBean {
         }
         return list;
     }
-//    action	GetProvince	必填
-    public void getProviceList(HttpCallback callback) {
+
+//    action	GetAllArea	必填
+//    Version	版本信息	1.0.0.0
+
+    public void getAllArea(HttpCallback callback) {
         Map map = new HashMap();
-        map.put("action", "GetProvince");
+        map.put("action", "GetAllArea");
+//        map.put("Version", ProvinceBean.getlocalAreaVserion());
+        map.put("Version", "0");
         NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_SYS_PARA, map, callback);
     }
 

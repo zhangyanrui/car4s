@@ -261,7 +261,10 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
             View view = LayoutInflater.from(ProductDetailActivity.this).inflate(R.layout.time_picker, null);
             final Dialog dialog = DialogUtil.buildDialog(ProductDetailActivity.this, view, Gravity.CENTER, 0, true);
             ListView listView = (ListView) view.findViewById(R.id.listview);
-            DialogTimeAdapter adapter = new DialogTimeAdapter(stationBean.ServiceTimeList, ProductDetailActivity.this);
+
+            List<Object> temp = new ArrayList<Object>();
+            temp.addAll(stationBean.ServiceTimeList);
+            DialogTimeAdapter adapter = new DialogTimeAdapter(temp, ProductDetailActivity.this);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
