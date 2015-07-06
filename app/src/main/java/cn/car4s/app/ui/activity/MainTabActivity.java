@@ -12,17 +12,75 @@ import cn.car4s.app.bean.UserBean;
 import cn.car4s.app.ui.fragment.Tab1Fragment;
 import cn.car4s.app.ui.fragment.Tab2Fragment;
 import cn.car4s.app.ui.fragment.Tab3Fragment;
+import cn.car4s.app.util.LogUtil;
+import com.tencent.map.geolocation.TencentLocation;
+import com.tencent.map.geolocation.TencentLocationListener;
+import com.tencent.map.geolocation.TencentLocationManager;
+import com.tencent.map.geolocation.TencentLocationRequest;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.PushAgent;
+import com.umeng.message.UmengRegistrar;
 
-public class MainTabActivity extends BaseActivity implements IBase {
+public class MainTabActivity extends BaseActivity implements IBase, TencentLocationListener {
     private FragmentManager fm;
     private FragmentTabHost tabhost;
+    TencentLocationManager locationManager;
+    PushAgent mPushAgent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MobclickAgent.updateOnlineConfig(this);
+        mPushAgent = PushAgent.getInstance(this);
+        mPushAgent.enable(mRegisterCallback);
+        mUserbean = UserBean.getLocalUserinfo();
+        if (mUserbean != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        mPushAgent.addAlias(mUserbean.UserID, "UserID");
+                        LogUtil.e("alias", "" + mUserbean.UserID);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
         initUI();
+        TencentLocationRequest request = TencentLocationRequest.create();
+        locationManager = TencentLocationManager.getInstance(this);
+        int error = locationManager.requestLocationUpdates(request, this);
+        LogUtil.e("onLocationChanged", error + "");
     }
+
+
+    IUmengRegisterCallback mRegisterCallback = new IUmengRegisterCallback() {
+
+        @Override
+        public void onRegistered(String registrationId) {
+            String device_token = UmengRegistrar.getRegistrationId(MainTabActivity.this);
+            LogUtil.e("onRegistered", "--->" + device_token);
+            mUserbean = UserBean.getLocalUserinfo();
+            if (mUserbean != null) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            mPushAgent.addAlias(mUserbean.UserID, "UserID");
+                            LogUtil.e("alias", "" + mUserbean.UserID);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+
+            }
+        }
+
+    };
 
     @Override
     public void initUI() {
@@ -86,6 +144,23 @@ public class MainTabActivity extends BaseActivity implements IBase {
 
     @Override
     public void initData() {
+
+    }
+
+    @Override
+    public void onLocationChanged(TencentLocation tencentLocation, int error, String s) {
+        LogUtil.e("onLocationChanged", tencentLocation.getCity());
+        if (TencentLocation.ERROR_OK == error) {
+            // 定位成功
+            LogUtil.e("onLocationChanged", tencentLocation.getCity());
+        } else {
+            // 定位失败
+        }
+        locationManager.removeUpdates(this);
+    }
+
+    @Override
+    public void onStatusUpdate(String s, int i, String s1) {
 
     }
 }

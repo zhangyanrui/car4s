@@ -55,17 +55,19 @@ public class BankDetialActivity extends BaseActivity implements IBase {
         ((TextView) findViewById(R.id.tv_actionbar_title)).setText("提现详情");
 
         txt.setText("");
-        txt.append("申请编号:" + tixianbean.ApplicationNo + "\n");
-        txt.append("申请时间:" + tixianbean.ApplicationTime + "\n");
-        txt.append("提现积分:" + tixianbean.WithdrawalPoint + "\n");
-        txt.append("转账方式:" + tixianbean.TransferMode + "\n");
-        txt.append("账户:" + tixianbean.AccountNumber + "\n");
-        txt.append("开户行:" + tixianbean.AccountBankName + "\n");
-        txt.append("联系人:" + tixianbean.ContactName + "\n");
-        txt.append("联系电话:" + tixianbean.ContactNumber + "\n");
-        txt.append("开户姓名:" + tixianbean.AccountName + "\n");
-        txt.append("身份证:" + tixianbean.IDCardNo + "\n");
-        txt.append("其他说明:" + tixianbean.Description + "\n");
+        if (tixianbean != null) {
+            txt.append("申请编号:" + tixianbean.ApplicationNo + "\n");
+            txt.append("申请时间:" + tixianbean.ApplicationTime + "\n");
+            txt.append("提现积分:" + tixianbean.WithdrawalPoint + "\n");
+            txt.append("转账方式:" + tixianbean.TransferMode + "\n");
+            txt.append("账户:" + tixianbean.AccountNumber + "\n");
+            txt.append("开户行:" + tixianbean.AccountBankName + "\n");
+            txt.append("联系人:" + tixianbean.ContactName + "\n");
+            txt.append("联系电话:" + tixianbean.ContactNumber + "\n");
+            txt.append("开户姓名:" + tixianbean.AccountName + "\n");
+            txt.append("身份证:" + tixianbean.IDCardNo + "\n");
+            txt.append("其他说明:" + tixianbean.Description + "\n");
+        }
     }
 
 

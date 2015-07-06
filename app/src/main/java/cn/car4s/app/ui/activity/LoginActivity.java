@@ -117,6 +117,8 @@ public class LoginActivity extends BaseActivity implements IBase {
         public void onResponse(String result) {
             Log.e("--->", "" + result);
             PreferencesUtil.putPreferences(AppConfig.SP_KEY_USERINFO, result);
+
+
             setResult(Activity.RESULT_OK);
             finish();
         }

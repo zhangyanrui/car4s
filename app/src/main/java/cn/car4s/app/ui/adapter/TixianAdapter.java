@@ -94,7 +94,7 @@ public class TixianAdapter extends BaseAdapter {
         } else if (object instanceof TixianBean) {
             TixianBean bean = (TixianBean) object;
             viewholder.title.setText("申请时间: " + bean.ApplicationTime);
-            viewholder.desc1.setText("提现积分: " + bean.WithdrawalPoint + "      折现金额:" + bean.WithdrawalAmount + "      折现方式:" + bean.TransferMode);
+            viewholder.desc1.setText("提现积分: " + bean.WithdrawalPoint + "      折现金额:" + bean.WithdrawalAmount + "\n\n折现方式:" + bean.TransferMode);
             viewholder.desc2.setText("状态: " + bean.Status);
             if ("0".equals(bean.Status)) {//weiqueren
                 viewholder.desc2.setText("状态: 未确认");

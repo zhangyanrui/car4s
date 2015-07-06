@@ -112,6 +112,12 @@ public class OrderAdapter extends BaseAdapter {
             viewholder.tv_timeshengyu.setVisibility(View.GONE);
             viewholder.title.setBackgroundResource(R.drawable.shape_jish_notbusy);
         } else if ("0".equals(bean.OrderStatus)) {//wanchengdingdan
+            if ("T".equals(bean.EvaluationFlag)) {
+                viewholder.pingjia.setText("您已对该技师评价过");
+                viewholder.pingjia.setEnabled(false);
+            } else {
+                viewholder.pingjia.setText("给技师评价");
+            }
             viewholder.layout_pingjia.setVisibility(View.VISIBLE);
             viewholder.tv_timeshengyu.setVisibility(View.GONE);
             viewholder.title.setBackgroundResource(R.drawable.shape_jish_busy);

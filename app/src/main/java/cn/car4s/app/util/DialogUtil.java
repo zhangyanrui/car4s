@@ -49,7 +49,7 @@ public class DialogUtil {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        TelephonyUtil.dial(telnumber);
+                        context.startActivity(TelephonyUtil.dial(telnumber));
                     }
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
 

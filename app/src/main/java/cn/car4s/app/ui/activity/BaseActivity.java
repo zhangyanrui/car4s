@@ -1,9 +1,12 @@
 package cn.car4s.app.ui.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import cn.car4s.app.bean.ProvinceListBean;
 import cn.car4s.app.bean.UserBean;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
 
 /**
  * Description:
@@ -16,4 +19,23 @@ public class BaseActivity extends FragmentActivity {
     public UserBean mUserbean;
     public ProvinceListBean mProvinceBean;
     public boolean mHasNext;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        PushAgent.getInstance(this).onAppStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 }

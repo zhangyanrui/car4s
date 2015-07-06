@@ -43,7 +43,11 @@ public class ChooseStationAdapter extends RecyclerView.Adapter {
         StationBean bean = list.get(i);
         Viewholder holder = (Viewholder) viewHolder;
         holder.textView.setText("" + bean.StationName);
-        holder.textViewdesc.setText("" + bean.Mileage);
+        if (!"-1".equals(bean.Mileage))
+            holder.textViewdesc.setText("" + bean.Mileage);
+        else {
+            holder.textViewdesc.setText("");
+        }
     }
 
     @Override

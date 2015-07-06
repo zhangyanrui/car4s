@@ -73,4 +73,29 @@ public class JishiBean extends BaseBean {
         }
         return list;
     }
+
+    public void getPingjiaPara(HttpCallback callback) {
+        Map map = new HashMap();
+        map.put("action", "GetEvaluationPara");
+        NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_SYS_PARA, map, callback);
+    }
+//    4.10.2. action名称
+//    OrderEvaluation
+//    4.10.3.参数说明
+//    参数名称	说明	备注	传参方式
+//    action	CancelOrder	必填
+//    Token	用户密钥	必填	header
+//    OrderID	订单ID	必填
+//    Evaluation	评价字符串	必填	评价ID:得分;评价ID：得分;
+//    EvaluationContent	评价内容
+
+
+    public void pingjiajishi(HttpCallback callback, String orderid, String rate, String content) {
+        Map map = new HashMap();
+        map.put("action", "OrderEvaluation");
+        map.put("OrderID", orderid);
+        map.put("Evaluation", rate);
+        map.put("EvaluationContent", content);
+        NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_PRODUCT, map, callback);
+    }
 }

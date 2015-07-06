@@ -87,7 +87,7 @@ public class TixianActivity extends BaseActivity implements IBase {
 
         @Override
         public void cancel(TixianBean bean) {
-
+            bean.quxiaotixian(callbackquxiao, bean.WithdrawalID);
         }
 
         @Override
@@ -99,6 +99,18 @@ public class TixianActivity extends BaseActivity implements IBase {
 
     };
 
+    HttpCallback callbackquxiao = new HttpCallback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+
+        }
+
+        @Override
+        public void onResponse(String result) {
+            Log.e("--->", "" + result);
+            loadData(true);
+        }
+    };
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override

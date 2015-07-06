@@ -23,6 +23,7 @@ android {
         targetSdkVersion 14
         versionCode 1
         versionName "1.0"
+//        multiDexEnabled true
     }
     buildTypes {
         debug {
@@ -53,10 +54,10 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:21.0.0'
+//    compile 'com.android.support:support-v4:22.2.0'
     compile 'com.android.support:recyclerview-v7:21.0.0'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile 'com.jakewharton:butterknife:6.1.0'
     compile 'com.squareup.okhttp:okhttp:2.3.0'
-    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.google.code.gson:gson:2.3'
 }

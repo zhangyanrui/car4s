@@ -4,16 +4,24 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RatingBar;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
 import cn.car4s.app.api.HttpCallback;
+import cn.car4s.app.bean.JishiBean;
+import cn.car4s.app.bean.JishiPingjiaBean;
+import cn.car4s.app.ui.widget.RatingLayout;
+import cn.car4s.app.util.LogUtil;
+import cn.car4s.app.util.PreferencesUtil;
 import cn.car4s.app.util.ToastUtil;
 import com.squareup.okhttp.Request;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description:
@@ -26,29 +34,47 @@ public class PingjiaJishiActivity extends BaseActivity implements IBase {
     ImageView mActionbarBack;
     @InjectView(R.id.tv_actionbar_title)
     TextView mActionbarTitle;
+    @InjectView(R.id.layout_all)
+    LinearLayout layout_all;
 
-
+    //
     @InjectView(R.id.edt_feedback_text)
     EditText mEdtText;
     @InjectView(R.id.btn_feedback_commit)
     TextView mBtnCommit;
-    @InjectView(R.id.ratingbar1)
-    RatingBar ratingBar1;
-    @InjectView(R.id.ratingbar2)
-    RatingBar ratingBar2;
-    @InjectView(R.id.ratingbar3)
-    RatingBar ratingBar3;
-    @InjectView(R.id.ratingbar4)
-    RatingBar ratingBar4;
+//    @InjectView(R.id.ratingbar1)
+//    RatingBar ratingBar1;
+//    @InjectView(R.id.ratingbar2)
+//    RatingBar ratingBar2;
+//    @InjectView(R.id.ratingbar3)
+//    RatingBar ratingBar3;
+//    @InjectView(R.id.ratingbar4)
+//    RatingBar ratingBar4;
+
+//    @InjectView(R.id.tv_1)
+//    TextView tv1;
+//    @InjectView(R.id.tv_2)
+//    TextView tv2;
+//    @InjectView(R.id.tv_3)
+//    TextView tv3;
+//    @InjectView(R.id.tv_4)
+//    TextView tv4;
+//
+//    @InjectView(R.id.listview)
+//    ListView listView;
+//    jishipingjiaAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jishipingjia);
         ButterKnife.inject(this);
-        initData();
+        ordreid = getIntent().getStringExtra("id");
         initUI();
+        initData();
     }
+
+    String ordreid;
 
     @Override
     public void initUI() {
@@ -57,6 +83,8 @@ public class PingjiaJishiActivity extends BaseActivity implements IBase {
         mActionbarBack.setOnClickListener(onClickListener);
         mBtnCommit.setOnClickListener(onClickListener);
         mActionbarTitle.setText("技师评价");
+//        adapter = new jishipingjiaAdapter(list, this);
+//        listView.setAdapter(adapter);
 
     }
 
@@ -69,14 +97,17 @@ public class PingjiaJishiActivity extends BaseActivity implements IBase {
                     finish();
                     break;
                 case R.id.btn_feedback_commit:
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < list.size(); i++) {
+                        JishiPingjiaBean bean = (JishiPingjiaBean) list.get(i);
+                        sb.append(bean.EvaluationID + ":" + bean.score);
+                        if (i != list.size() - 1)
+                            sb.append(";");
+                    }
+
                     String text = mEdtText.getText().toString().trim();
-                    int score1 = ratingBar1.getNumStars();
-                    int score2 = ratingBar2.getNumStars();
-                    int score3 = ratingBar3.getNumStars();
-                    int score4 = ratingBar4.getNumStars();
-//                    UserBean userBean = new UserBean(phone, text);
-//                    userBean.feedBackText = text;
-//                    userBean.feedback(callback);
+                    LogUtil.e("--->", sb.toString() + "    " + text);
+                    new JishiBean().pingjiajishi(callback, ordreid, sb.toString(), text);
                     break;
             }
         }
@@ -94,9 +125,40 @@ public class PingjiaJishiActivity extends BaseActivity implements IBase {
 
         }
     };
+    HttpCallback callbackpara = new HttpCallback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+
+        }
+
+        @Override
+        public void onResponse(String bean) {
+            PreferencesUtil.putPreferences(AppConfig.SP_KEY_PINGJIA, bean);
+            list.clear();
+            list.addAll(JishiPingjiaBean.getData(bean));
+//            adapter.notifyDataSetChanged();
+            updateUI();
+        }
+    };
+    List<Object> list = new ArrayList<Object>();
+
+    public void updateUI() {
+
+        for (int i = 0; i < list.size(); i++) {
+            JishiPingjiaBean bean = (JishiPingjiaBean) list.get(i);
+//            tv1.setText(bean.EvaluationType);
+            RatingLayout ratingLayout = new RatingLayout(this);
+            ratingLayout.setData(bean);
+            layout_all.addView(ratingLayout);
+
+        }
+
+    }
 
     @Override
     public void initData() {
-
+        new JishiBean().getPingjiaPara(callbackpara);
     }
+
+
 }

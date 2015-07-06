@@ -23,6 +23,7 @@ public class AppConfig {
     public static final String SP_KEY_CHOOSEPOSITION_NAME = "sp_key_choosepos_name";
     public static final String SP_KEY_USERINFO = "sp_key_userinfo";
     public static final String SP_KEY_PROVICE = "sp_key_provice";
+    public static final String SP_KEY_PINGJIA = "sp_key_pingjia";
 
     public static final int REQUEST_CODE_RESETPWD = 100;
     public static final int REQUEST_CODE_REGISTER = 101;

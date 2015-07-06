@@ -107,7 +107,6 @@ public class Tab3Fragment extends BaseFragment implements IBase {
                     mIntent = new Intent(getActivity(), EditProfileActivity.class);
                     startActivityForResult(mIntent, AppConfig.REQUEST_CODE_EDITPROFILE);
                     break;
-
                 case R.id.img_tab3_useravaster:
                     DialogUtil.showUploadDialog(getActivity(), DialogListener);
                     break;
@@ -125,7 +124,7 @@ public class Tab3Fragment extends BaseFragment implements IBase {
             }
             switch (v.getId()) {
                 case R.id.dialog_upload_take:
-                    mUploadPicPath = UtilImage.callCamera(getActivity());
+                    mUploadPicPath = UtilImage.callCamera(Tab3Fragment.this);
                     break;
                 case R.id.dialog_upload_abulmb:
                     Intent intent = new Intent(getActivity(), SelectPhotoActivity.class);

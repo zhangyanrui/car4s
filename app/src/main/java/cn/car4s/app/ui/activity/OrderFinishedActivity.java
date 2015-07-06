@@ -160,7 +160,7 @@ public class OrderFinishedActivity extends BaseActivity implements IBase {
         @Override
         public void pingjia(OrderBean bean) {
             Intent intent = new Intent(OrderFinishedActivity.this, PingjiaJishiActivity.class);
-            intent.putExtra("id", bean.TechnicianID);
+            intent.putExtra("id", bean.OrderID);
             startActivity(intent);
         }
     };

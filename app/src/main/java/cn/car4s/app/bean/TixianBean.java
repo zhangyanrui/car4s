@@ -112,4 +112,11 @@ public class TixianBean extends BaseBean {
     }
 
 
+    public void quxiaotixian(HttpCallback callback, int itxianId) {
+        Map map = new HashMap();
+        map.put("action", "CancelWithdrawal");
+        map.put("WithdrawalID", "" + itxianId);
+        NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_TIXIAN, map, callback);
+    }
+
 }
