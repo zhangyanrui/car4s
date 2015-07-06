@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/layout_all"
+
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical">
     <LinearLayout
-            android:layout_width="match_parent" android:layout_margin="20dp"
+            android:layout_width="match_parent" android:layout_margin="10dp"
             android:background="@drawable/shape_order"
-            android:layout_height="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/layout_all"
             android:orientation="vertical">
         <TextView
                 android:id="@+id/tv_title" android:background="@drawable/shape_jish_notbusy"
@@ -35,7 +35,7 @@
 
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
                   android:id="@+id/tv_timeshengyu"
-                  android:visibility="visible" android:gravity="left" android:singleLine="true" android:ellipsize="end"
+                  android:visibility="visible" android:gravity="left"
                   android:text="忙碌" style="@style/appstyle_basic_text_black"
                 />
         <LinearLayout android:layout_width="match_parent" android:layout_height="1dp"
@@ -54,15 +54,15 @@
                       android:gravity="right" android:id="@+id/layout_bianji"
                       android:orientation="horizontal">
             <Button style="@style/appstyle_basic_text_black" android:text="编辑" android:textColor="@color/color_green"
-                    android:layout_margin="10dp" android:layout_width="100dp"
+                    android:layout_margin="0dp" android:layout_width="100dp"
                     android:id="@+id/edit"
                     android:layout_gravity="right"/>
         </LinearLayout>
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:gravity="right" android:id="@+id/layout_pingjia"
                       android:orientation="horizontal">
-            <Button style="@style/appstyle_basic_text_black" android:text="评价"
-                    android:layout_margin="10dp" android:layout_width="100dp"
+            <Button style="@style/appstyle_basic_text_black" android:text="给技师评价"
+                    android:layout_margin="0dp" android:layout_width="100dp"
                     android:id="@+id/pingjia"
                     android:layout_gravity="right"/>
         </LinearLayout>

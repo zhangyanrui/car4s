@@ -78,6 +78,7 @@ public class UserBean extends BaseBean {
         map.put("action", "Login");
         map.put("PhoneNumber", this.PhoneNumber + "");
         map.put("PassWord", this.PassWord + "");
+        map.put("PlatForm", "Android");
         NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_USER, map, callback);
     }
 

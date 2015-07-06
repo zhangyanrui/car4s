@@ -11,7 +11,11 @@ import android.widget.TextView;
 import cn.car4s.app.R;
 import cn.car4s.app.bean.OrderBean;
 import cn.car4s.app.ui.activity.ProductDetailActivity;
+import cn.car4s.app.util.LogUtil;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,11 +29,19 @@ public class OrderAdapter extends BaseAdapter {
     List<Object> list;
     Context context;
     OrderDo orderDo;
+    SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    SimpleDateFormat df2 = new SimpleDateFormat("mm:ss");
 
     public OrderAdapter(List<Object> list, Context context, OrderDo orderDo) {
         this.list = list;
         this.context = context;
         this.orderDo = orderDo;
+    }
+
+    public long mCurrenttime;
+
+    public void settime(long time) {
+        this.mCurrenttime = time;
     }
 
     @Override
@@ -50,6 +62,7 @@ public class OrderAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         Viewholder viewholder;
+        LogUtil.e("--->", "getview");
         if (view == null) {
             viewholder = new Viewholder();
             view = LayoutInflater.from(context).inflate(R.layout.adapter_item_order, null);
@@ -74,18 +87,49 @@ public class OrderAdapter extends BaseAdapter {
         viewholder.layout_zhifu.setVisibility(View.GONE);
         viewholder.layout_bianji.setVisibility(View.GONE);
         viewholder.layout_pingjia.setVisibility(View.GONE);
-        if ("2".equals(bean.OrderStatus)) {
+        viewholder.tv_timeshengyu.setVisibility(View.GONE);
+        if ("2".equals(bean.OrderStatus)) {//daizhifu
             viewholder.layout_zhifu.setVisibility(View.VISIBLE);
+            String string = null;
+            try {
+                Date date = df1.parse(bean.OrderTime);
+                long timeserver = date.getTime();
+                long timespace = mCurrenttime - timeserver;
+                long timeleft = 15 * 60 * 1000 - timespace;
+                if (timeleft < 0) {
+                    list.remove(i);
+                    notifyDataSetChanged();
+                }
+                string = df2.format(timeleft);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            viewholder.tv_timeshengyu.setText("剩余支付时间: " + string);
             viewholder.tv_timeshengyu.setVisibility(View.VISIBLE);
             viewholder.title.setBackgroundResource(R.drawable.shape_jish_notbusy);
         } else if ("1".equals(bean.OrderStatus)) {
             viewholder.layout_bianji.setVisibility(View.VISIBLE);
             viewholder.tv_timeshengyu.setVisibility(View.GONE);
             viewholder.title.setBackgroundResource(R.drawable.shape_jish_notbusy);
-        } else if ("0".equals(bean.OrderStatus)) {
+        } else if ("0".equals(bean.OrderStatus)) {//wanchengdingdan
             viewholder.layout_pingjia.setVisibility(View.VISIBLE);
             viewholder.tv_timeshengyu.setVisibility(View.GONE);
             viewholder.title.setBackgroundResource(R.drawable.shape_jish_busy);
+            viewholder.layout_all.setTag(bean);
+            viewholder.layout_all.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    OrderBean bean1 = (OrderBean) view.getTag();
+                    Intent intent = new Intent(context, ProductDetailActivity.class);
+                    intent.putExtra("type", 3);
+                    intent.putExtra("orderid", bean1.OrderID);
+                    context.startActivity(intent);
+                }
+            });
+        } else {//下线订单
+            viewholder.tv_timeshengyu.setVisibility(View.VISIBLE);
+            viewholder.tv_timeshengyu.setText("手机号: " + bean.PhoneNumber_Sub + "\n\n" + "贡献积分: " + bean.ContributionPoint);
+            viewholder.title.setBackgroundResource(R.color.transparent);
             viewholder.layout_all.setTag(bean);
             viewholder.layout_all.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -101,7 +145,7 @@ public class OrderAdapter extends BaseAdapter {
         }
         viewholder.title.setText("套餐: " + bean.ProductName);
         viewholder.desc1.setText("下单时间: " + bean.OrderTime);
-        viewholder.desc2.setText("网店: " + bean.StationName);
+        viewholder.desc2.setText("网点: " + bean.StationName);
         viewholder.edit.setTag(bean);
         viewholder.edit.setOnClickListener(new View.OnClickListener() {
             @Override

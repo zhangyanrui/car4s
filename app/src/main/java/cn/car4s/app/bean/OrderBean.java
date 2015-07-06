@@ -53,6 +53,11 @@ public class OrderBean extends BaseBean {
 //            "SalesPrice": "356.00",
 //            "DiscountPrice": "280.40",
 //            "EvaluationFlag": "F"
+//    "PhoneNumber_Sub": "13472858805",
+//            "ContributionPoint": "5.65"
+
+    public String PhoneNumber_Sub;
+    public String ContributionPoint;
 
 
     public String OrderID;
@@ -70,6 +75,7 @@ public class OrderBean extends BaseBean {
     public String LastPaymentTime;
     public String Description;
 
+    public long time_daizhifu;
 
     public String AvailablePoint;
     public String FreezingPoint;

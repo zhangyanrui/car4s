@@ -2,6 +2,8 @@ package cn.car4s.app.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +17,13 @@ import cn.car4s.app.ui.activity.OrderFinishedActivity;
 import cn.car4s.app.ui.activity.ProductDetailActivity;
 import cn.car4s.app.ui.adapter.OrderAdapter;
 import cn.car4s.app.ui.widget.xlistview.XListView;
+import cn.car4s.app.util.LogUtil;
 import cn.car4s.app.util.ToastUtil;
 import com.squareup.okhttp.Request;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,9 +37,12 @@ public class Tab2Fragment extends BaseFragment implements IBase {
     XListView listView;
     List<Object> list = new ArrayList<Object>();
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootview = inflater.inflate(R.layout.fragment_tab2, null);
+        LogUtil.e("--->", "onCreateView");
+        flag = true;
         initUI();
         initData();
         return rootview;
@@ -68,6 +75,50 @@ public class Tab2Fragment extends BaseFragment implements IBase {
     }
 
 
+    @Override
+    public void onPause() {
+        LogUtil.e("--->", "onPause");
+        super.onPause();
+        flag = false;
+    }
+
+    boolean flag = false;
+
+    public void TimeStart() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (flag) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    Message msg = new Message();
+                    msg.what = 0;
+                    mHandler.sendMessage(msg);
+                }
+            }
+        }).start();
+    }
+
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    LogUtil.e("--->", "handleMessage");
+                    long time = new Date().getTime();
+                    adapter.settime(time);
+                    adapter.notifyDataSetChanged();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
     HttpCallback callback = new HttpCallback() {
         @Override
         public void onFailure(Request request, IOException e) {
@@ -90,7 +141,8 @@ public class Tab2Fragment extends BaseFragment implements IBase {
                 listView.setPullLoadEnable(true);
             }
             list.addAll(listnet);
-
+            flag = true;
+            TimeStart();
             adapter.notifyDataSetChanged();
             if (list.size() == 0) {
                 ToastUtil.showToastShort("暂无订单");
@@ -127,6 +179,7 @@ public class Tab2Fragment extends BaseFragment implements IBase {
         }
     }
 
+
     OrderAdapter.OrderDo orderDo = new OrderAdapter.OrderDo() {
 
         @Override
@@ -139,7 +192,7 @@ public class Tab2Fragment extends BaseFragment implements IBase {
             Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
             intent.putExtra("type", 1);
             intent.putExtra("orderid", orderBean.OrderID);
-            startActivity(intent);
+            startActivityForResult(intent, 1001);
         }
 
         @Override
@@ -147,7 +200,7 @@ public class Tab2Fragment extends BaseFragment implements IBase {
             Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
             intent.putExtra("type", 2);
             intent.putExtra("orderid", bean.OrderID);
-            startActivity(intent);
+            startActivityForResult(intent, 1001);
         }
 
         @Override
@@ -167,4 +220,10 @@ public class Tab2Fragment extends BaseFragment implements IBase {
         }
     };
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        flag = true;
+        initData();
+    }
 }

@@ -2,6 +2,8 @@ package cn.car4s.app.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -94,6 +96,7 @@ public class ResetPwdActivity extends BaseActivity implements IBase {
                     if (TextUtils.isEmpty(phonegetyanzhengma)) {
                         ToastUtil.showToastShort("您的输入有误，请重新输入");
                     } else {
+                        TimeStart();
                         UserBean bean = new UserBean(phonegetyanzhengma);
                         bean.getYanzhegnma(callbackGetyanzhengma);
                     }
@@ -119,6 +122,50 @@ public class ResetPwdActivity extends BaseActivity implements IBase {
             }
         }
     };
+    int time;
+
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    mBtnGetyanzhengma.setText(msg.arg1 + "秒后重发");
+                    if (msg.arg1 == 0) {
+                        mBtnGetyanzhengma.setEnabled(true);
+                        mBtnGetyanzhengma.setText("获取验证码");
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+
+    public void TimeStart() {
+        mBtnGetyanzhengma.setText("60秒后重发");
+        mBtnGetyanzhengma.setEnabled(false);
+        time = 60;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (time > 0) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    time--;
+                    Message msg = new Message();
+                    msg.what = 0;
+                    msg.arg1 = time;
+                    mHandler.sendMessage(msg);
+                }
+            }
+        }).start();
+    }
 
     HttpCallback callbackRgeister = new HttpCallback() {
         @Override

@@ -53,6 +53,7 @@
         <activity android:name=".ui.activity.TixianActivity"></activity>
         <activity android:name=".ui.activity.BankActivity"></activity>
         <activity android:name=".ui.activity.BankDetialActivity"></activity>
+        <activity android:name=".ui.activity.PingjiaJishiActivity"></activity>
         <activity android:name=".ui.activity.SelectPhotoActivity"></activity>
         <activity android:name=".ui.activity.SchemeActivity">
             <intent-filter>
