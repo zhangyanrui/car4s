@@ -6,9 +6,9 @@
     <include layout="@layout/common_actionbar"></include>
 
 
-    <ListView android:layout_width="match_parent" android:layout_height="match_parent"
+    <cn.car4s.app.ui.widget.xlistview.XListView android:layout_width="match_parent" android:layout_height="match_parent"
                   android:id="@+id/recyclerview">
 
-    </ListView>
+    </cn.car4s.app.ui.widget.xlistview.XListView>
 
 </LinearLayout>

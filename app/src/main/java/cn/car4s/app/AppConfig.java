@@ -40,4 +40,6 @@ public class AppConfig {
 
     public static final String SHARE_SDK_KEY = "7f3faf882a4c";
     public static final String SHARE_SDK_SERCET = "7835047a7e79963f2141d8b2d82c3bc5";
+
+    public static final int PAGE_COUNT = 20;
 }

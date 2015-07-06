@@ -19,7 +19,9 @@ import cn.car4s.app.api.HttpCallback;
 import cn.car4s.app.bean.CarSerisBean;
 import cn.car4s.app.bean.ProductBean;
 import cn.car4s.app.ui.adapter.ProductAdapter;
+import cn.car4s.app.ui.widget.EndlessRecyclerOnScrollListener;
 import cn.car4s.app.ui.widget.RecyclerItemClickListener;
+import cn.car4s.app.util.LogUtil;
 import com.squareup.okhttp.Request;
 
 import java.io.IOException;
@@ -103,11 +105,21 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
             }
         });
         recyclerView.addOnItemTouchListener(itemlistener);
+        recyclerView.setOnScrollListener(new EndlessRecyclerOnScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int current_page) {
+                LogUtil.e("---<", "onLoadMore" + current_page);
+                if (mHasNext) {
+                    loadData(false);
+                }
+            }
+        });
 
         mBtnChooseCarbrand.setOnClickListener(onClickListener);
         mBtnDabao.setOnClickListener(onClickListener);
         mBtnXiaobao.setOnClickListener(onClickListener);
     }
+
 
     HttpCallback callback = new HttpCallback() {
         @Override
@@ -121,7 +133,13 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
             if (mCurrentPage == 1) {
                 list.clear();
             }
-            list.addAll(ProductBean.getData(result));
+            List<ProductBean> listnet = ProductBean.getData(result);
+            if (listnet.size() < AppConfig.PAGE_COUNT) {
+                mHasNext = false;
+            } else {
+                mHasNext = true;
+            }
+            list.addAll(listnet);
             adapter.notifyDataSetChanged();
         }
     };
@@ -166,8 +184,13 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
     }
 
     public void loadData(boolean isRefresh) {
-        if (isRefresh)
+        if (isRefresh) {
             mCurrentPage = 1;
+            mHasNext = true;
+        } else {
+            mCurrentPage++;
+        }
+        mProductBean.mPageNo = mCurrentPage;
         mProductBean.getProductList(callback, mProductBean);
     }
 

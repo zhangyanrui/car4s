@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
@@ -14,6 +13,7 @@ import cn.car4s.app.api.HttpCallback;
 import cn.car4s.app.bean.TixianBean;
 import cn.car4s.app.bean.TixianListBean;
 import cn.car4s.app.ui.adapter.TixianAdapter;
+import cn.car4s.app.ui.widget.xlistview.XListView;
 import cn.car4s.app.util.ToastUtil;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
@@ -31,7 +31,7 @@ import java.util.List;
 public class TixianActivity extends BaseActivity implements IBase {
     List<Object> list = new ArrayList<Object>();
     TixianAdapter adapter;
-    ListView recyclerView;
+    XListView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,20 @@ public class TixianActivity extends BaseActivity implements IBase {
         ((TextView) findViewById(R.id.tv_actionbar_title)).setText("提现");
 
 
-        recyclerView = (ListView) findViewById(R.id.recyclerview);
+        recyclerView = (XListView) findViewById(R.id.recyclerview);
+        recyclerView.setPullRefreshEnable(false);
+        recyclerView.setXListViewListener(new XListView.IXListViewListener() {
+            @Override
+            public void onRefresh() {
+
+            }
+
+            @Override
+            public void onLoadMore() {
+                loadData(false);
+
+            }
+        });
         adapter = new TixianAdapter(list, this, tixianInterface);
         recyclerView.setAdapter(adapter);
 
@@ -109,7 +122,10 @@ public class TixianActivity extends BaseActivity implements IBase {
     public void loadData(boolean isrefresh) {
         if (isrefresh)
             mPageno = 1;
-        new TixianBean().getTixianList(callback, 1);
+        else {
+            mPageno++;
+        }
+        new TixianBean().getTixianList(callback, mPageno);
     }
 
     HttpCallback callback = new HttpCallback() {
@@ -126,6 +142,11 @@ public class TixianActivity extends BaseActivity implements IBase {
                 list.clear();
             }
             list.add(tixianListBean);
+            if (tixianListBean.Data.size() < AppConfig.PAGE_COUNT) {
+                recyclerView.setPullLoadEnable(false);
+            } else {
+                recyclerView.setPullLoadEnable(true);
+            }
             list.addAll(tixianListBean.Data);
             adapter.notifyDataSetChanged();
         }

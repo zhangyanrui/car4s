@@ -2,6 +2,7 @@ package cn.car4s.app.util;
 
 import android.os.Handler;
 import android.util.Log;
+import cn.car4s.app.AppConfig;
 import cn.car4s.app.AppContext;
 import cn.car4s.app.api.HttpCallback;
 import cn.car4s.app.bean.NetReturnBean;
@@ -83,6 +84,8 @@ public class NetUtil {
 //                        ToastUtil.showToastShort(bean.Message);
                         if ("0".equals(bean.Code)) {
                             callback.onResponse(result);
+                        } else if ("-9".equals(bean.Code)) {
+                            PreferencesUtil.putPreferences(AppConfig.SP_KEY_USERINFO, "");
                         } else {
                             if (!"1".equals(bean.Code))
                                 ToastUtil.showToastShort(bean.Message);

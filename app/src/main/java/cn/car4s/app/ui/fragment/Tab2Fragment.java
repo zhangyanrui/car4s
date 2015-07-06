@@ -83,7 +83,14 @@ public class Tab2Fragment extends BaseFragment implements IBase {
             if (mPageNo == 1) {
                 list.clear();
             }
-            list.addAll(new OrderBean().getData(result));
+            List<OrderBean> listnet = new OrderBean().getData(result);
+            if (listnet.size() < 20) {
+                listView.setPullLoadEnable(false);
+            } else {
+                listView.setPullLoadEnable(true);
+            }
+            list.addAll(listnet);
+
             adapter.notifyDataSetChanged();
             if (list.size() == 0) {
                 ToastUtil.showToastShort("暂无订单");
@@ -97,6 +104,8 @@ public class Tab2Fragment extends BaseFragment implements IBase {
     public void load(Boolean isRefresh) {
         if (isRefresh) {
             mPageNo = 1;
+        } else {
+            mPageNo++;
         }
         new OrderBean().getorderList(callback, mPageNo, -1);
     }

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
 import cn.car4s.app.api.HttpCallback;
 import cn.car4s.app.bean.OrderBean;
@@ -86,7 +87,13 @@ public class OrderFinishedActivity extends BaseActivity implements IBase {
             if (mPageNo == 1) {
                 list.clear();
             }
-            list.addAll(new OrderBean().getData(result));
+            List<OrderBean> listtemp = new OrderBean().getData(result);
+            list.addAll(listtemp);
+            if (listtemp.size() < AppConfig.PAGE_COUNT) {
+                listView.setPullLoadEnable(false);
+            } else {
+                listView.setPullLoadEnable(true);
+            }
             adapter.notifyDataSetChanged();
             if (list.size() == 0) {
                 ToastUtil.showToastShort("暂无订单");
@@ -100,6 +107,8 @@ public class OrderFinishedActivity extends BaseActivity implements IBase {
     public void load(Boolean isRefresh) {
         if (isRefresh) {
             mPageNo = 1;
+        } else {
+            mPageNo++;
         }
         if (mType == 0)
             new OrderBean().getorderList(callback, mPageNo, 0);
