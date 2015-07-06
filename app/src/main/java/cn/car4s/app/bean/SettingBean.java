@@ -83,4 +83,18 @@ public class SettingBean extends BaseBean {
         return listData;
     }
 
+    public static List<SettingBean> createEdit2User(UserBean mUserbean) {
+        listData = null;
+        if (listData == null) {
+            listData = new ArrayList<SettingBean>();
+            SettingBean bean = new SettingBean(0, R.mipmap.setting_goto, "省", mUserbean.ProvinceID);
+            SettingBean bean2 = new SettingBean(0, R.mipmap.setting_goto, "市", mUserbean.CityID);
+            SettingBean bean3 = new SettingBean(0, R.mipmap.setting_goto, "区", mUserbean.AreaID);
+            listData.add(bean);
+            listData.add(bean2);
+            listData.add(bean3);
+        }
+        return listData;
+    }
+
 }

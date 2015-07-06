@@ -15,7 +15,9 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
+import cn.car4s.app.bean.UserBean;
 import cn.car4s.app.bean.WebviewBean;
+import cn.car4s.app.util.UtilShare;
 
 /**
  * Description:֧��js�ӿڵ���
@@ -60,6 +62,8 @@ public class WebviewActivity extends BaseActivity implements IBase {
         mActionbarTitle.setText(bean.webTitle);
         if (bean.isShare) {
             mShareLayout.setVisibility(View.VISIBLE);
+            mShareBtnWX.setOnClickListener(onClickListener);
+            mShareBtnQQ.setOnClickListener(onClickListener);
         }
         initWebview();
     }
@@ -111,8 +115,12 @@ public class WebviewActivity extends BaseActivity implements IBase {
                     finish();
                     break;
                 case R.id.share_qq:
+                    mUserbean = UserBean.getLocalUserinfo();
+                    UtilShare.shareQQ(mUserbean.ReferralCode_I);
                     break;
                 case R.id.share_weixin:
+                    mUserbean = UserBean.getLocalUserinfo();
+                    UtilShare.shareWXFriend(mUserbean.ReferralCode_I);
                     break;
             }
         }

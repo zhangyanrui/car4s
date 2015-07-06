@@ -5,8 +5,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,8 +18,6 @@ import cn.car4s.app.api.HttpCallback;
 import cn.car4s.app.bean.SettingBean;
 import cn.car4s.app.bean.StationAreaBean;
 import cn.car4s.app.bean.UserBean;
-import cn.car4s.app.ui.adapter.ChoosePositionAdapter;
-import cn.car4s.app.ui.widget.RecyclerItemClickListener;
 import cn.car4s.app.ui.widget.SettingLayoutSmall;
 import cn.car4s.app.util.DialogUtil;
 import cn.car4s.app.util.LogUtil;
@@ -29,7 +25,10 @@ import cn.car4s.app.util.PreferencesUtil;
 import com.squareup.okhttp.Request;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Description:
@@ -37,24 +36,16 @@ import java.util.*;
  * Email: xuebo.chang@langtaojin.com
  * Time: 2015/4/22.
  */
-public class EditProfileActivity extends BaseActivity implements IBase {
+public class EditProfile2Activity extends BaseActivity implements IBase {
     @InjectView(R.id.btn_actionbar_back_img)
     ImageView mActionbarBack;
     @InjectView(R.id.tv_actionbar_title)
     TextView mActionbarTitle;
-    @InjectView(R.id.btn_login)
-    TextView mBtnLogin;
-
-
-    List<StationAreaBean> list = new ArrayList<StationAreaBean>();
-    ChoosePositionAdapter adapter;
-    RecyclerView recyclerView;
-    RecyclerItemClickListener itemlistener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editprofile);
+        setContentView(R.layout.activity_editprofile2);
         ButterKnife.inject(this);
         initData();
         initUI();
@@ -65,45 +56,21 @@ public class EditProfileActivity extends BaseActivity implements IBase {
         mActionbarBack.setVisibility(View.VISIBLE);
         mActionbarBack.setImageResource(R.mipmap.ic_loginactivity_back);
         mActionbarBack.setOnClickListener(onClickListener);
-        mActionbarTitle.setText("我的信息");
-        mBtnLogin.setOnClickListener(onClickListener);
+        mActionbarTitle.setText("地址");
 
 
         SettingLayoutSmall mLayoutKeyongjifen = (SettingLayoutSmall) findViewById(R.id.setting_keyongjifen);
         SettingLayoutSmall mLayoutdongjiejifen = (SettingLayoutSmall) findViewById(R.id.setting_dongjiejifen);
         SettingLayoutSmall mLayoutfeedback = (SettingLayoutSmall) findViewById(R.id.setting_feedback);
-        SettingLayoutSmall mLayoutAboutus = (SettingLayoutSmall) findViewById(R.id.setting_aboutus);
 
-        List<SettingBean> listData = SettingBean.createEditUser(mUserbean);
+        List<SettingBean> listData = SettingBean.createEdit2User(mUserbean);
         mLayoutKeyongjifen.setData(listData.get(0));
         mLayoutdongjiejifen.setData(listData.get(1));
         mLayoutfeedback.setData(listData.get(2));
-        mLayoutAboutus.setData(listData.get(3));
 
         mLayoutKeyongjifen.setOnClickListener(onClickListener);
         mLayoutdongjiejifen.setOnClickListener(onClickListener);
         mLayoutfeedback.setOnClickListener(onClickListener);
-        mLayoutAboutus.setOnClickListener(onClickListener);
-
-        //
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-
-        recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new ChoosePositionAdapter(this, list, "");
-        recyclerView.setAdapter(adapter);
-        itemlistener = new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-//                StationAreaBean bean = list.get(position);
-//                PreferencesUtil.putPreferences(AppConfig.SP_KEY_CHOOSEPOSITION_NAME, bean.StationAreaName);
-//                PreferencesUtil.putPreferences(AppConfig.SP_KEY_CHOOSEPOSITION_ID, bean.StationAreaID);
-//                setResult(Activity.RESULT_OK);
-//                finish();
-            }
-        });
-        recyclerView.addOnItemTouchListener(itemlistener);
     }
 
 
@@ -116,26 +83,12 @@ public class EditProfileActivity extends BaseActivity implements IBase {
                     setResult(Activity.RESULT_OK, null);
                     finish();
                     break;
-                case R.id.btn_login://loginout
-                    PreferencesUtil.putPreferences(AppConfig.SP_KEY_USERINFO, "");
-                    setResult(Activity.RESULT_OK, null);
-                    finish();
-                    break;
                 case R.id.setting_keyongjifen://
-                    showNameDialog();
                     break;
                 case R.id.setting_dongjiejifen://
-                    showSexDialog();
                     break;
                 case R.id.setting_feedback://
-                    showDataDialog();
                     break;
-                case R.id.setting_aboutus://
-                    mIntent = new Intent(EditProfileActivity.this, EditProfile2Activity.class);
-                    startActivity(mIntent);
-                    break;
-
-
             }
         }
     };
@@ -202,7 +155,7 @@ public class EditProfileActivity extends BaseActivity implements IBase {
         day = mycalendar.get(Calendar.DAY_OF_MONTH);//获取这个月的第几天
         hour = mycalendar.get(Calendar.HOUR_OF_DAY);//获取这个月的第几天
         minute = mycalendar.get(Calendar.MINUTE);//获取这个月的第几天
-        DatePickerDialog dialog = new DatePickerDialog(EditProfileActivity.this, Datelistener, year, month, day);
+        DatePickerDialog dialog = new DatePickerDialog(EditProfile2Activity.this, Datelistener, year, month, day);
         dialog.show();
     }
 
@@ -307,5 +260,18 @@ public class EditProfileActivity extends BaseActivity implements IBase {
     @Override
     public void initData() {
         mUserbean = UserBean.getLocalUserinfo();
+        new StationAreaBean().getProviceList(callbackLoadingProvince);
     }
+
+    HttpCallback callbackLoadingProvince = new HttpCallback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+
+        }
+
+        @Override
+        public void onResponse(String result) {
+            Log.e("--->", "" + result);
+        }
+    };
 }
