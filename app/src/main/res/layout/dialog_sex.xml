@@ -12,6 +12,7 @@
             android:layout_width="300dp" android:padding="20dp"
             android:layout_height="250dp">
         <TextView style="@style/appstyle_basic_text_black" android:layout_width="match_parent" android:gravity="center"
+                  android:id="@+id/dialog_sex_title"
                   android:text="请选择您的性别"/>
 
         <RadioGroup
