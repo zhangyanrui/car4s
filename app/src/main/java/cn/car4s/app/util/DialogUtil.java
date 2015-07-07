@@ -41,10 +41,10 @@ public class DialogUtil {
     public static void buildTelDialog(final Context context) {
         if (((Activity) context).isFinishing())
             return;
-        final String telnumber = "02150185352";
+        final String telnumber = "051387303062";
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle("")
-                .setMessage("021-50185352")
+                .setMessage("0513-87303062")
                 .setPositiveButton("呼叫", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

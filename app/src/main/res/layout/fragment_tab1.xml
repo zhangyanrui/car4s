@@ -10,14 +10,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/bg_tab1frag_ad"
-                android:scaleType="fitXY"
-                android:id="@+id/viewpager">
-        </ImageView>
 
+        <android.support.v4.view.ViewPager
+                android:layout_width="match_parent"
+                android:id="@+id/viewpager"
+                android:layout_height="100dp">
+        </android.support.v4.view.ViewPager>
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_below="@+id/viewpager"

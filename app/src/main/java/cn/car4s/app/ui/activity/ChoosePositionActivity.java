@@ -54,9 +54,9 @@ public class ChoosePositionActivity extends BaseActivity implements IBase {
         String name = PreferencesUtil.getPreferences(AppConfig.SP_KEY_CHOOSEPOSITION_NAME, "");
         String id = PreferencesUtil.getPreferences(AppConfig.SP_KEY_CHOOSEPOSITION_ID, "");
         if (TextUtils.isEmpty(name)) {
-            ((TextView) findViewById(R.id.tv_actionbar_title)).setText("请选择网点");
+            ((TextView) findViewById(R.id.tv_actionbar_title)).setText("请选择区域");
         } else
-            ((TextView) findViewById(R.id.tv_actionbar_title)).setText("当前网店：" + name);
+            ((TextView) findViewById(R.id.tv_actionbar_title)).setText("当前区域：" + name);
 
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);

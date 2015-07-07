@@ -9,12 +9,15 @@ import cn.car4s.app.ui.activity.LoginActivity;
 import cn.car4s.app.util.NetUtil;
 import cn.car4s.app.util.PreferencesUtil;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -189,4 +192,57 @@ public class UserBean extends BaseBean {
         NetUtil.uploadImg(AppConfig.APP_SERVER + ApiService.INTERFACE_USER, path, callback);
 //        NetUtil.doPostMultipart(AppConfig.APP_SERVER + ApiService.INTERFACE_USER, path, callback);
     }
+
+//    地址：Interface_Sys_Para.aspx
+//    2.11.2. action名称
+//    ·GetBanner
+//    2.11.3.参数说明
+//    参数名称	说明	备注
+//    action	GetBanner	必填
+//
+//
+//    2.11.4. 返回值
+//    例：
+//    {
+//        "Code": "0",
+//            "Message": "成功",
+//            "Data": [
+//        {
+//            "BannerID": "3",
+//                "ImgPath": "http://localhost:51933/FileUpload/BannerImg/201506241020459829.png",
+//                "LinkURL": "www.baidu.com",
+//                "Remark": "24小时救援电话：021-55886258"
+//        }
+//        ]
+//    }
+
+    public void getBanner(HttpCallback callback) {
+        Map map = new HashMap();
+        map.put("action", "GetBanner");
+        NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_SYS_PARA, map, callback);
+    }
+
+    public static class BannerBean extends BaseBean {
+        public String BannerID;
+        public String ImgPath;
+        public String LinkURL;
+        public String Remark;
+    }
+
+    static Type list_type = new TypeToken<List<BannerBean>>() {
+    }.getType();
+
+    public static List<BannerBean> getData(String json) {
+        List<BannerBean> list = null;
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(json);
+            JSONArray array = jsonObject.getJSONArray("Data");
+            list = new Gson().fromJson(array.toString(), list_type);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 }
