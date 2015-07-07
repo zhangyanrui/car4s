@@ -24,6 +24,8 @@ public class AppConfig {
     public static final String SP_KEY_USERINFO = "sp_key_userinfo";
     public static final String SP_KEY_PROVICE = "sp_key_provice";
     public static final String SP_KEY_PINGJIA = "sp_key_pingjia";
+    public static final String SP_KEY_MOBILE= "sp_key_mobile";
+    public static final String SP_KEY_PWD = "sp_key_pwd";
 
     public static final int REQUEST_CODE_RESETPWD = 100;
     public static final int REQUEST_CODE_REGISTER = 101;
@@ -34,7 +36,7 @@ public class AppConfig {
     public static final int REQUEST_CODE_CHOOSE_STATION = 106;
     public static final int REQUEST_CODE_EDITPROFILE = 107;
     public static final int REQUEST_CODE_TIXIAN = 108;
-
+    public static final int REQUEST_CODE_LOGIN = 109;
 
     public static final String INTENT_PARA_KEY_BEAN = "serizal_bean";
 
@@ -43,4 +45,9 @@ public class AppConfig {
     public static final String SHARE_SDK_SERCET = "7835047a7e79963f2141d8b2d82c3bc5";
 
     public static final int PAGE_COUNT = 20;
+
+
+
+    public static final String LINK_ABOUT_US = "aboutus.html";
+    public static final String LINK_XIEYI = "useragreement.html";
 }

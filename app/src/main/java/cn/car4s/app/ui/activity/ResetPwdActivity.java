@@ -6,15 +6,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
 import cn.car4s.app.api.HttpCallback;
 import cn.car4s.app.bean.UserBean;
+import cn.car4s.app.bean.WebviewBean;
 import cn.car4s.app.util.ToastUtil;
 import com.squareup.okhttp.Request;
 
@@ -49,6 +48,13 @@ public class ResetPwdActivity extends BaseActivity implements IBase {
     EditText mEdtPwd2;
     @InjectView(R.id.btn_login)
     TextView mBtnRegister;
+    @InjectView(R.id.checkbox)
+    CheckBox checkbox;
+
+    @InjectView(R.id.btn_xieyi)
+    TextView btn_xieyi;
+    @InjectView(R.id.layout_xieyi)
+    LinearLayout layout_xieyi;
 
     Intent intent;
 
@@ -70,15 +76,18 @@ public class ResetPwdActivity extends BaseActivity implements IBase {
         mActionbarBack.setVisibility(View.VISIBLE);
         mActionbarBack.setImageResource(R.mipmap.ic_loginactivity_back);
         mActionbarBack.setOnClickListener(onClickListener);
-        if (mType == 0)
+        if (mType == 0) {
             mActionbarTitle.setText("注册");
-        else {
+            layout_xieyi.setVisibility(View.VISIBLE);
+        } else {
+            layout_xieyi.setVisibility(View.GONE);
             mActionbarTitle.setText("重置密码");
             mEdtPwd.setHint("新密码");
             mEdtPwd2.setHint("验证新密码");
             mBtnRegister.setText("重置密码");
             mEdtTuijianma.setVisibility(View.GONE);
         }
+        btn_xieyi.setOnClickListener(onClickListener);
         mBtnGetyanzhengma.setOnClickListener(onClickListener);
         mBtnRegister.setOnClickListener(onClickListener);
     }
@@ -88,6 +97,12 @@ public class ResetPwdActivity extends BaseActivity implements IBase {
         public void onClick(View view) {
 
             switch (view.getId()) {
+                case R.id.btn_xieyi:
+                    mIntent = new Intent(ResetPwdActivity.this, WebviewActivity.class);
+                    WebviewBean bean2 = new WebviewBean("用户协议", AppConfig.APP_SERVER + AppConfig.LINK_XIEYI, false);
+                    mIntent.putExtra(AppConfig.INTENT_PARA_KEY_BEAN, bean2);
+                    startActivity(mIntent);
+                    break;
                 case R.id.btn_actionbar_back_img:
                     finish();
                     break;
@@ -109,6 +124,8 @@ public class ResetPwdActivity extends BaseActivity implements IBase {
                     String tuijianma = mEdtTuijianma.getText().toString().trim();
                     if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(pwd) || TextUtils.isEmpty(pwd2) || TextUtils.isEmpty(yanzhengma) || !pwd.equals(pwd2)) {
                         ToastUtil.showToastShort("您的输入有误，请重新输入");
+                    } else if (!checkbox.isChecked()) {
+                        ToastUtil.showToastShort("请阅读并同意用户使用协议");
                     } else {
                         UserBean bean = new UserBean(phone, pwd, yanzhengma, tuijianma);
                         if (mType == 0) {

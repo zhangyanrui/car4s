@@ -86,6 +86,8 @@ public class Tab3Fragment extends BaseFragment implements IBase {
     @Override
     public void initData() {
         mUserbean = UserBean.getLocalUserinfo();
+        if (mUserbean != null)
+            mUserbean.refresh(callbackRefresh, mUserbean.Token);
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -99,7 +101,7 @@ public class Tab3Fragment extends BaseFragment implements IBase {
                     break;
                 case R.id.setting_aboutus:
                     mIntent = new Intent(getActivity(), WebviewActivity.class);
-                    WebviewBean bean = new WebviewBean("关于我们", "http://www.baidu.com", false);
+                    WebviewBean bean = new WebviewBean("关于我们", AppConfig.APP_SERVER + AppConfig.LINK_ABOUT_US, false);
                     mIntent.putExtra(AppConfig.INTENT_PARA_KEY_BEAN, bean);
                     startActivity(mIntent);
                     break;
@@ -209,7 +211,8 @@ public class Tab3Fragment extends BaseFragment implements IBase {
         public void onResponse(String result) {
             Log.e("--->", "" + result);
             PreferencesUtil.putPreferences(AppConfig.SP_KEY_USERINFO, result);
-            initData();
+//            initData();
+            mUserbean = UserBean.getLocalUserinfo();
             initUI();
         }
     };

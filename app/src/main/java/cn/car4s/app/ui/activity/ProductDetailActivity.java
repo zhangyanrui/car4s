@@ -163,6 +163,7 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
                         ToastUtil.showToastShort("请先选择网店");
                         return;
                     }
+                    isFirst = true;
                     //初始化Calendar日历对象
                     Calendar mycalendar = Calendar.getInstance(Locale.CHINA);
                     Date mydate = new Date(); //获取当前日期Date对象
@@ -172,6 +173,7 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
                     month = mycalendar.get(Calendar.MONTH);//获取Calendar对象中的月
                     day = mycalendar.get(Calendar.DAY_OF_MONTH);//获取这个月的第几天
                     DatePickerDialog dialog = new DatePickerDialog(ProductDetailActivity.this, Datelistener, year, month, day);
+                    dialog.getDatePicker().setMinDate(mydate.getTime());
                     dialog.show();
                     break;
 
@@ -201,19 +203,30 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
                         } else if (TextUtils.isEmpty(mlayoutjishi.getBean().desc)) {
                             ToastUtil.showToastShort("请先选择技师");
                             return;
+                        } else if (UserBean.checkUserLoginStatus()) {
+                            OrderBean commitBean = new OrderBean(stationBean.StationId, "" + mSerisId, sb.toString(), mSelectedTimeId, jishiBean.UserID, "" + mproductBean.ProductID, checkbox.isChecked(), "" + jifen);
+                            commitBean.addorder(callbackAddorder, commitBean);
+                        } else {
+                            UserBean.toLogin(ProductDetailActivity.this, AppConfig.REQUEST_CODE_LOGIN);
                         }
-                        OrderBean commitBean = new OrderBean(stationBean.StationId, "" + mSerisId, sb.toString(), mSelectedTimeId, jishiBean.UserID, "" + mproductBean.ProductID, checkbox.isChecked(), "" + jifen);
-                        commitBean.addorder(callbackAddorder, commitBean);
                     } else if (mType == 1) {//pay
-                        AlipayBean alipayBean = new AlipayBean(orderBean.ProductName, orderBean.Description, orderBean.ReceiveMoney, orderBean.OrderCode, orderBean.LastPaymentTime);
-                        AlipayUtil.pay(ProductDetailActivity.this, mHandler, alipayBean);
+                        if (UserBean.checkUserLoginStatus()) {
+                            AlipayBean alipayBean = new AlipayBean(orderBean.ProductName, orderBean.Description, orderBean.ReceiveMoney, orderBean.OrderCode, orderBean.LastPaymentTime);
+                            AlipayUtil.pay(ProductDetailActivity.this, mHandler, alipayBean);
+                        } else {
+                            UserBean.toLogin(ProductDetailActivity.this, AppConfig.REQUEST_CODE_LOGIN);
+                        }
                     } else if (mType == 2) {//pay
-                        OrderBean tempbean = new OrderBean();
-                        tempbean.OrderID = orderBean.OrderID;
-                        tempbean.ServiceData = sb.toString();
-                        tempbean.ServiceTime = mSelectedTimeId;
-                        tempbean.TechnicianID = jishiBean.UserID;
-                        tempbean.updateOrder(callbackUpdateOrder, tempbean);
+                        if (UserBean.checkUserLoginStatus()) {
+                            OrderBean tempbean = new OrderBean();
+                            tempbean.OrderID = orderBean.OrderID;
+                            tempbean.ServiceData = sb.toString();
+                            tempbean.ServiceTime = mSelectedTimeId;
+                            tempbean.TechnicianID = jishiBean.UserID;
+                            tempbean.updateOrder(callbackUpdateOrder, tempbean);
+                        } else {
+                            UserBean.toLogin(ProductDetailActivity.this, AppConfig.REQUEST_CODE_LOGIN);
+                        }
                     }
                     break;
 
@@ -222,6 +235,7 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
     };
     int year, month, day;
     StringBuilder sb;
+    private boolean isFirst;
     private DatePickerDialog.OnDateSetListener Datelistener = new DatePickerDialog.OnDateSetListener() {
         /**params：view：该事件关联的组件
          * params：myyear：当前选择的年
@@ -230,8 +244,11 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
          */
         @Override
         public void onDateSet(DatePicker view, int myyear, int monthOfYear, int dayOfMonth) {
-
-
+            LogUtil.e("------", "onDateSet");
+            if (!isFirst) {
+                return;
+            }
+            isFirst = false;
             //修改year、month、day的变量值，以便以后单击按钮时，DatePickerDialog上显示上一次修改后的值
             year = myyear;
             month = monthOfYear + 1;
@@ -254,6 +271,7 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
 
             //更新日期
             updateDate();
+
         }
 
         //当DatePickerDialog关闭时，更新日期显示
@@ -353,8 +371,13 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
         public void onResponse(String result) {
             LogUtil.e("--->", "" + result);
             orderBean = new Gson().fromJson(result, OrderBean.class);
-            mType = 1;
-            changeToOrder();
+            if ("1".equals(orderBean.OrderStatus)) {
+                ToastUtil.showToastShort("支付完成");
+                finish();
+            } else if ("2".equals(orderBean.OrderStatus)) {
+                mType = 1;
+                changeToOrder();
+            }
         }
     };
     OrderBean orderBean;

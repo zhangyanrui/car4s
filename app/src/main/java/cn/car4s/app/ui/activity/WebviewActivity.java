@@ -115,12 +115,20 @@ public class WebviewActivity extends BaseActivity implements IBase {
                     finish();
                     break;
                 case R.id.share_qq:
-                    mUserbean = UserBean.getLocalUserinfo();
-                    UtilShare.shareQQ(mUserbean.ReferralCode_I);
+                    if (UserBean.checkUserLoginStatus()) {
+                        mUserbean = UserBean.getLocalUserinfo();
+                        UtilShare.shareQQ(mUserbean.ReferralCode_I);
+                    } else {
+                        UserBean.toLogin(WebviewActivity.this, AppConfig.REQUEST_CODE_LOGIN);
+                    }
                     break;
                 case R.id.share_weixin:
-                    mUserbean = UserBean.getLocalUserinfo();
-                    UtilShare.shareWXFriend(mUserbean.ReferralCode_I);
+                    if (UserBean.checkUserLoginStatus()) {
+                        mUserbean = UserBean.getLocalUserinfo();
+                        UtilShare.shareWXFriend(mUserbean.ReferralCode_I);
+                    } else {
+                        UserBean.toLogin(WebviewActivity.this, AppConfig.REQUEST_CODE_LOGIN);
+                    }
                     break;
             }
         }

@@ -26,9 +26,12 @@ import cn.car4s.app.ui.widget.SettingLayoutSmall;
 import cn.car4s.app.util.DialogUtil;
 import cn.car4s.app.util.LogUtil;
 import cn.car4s.app.util.PreferencesUtil;
+import cn.car4s.app.util.ToastUtil;
 import com.squareup.okhttp.Request;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -171,8 +174,27 @@ public class EditProfileActivity extends BaseActivity implements IBase {
             } else
                 sb.append(day);
             LogUtil.e("selectedData", sb.toString());
+
             //更新日期
             updateDate();
+
+//            SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
+//            Date date = null;
+//            try {
+//                date = df1.parse(sb.toString());
+//                long timeselect = date.getTime();
+//                long time = new Date().getTime();
+//                long timespace = timeselect - time;
+//                if (timespace >= 0) {
+//                    ToastUtil.showToastShort("出生时间不能大于现在时间");
+//                } else {
+//                    //更新日期
+//                    updateDate();
+//                }
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+
         }
 
         //当DatePickerDialog关闭时，更新日期显示
@@ -203,6 +225,7 @@ public class EditProfileActivity extends BaseActivity implements IBase {
         hour = mycalendar.get(Calendar.HOUR_OF_DAY);//获取这个月的第几天
         minute = mycalendar.get(Calendar.MINUTE);//获取这个月的第几天
         DatePickerDialog dialog = new DatePickerDialog(EditProfileActivity.this, Datelistener, year, month, day);
+        dialog.getDatePicker().setMaxDate(mydate.getTime());
         dialog.show();
     }
 

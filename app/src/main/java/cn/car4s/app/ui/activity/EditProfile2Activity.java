@@ -321,6 +321,7 @@ public class EditProfile2Activity extends BaseActivity implements IBase {
     @Override
     public void initData() {
         mUserbean = UserBean.getLocalUserinfo();
+        getProCity();
         new StationAreaBean().getAllArea(callbackLoadingProvince);
     }
 
@@ -334,7 +335,6 @@ public class EditProfile2Activity extends BaseActivity implements IBase {
         public void onResponse(String result) {
             Log.e("--->", "" + result);
             PreferencesUtil.putPreferences(AppConfig.SP_KEY_PROVICE, result);
-            getProCity();
         }
     };
 

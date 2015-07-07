@@ -18,6 +18,7 @@ import cn.car4s.app.R;
 import cn.car4s.app.api.HttpCallback;
 import cn.car4s.app.bean.CarSerisBean;
 import cn.car4s.app.bean.ProductBean;
+import cn.car4s.app.bean.UserBean;
 import cn.car4s.app.ui.adapter.ProductAdapter;
 import cn.car4s.app.ui.widget.EndlessRecyclerOnScrollListener;
 import cn.car4s.app.ui.widget.RecyclerItemClickListener;
@@ -96,12 +97,16 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
         itemlistener = new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                ProductBean bean = list.get(position);
-                mIntent = new Intent(CarBaoyangActivity.this, ProductDetailActivity.class);
-                mIntent.putExtra("bean", bean);
-                mIntent.putExtra("serisid", serisId);
-                startActivity(mIntent);
 
+                if (UserBean.checkUserLoginStatus()) {
+                    ProductBean bean = list.get(position);
+                    mIntent = new Intent(CarBaoyangActivity.this, ProductDetailActivity.class);
+                    mIntent.putExtra("bean", bean);
+                    mIntent.putExtra("serisid", serisId);
+                    startActivity(mIntent);
+                } else {
+                    UserBean.toLogin(CarBaoyangActivity.this, AppConfig.REQUEST_CODE_LOGIN);
+                }
             }
         });
         recyclerView.addOnItemTouchListener(itemlistener);

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
+import cn.car4s.app.bean.UserBean;
 import cn.car4s.app.bean.WebviewBean;
 import cn.car4s.app.ui.activity.*;
 import cn.car4s.app.util.DeviceUtil;
@@ -86,14 +87,16 @@ public class Tab1Fragment extends BaseFragment implements IBase {
                     startActivity(mIntent);
                     break;
                 case R.id.btn_zhengqian:
-                    mIntent = new Intent(getActivity(), WebviewActivity.class);
-                    WebviewBean bean = new WebviewBean("挣钱", "http://baike.baidu.com/subview/555/5133091.htm", true);
-                    mIntent.putExtra(AppConfig.INTENT_PARA_KEY_BEAN, bean);
+                    mIntent = new Intent(getActivity(), ZhengqianActivity.class);
                     startActivity(mIntent);
                     break;
                 case R.id.btn_tiqian:
-                    mIntent = new Intent(getActivity(), TixianActivity.class);
-                    startActivity(mIntent);
+                    if (UserBean.checkUserLoginStatus()) {
+                        mIntent = new Intent(getActivity(), TixianActivity.class);
+                        startActivity(mIntent);
+                    } else {
+                        UserBean.toLogin(getActivity(), AppConfig.REQUEST_CODE_LOGIN);
+                    }
                     break;
             }
         }

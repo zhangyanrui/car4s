@@ -85,6 +85,7 @@ public class NetUtil {
                         if ("0".equals(bean.Code)) {
                             callback.onResponse(result);
                         } else if ("-9".equals(bean.Code)) {
+                            ToastUtil.showToastShort(bean.Message);
                             PreferencesUtil.putPreferences(AppConfig.SP_KEY_USERINFO, "");
                         } else {
                             if (!"1".equals(bean.Code))

@@ -71,8 +71,8 @@ public class LoginActivity extends BaseActivity implements IBase {
         mBtnLogin.setOnClickListener(onClickListener);
 
 
-        mEdtMobile.setText(AppConfig.TEST_ID);
-        mEdtPwd.setText(AppConfig.TEST_PWD);
+        mEdtMobile.setText(PreferencesUtil.getPreferences(AppConfig.SP_KEY_MOBILE, ""));
+        mEdtPwd.setText(PreferencesUtil.getPreferences(AppConfig.SP_KEY_PWD, ""));
     }
 
 
@@ -94,8 +94,8 @@ public class LoginActivity extends BaseActivity implements IBase {
                     startActivityForResult(intent, AppConfig.REQUEST_CODE_REGISTER);
                     break;
                 case R.id.btn_login:
-                    String phone = mEdtMobile.getText().toString().trim();
-                    String pwd = mEdtPwd.getText().toString().trim();
+                    phone = mEdtMobile.getText().toString().trim();
+                    pwd = mEdtPwd.getText().toString().trim();
                     if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(pwd)) {
                         ToastUtil.showToastShort("您的输入有误，请重新输入");
                     } else {
@@ -106,7 +106,7 @@ public class LoginActivity extends BaseActivity implements IBase {
             }
         }
     };
-
+    String phone, pwd;
     HttpCallback callback = new HttpCallback() {
         @Override
         public void onFailure(Request request, IOException e) {
@@ -118,7 +118,10 @@ public class LoginActivity extends BaseActivity implements IBase {
             Log.e("--->", "" + result);
             PreferencesUtil.putPreferences(AppConfig.SP_KEY_USERINFO, result);
 
-
+            mUserbean = UserBean.getLocalUserinfo();
+            PreferencesUtil.putPreferences(AppConfig.SP_KEY_MOBILE, phone);
+            PreferencesUtil.putPreferences(AppConfig.SP_KEY_PWD, pwd);
+            Log.e("--->", "" + PreferencesUtil.getPreferences(AppConfig.SP_KEY_MOBILE, ""));
             setResult(Activity.RESULT_OK);
             finish();
         }

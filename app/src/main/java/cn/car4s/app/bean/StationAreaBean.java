@@ -59,8 +59,8 @@ public class StationAreaBean extends BaseBean {
     public void getAllArea(HttpCallback callback) {
         Map map = new HashMap();
         map.put("action", "GetAllArea");
-//        map.put("Version", ProvinceBean.getlocalAreaVserion());
-        map.put("Version", "0");
+        map.put("Version", ProvinceBean.getlocalAreaVserion());
+//        map.put("Version", "0");
         NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_SYS_PARA, map, callback);
     }
 
