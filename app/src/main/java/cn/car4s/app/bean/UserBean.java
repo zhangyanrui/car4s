@@ -122,11 +122,11 @@ public class UserBean extends BaseBean {
     }
 
 
-    public void feedback(HttpCallback callback) {
+    public void feedback(HttpCallback callback, String text, String contact) {
         Map map = new HashMap();
         map.put("action", "AddFeedback");
-        map.put("PhoneNumber", this.PhoneNumber + "");
-        map.put("text", this.feedBackText + "");
+        map.put("ContactWay", contact + "");
+        map.put("Content", text + "");
         NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_USER, map, callback);
     }
 
