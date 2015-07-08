@@ -19,9 +19,9 @@ import java.io.FileOutputStream;
  */
 public class UtilShare {
 
-    private static final String textprefix = "快来下载指尖创业吧,我的邀请码是";
+    private static final String textprefix = "快来下载指尖创业吧，我的推荐码是 ";
     private static final String title = "我在用指尖创业";
-    private static final String shareurl = "http://www.baidu.com";
+    private static final String shareurl = "http://www.pgyer.com/zjcyandroid";
 
 //    public static void shareSina(CarSourceDetialEntity shareEntity, int type) {
 //        ShareSDK.initSDK(AppContext.getInstance());
