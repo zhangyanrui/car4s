@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
 import butterknife.ButterKnife;
@@ -13,6 +14,7 @@ import cn.car4s.app.R;
 import cn.car4s.app.api.HttpCallback;
 import cn.car4s.app.bean.TixianBean;
 import cn.car4s.app.bean.TixianListBean;
+import cn.car4s.app.ui.adapter.DialogTimeAdapter;
 import cn.car4s.app.ui.adapter.TixianAdapter;
 import cn.car4s.app.util.DialogUtil;
 import cn.car4s.app.util.ToastUtil;
@@ -33,7 +35,7 @@ public class BankActivity extends BaseActivity implements IBase {
     TixianAdapter adapter;
     ListView recyclerView;
     @InjectView(R.id.edt_1)
-    EditText edt1;
+    TextView edt1;
     @InjectView(R.id.edt_2)
     TextView edt2;
     @InjectView(R.id.edt_3)
@@ -52,17 +54,22 @@ public class BankActivity extends BaseActivity implements IBase {
     EditText edt9;
     @InjectView(R.id.btn_feedback_commit)
     TextView commit;
+    @InjectView(R.id.keyitixian)
+    TextView allfenshu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank);
         ButterKnife.inject(this);
+        availabepoint = getIntent().getStringExtra("allpoint");
         initUI();
         initData();
     }
 
     ImageView mActionbarBack;
+    private String availabepoint;
+    List<Object> pointlist;
 
     @Override
     public void initUI() {
@@ -76,7 +83,19 @@ public class BankActivity extends BaseActivity implements IBase {
                 showSexDialog();
             }
         });
-
+        allfenshu.setText("当前可提现积分: " + availabepoint);
+        float fenshu = Float.parseFloat(availabepoint);
+        int temp = (int) (fenshu / 100);
+        pointlist = new ArrayList<Object>();
+        for (int i = 0; i < temp; i++) {
+            pointlist.add((i + 1) * 100);
+        }
+        edt1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateDate();
+            }
+        });
         ((TextView) findViewById(R.id.tv_actionbar_title)).setText("提现流程");
         commit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +124,38 @@ public class BankActivity extends BaseActivity implements IBase {
 
             }
         });
+    }
+
+    private void updateDate() {
+        View view = LayoutInflater.from(BankActivity.this).inflate(R.layout.time_picker, null);
+        final Dialog dialog = DialogUtil.buildDialog(BankActivity.this, view, Gravity.CENTER, 0, true);
+        ListView listView = (ListView) view.findViewById(R.id.listview);
+
+        DialogTimeAdapter adapter = new DialogTimeAdapter(pointlist, BankActivity.this);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                dialog.dismiss();
+                String point = "" + pointlist.get(i);
+                edt1.setText(point);
+            }
+        });
+        TextView cancel = (TextView) view.findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        TextView sure = (TextView) view.findViewById(R.id.sure);
+        sure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     TixianBean tixianBean;

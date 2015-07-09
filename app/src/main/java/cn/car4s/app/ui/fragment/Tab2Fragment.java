@@ -70,6 +70,7 @@ public class Tab2Fragment extends BaseFragment implements IBase {
         });
         listView = (XListView) rootview.findViewById(R.id.listview);
         listView.setXListViewListener(new MyRefreshListener());
+        list.clear();
         adapter = new OrderAdapter(list, getActivity(), orderDo);
         listView.setAdapter(adapter);
     }

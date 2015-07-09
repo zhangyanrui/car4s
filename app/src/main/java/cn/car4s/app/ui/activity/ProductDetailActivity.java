@@ -216,12 +216,12 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
                         } else {
                             UserBean.toLogin(ProductDetailActivity.this, AppConfig.REQUEST_CODE_LOGIN);
                         }
-                    } else if (mType == 2) {//pay
+                    } else if (mType == 2) {//xiugai
                         if (UserBean.checkUserLoginStatus()) {
                             OrderBean tempbean = new OrderBean();
                             tempbean.OrderID = orderBean.OrderID;
                             tempbean.ServiceData = sb.toString();
-                            tempbean.ServiceTime = mSelectedTimeId;
+                            tempbean.ServiceTimeID = mSelectedTimeId;
                             tempbean.TechnicianID = jishiBean.UserID;
                             tempbean.updateOrder(callbackUpdateOrder, tempbean);
                         } else {
@@ -372,8 +372,7 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
             LogUtil.e("--->", "" + result);
             orderBean = new Gson().fromJson(result, OrderBean.class);
             if ("1".equals(orderBean.OrderStatus)) {
-                ToastUtil.showToastShort("支付完成");
-                finish();
+                paySuccess();
             } else if ("2".equals(orderBean.OrderStatus)) {
                 mType = 1;
                 changeToOrder();
@@ -536,9 +535,7 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
 
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
-                        Toast.makeText(ProductDetailActivity.this, "支付成功",
-                                Toast.LENGTH_SHORT).show();
-                        finish();
+                        paySuccess();
                     } else {
                         // 判断resultStatus 为非“9000”则代表可能支付失败
                         // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
@@ -563,4 +560,10 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
         ;
     };
 
+
+    public void paySuccess() {
+        Toast.makeText(ProductDetailActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+        setResult(Activity.RESULT_OK);
+        finish();
+    }
 }

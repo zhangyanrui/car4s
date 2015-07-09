@@ -103,7 +103,7 @@ public class CarBaoyangActivity extends BaseActivity implements IBase {
                     mIntent = new Intent(CarBaoyangActivity.this, ProductDetailActivity.class);
                     mIntent.putExtra("bean", bean);
                     mIntent.putExtra("serisid", serisId);
-                    startActivity(mIntent);
+                    startActivityForResult(mIntent, AppConfig.REQUEST_CODE_PAY);
                 } else {
                     UserBean.toLogin(CarBaoyangActivity.this, AppConfig.REQUEST_CODE_LOGIN);
                 }

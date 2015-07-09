@@ -45,7 +45,7 @@ public class ProductDetialAdapter extends RecyclerView.Adapter {
         ProductDetialBean bean = list.get(i);
         Viewholder holder = (Viewholder) viewHolder;
         holder.textView1.setText("名称:  " + bean.PartsName);
-        holder.textView2.setText("数量:  " + bean.Count);
+        holder.textView2.setText("数量:  " + bean.Count + " " + bean.PartsUnit);
         holder.textView3.setText("备注:  " + bean.Remark);
         ImageLoader.getInstance().displayImage(bean.ProductPicPath, holder.imageView, AppContext.display_imageloader);
     }

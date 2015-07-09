@@ -1,6 +1,8 @@
 package cn.car4s.app.ui.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -64,7 +66,6 @@ public class TixianActivity extends BaseActivity implements IBase {
             @Override
             public void onLoadMore() {
                 loadData(false);
-
             }
         });
         adapter = new TixianAdapter(list, this, tixianInterface);
@@ -81,13 +82,32 @@ public class TixianActivity extends BaseActivity implements IBase {
                 ToastUtil.showToastShort("积分不足");
             } else {
                 mIntent = new Intent(TixianActivity.this, BankActivity.class);
-                startActivity(mIntent);
+                mIntent.putExtra("allpoint", tixianListBean.AvailableWithdrawalPoint);
+                startActivityForResult(mIntent, AppConfig.REQUEST_CODE_TIXIAN);
             }
         }
 
         @Override
-        public void cancel(TixianBean bean) {
-            bean.quxiaotixian(callbackquxiao, bean.WithdrawalID);
+        public void cancel(final TixianBean bean) {
+            AlertDialog dialog = new AlertDialog.Builder(TixianActivity.this)
+                    .setTitle("确定取消该提现单")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            bean.quxiaotixian(callbackquxiao, bean.WithdrawalID);
+                        }
+                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            dialog.dismiss();
+                        }
+                    }).create();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+            dialog.show();
+
         }
 
         @Override

@@ -15,8 +15,8 @@ public class AppConfig {
 
 
     //offical
-    public static final String APP_SERVER = "http://www.syzjcy.com/App_Interface/";
-    //    public static final String APP_SERVER = "http://www.siding.cn:6789/App_Interface/";
+//    public static final String APP_SERVER = "http://www.syzjcy.com/App_Interface/";
+    public static final String APP_SERVER = "http://www.siding.cn:6789/App_Interface/";
     public static final String DIR_ROOT = "car4s";
     public static final String DIR_IMAGELOADER_CACHE = DIR_ROOT + "/imgcache";
 
@@ -39,6 +39,7 @@ public class AppConfig {
     public static final int REQUEST_CODE_EDITPROFILE = 107;
     public static final int REQUEST_CODE_TIXIAN = 108;
     public static final int REQUEST_CODE_LOGIN = 109;
+    public static final int REQUEST_CODE_PAY = 110;
 
     public static final String INTENT_PARA_KEY_BEAN = "serizal_bean";
 

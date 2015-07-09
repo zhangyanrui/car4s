@@ -72,6 +72,8 @@ public class DialogTimeAdapter extends BaseAdapter {
             viewholder.textView.setText(((CityBean) object).CityName);
         if (object instanceof CityBean.AreaBean)
             viewholder.textView.setText(((CityBean.AreaBean) object).AreaName);
+        if (object instanceof Integer)
+            viewholder.textView.setText("" + object);
         return allView;
     }
 

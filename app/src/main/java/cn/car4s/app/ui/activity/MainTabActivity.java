@@ -130,6 +130,10 @@ public class MainTabActivity extends BaseActivity implements IBase, TencentLocat
         radioGroup.check(R.id.rdo_tab_1);
     }
 
+    public void changeTotab2() {
+        radioGroup.check(R.id.rdo_tab_2);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

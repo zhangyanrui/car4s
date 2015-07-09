@@ -25,11 +25,11 @@
                                                        android:layout_height="40dp">
             </cn.car4s.app.ui.widget.SettingLayoutSmall>
 
-            <TextView style="@style/appstyle_product_text" android:text="chanpin" android:layout_marginLeft="20dp"
+            <TextView style="@style/appstyle_product_text" android:text="" android:layout_marginLeft="20dp"
                       android:id="@+id/chanpin"/>
-            <TextView style="@style/appstyle_product_text" android:text="yuanjian" android:layout_marginLeft="20dp"
+            <TextView style="@style/appstyle_product_text" android:text="" android:layout_marginLeft="20dp"
                       android:id="@+id/yuanjia"/>
-            <TextView style="@style/appstyle_product_text" android:text="xianjia" android:layout_marginLeft="20dp"
+            <TextView style="@style/appstyle_product_text" android:text="" android:layout_marginLeft="20dp"
                       android:id="@+id/xianjia"/>
 
             <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
@@ -39,7 +39,7 @@
             <LinearLayout android:layout_width="match_parent" android:layout_height="60dp"
                           android:id="@+id/layout_zhekou"
                           android:orientation="horizontal">
-                <TextView style="@style/appstyle_basic_text_black" android:text="dafdfafda"
+                <TextView style="@style/appstyle_basic_text_black" android:text=""
                           android:layout_height="match_parent" android:padding="5dp" android:gravity="left"
                           android:layout_width="match_parent" android:id="@+id/tv_jifendikoudesc"
                           android:textSize="@dimen/textsize_small" android:layout_weight="1"
@@ -49,7 +49,7 @@
                           android:layout_margin="10dp" android:gravity="center" android:id="@+id/checkbox"
                           android:layout_gravity="right"/>
             </LinearLayout>
-            <TextView style="@style/appstyle_product_text" android:text="fukuan" android:layout_marginLeft="20dp"
+            <TextView style="@style/appstyle_product_text" android:text="" android:layout_marginLeft="20dp"
                       android:layout_width="match_parent"
                       android:gravity="right" android:textColor="@color/maintab_red"
                       android:id="@+id/allprice"/>

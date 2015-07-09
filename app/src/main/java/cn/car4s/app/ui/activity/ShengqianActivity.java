@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
 import cn.car4s.app.bean.ShengqianGridBean;
 import cn.car4s.app.ui.adapter.ShengqianAdapter;
@@ -64,7 +65,7 @@ public class ShengqianActivity extends BaseActivity implements IBase {
                 if (bean.isSelcted) {
                     mIntent = new Intent(ShengqianActivity.this, CarBaoyangActivity.class);
                     mIntent.putExtra("type", 2);
-                    startActivity(mIntent);
+                    startActivityForResult(mIntent, AppConfig.REQUEST_CODE_PAY);
                 } else {
                     ToastUtil.showToastShort("暂未开放");
                 }

@@ -343,6 +343,7 @@ public class EditProfile2Activity extends BaseActivity implements IBase {
         if (mProvinceBean == null) {
             ToastUtil.showToastShort("获取省市信息失败");
             finish();
+            return;
         }
         provinceBeanList = mProvinceBean.ProvinceList;
         for (int i = 0; i < provinceBeanList.size(); i++) {
