@@ -70,9 +70,8 @@ public class FeedbackActivity extends BaseActivity implements IBase {
                     if (TextUtils.isEmpty(phone) && TextUtils.isEmpty(text)) {
                         ToastUtil.showToastShort("您的输入有误，请重新输入");
                     } else {
-                        UserBean userBean = new UserBean(phone, text);
-                        userBean.feedBackText = text;
-                        userBean.feedback(callback);
+                        UserBean userBean = new UserBean();
+                        userBean.feedback(callback, text, phone);
                     }
                     break;
             }
@@ -88,7 +87,6 @@ public class FeedbackActivity extends BaseActivity implements IBase {
         public void onResponse(String bean) {
             ToastUtil.showToastShort("提交成功");
             finish();
-
         }
     };
 

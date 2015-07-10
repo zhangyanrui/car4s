@@ -8,10 +8,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
 import cn.car4s.app.api.HttpCallback;
 import cn.car4s.app.bean.Paimingbean;
+import cn.car4s.app.bean.UserBean;
 import cn.car4s.app.ui.widget.PaimingLayout;
+import cn.car4s.app.util.UtilShare;
 import com.squareup.okhttp.Request;
 
 import java.io.IOException;
@@ -43,7 +46,12 @@ public class ZhengqianActivity extends BaseActivity implements IBase {
 
     @InjectView(R.id.brand)
     PaimingLayout brand;
-
+    @InjectView(R.id.share_layout)
+    LinearLayout mShareLayout;
+    @InjectView(R.id.share_qq)
+    TextView mShareBtnQQ;
+    @InjectView(R.id.share_weixin)
+    TextView mShareBtnWX;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +68,12 @@ public class ZhengqianActivity extends BaseActivity implements IBase {
 
     @Override
     public void initUI() {
-        mActionbarBackLayoutall.setBackgroundColor(getResources().getColor(R.color.transparent));
         mActionbarBack.setVisibility(View.VISIBLE);
         mActionbarBack.setImageResource(R.mipmap.ic_loginactivity_back);
         mActionbarBack.setOnClickListener(onClickListener);
+
+        mShareBtnWX.setOnClickListener(onClickListener);
+        mShareBtnQQ.setOnClickListener(onClickListener);
 
         paimingbean.type = 2;
         brand.setData(paimingbean);
@@ -129,6 +139,22 @@ public class ZhengqianActivity extends BaseActivity implements IBase {
             switch (view.getId()) {
                 case R.id.btn_actionbar_back_img:
                     finish();
+                    break;
+                case R.id.share_qq:
+                    if (UserBean.checkUserLoginStatus()) {
+                        mUserbean = UserBean.getLocalUserinfo();
+                        UtilShare.shareQQ(mUserbean.ReferralCode_I);
+                    } else {
+                        UserBean.toLogin(ZhengqianActivity.this, AppConfig.REQUEST_CODE_LOGIN);
+                    }
+                    break;
+                case R.id.share_weixin:
+                    if (UserBean.checkUserLoginStatus()) {
+                        mUserbean = UserBean.getLocalUserinfo();
+                        UtilShare.shareWXFriend(mUserbean.ReferralCode_I);
+                    } else {
+                        UserBean.toLogin(ZhengqianActivity.this, AppConfig.REQUEST_CODE_LOGIN);
+                    }
                     break;
             }
         }

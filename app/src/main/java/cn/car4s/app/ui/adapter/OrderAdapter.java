@@ -95,7 +95,7 @@ public class OrderAdapter extends BaseAdapter {
                 Date date = df1.parse(bean.OrderTime);
                 long timeserver = date.getTime();
                 long timespace = mCurrenttime - timeserver;
-                long timeleft = 15 * 60 * 1000 - timespace;
+                long timeleft = 14 * 60 * 1000 - timespace;
                 if (timeleft < 0) {
                     list.remove(i);
                     notifyDataSetChanged();

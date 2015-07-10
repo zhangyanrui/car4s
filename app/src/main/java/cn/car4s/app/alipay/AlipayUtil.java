@@ -3,6 +3,8 @@ package cn.car4s.app.alipay;
 import android.app.Activity;
 import android.os.Message;
 import android.text.TextUtils;
+import cn.car4s.app.AppConfig;
+import cn.car4s.app.api.ApiService;
 import com.alipay.sdk.app.PayTask;
 
 import java.io.UnsupportedEncodingException;
@@ -93,9 +95,10 @@ public class AlipayUtil {
         orderInfo += "&total_fee=" + "\"" + price + "\"";
 
         // 服务器异步通知页面路径
-        orderInfo += "&notify_url=" + "\"" + "http://notify.msp.hk/notify.htm"
+//        orderInfo += "&notify_url=" + "\"" + "http://notify.msp.hk/notify.htm"
+//                + "\"";
+        orderInfo += "&notify_url=" + "\"" + AppConfig.APP_SERVER + ApiService.INTERFACE_ZHIFUBAO
                 + "\"";
-
         // 服务接口名称， 固定值
         orderInfo += "&service=\"mobile.securitypay.pay\"";
 

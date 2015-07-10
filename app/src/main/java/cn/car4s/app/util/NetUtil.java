@@ -72,6 +72,10 @@ public class NetUtil {
 
             @Override
             public void onResponse(final Response response) throws IOException {
+                if (response.code() != 200) {
+                    LogUtil.e("response code", "" + response.code());
+                    return;
+                }
                 if (response != null) {
                     result = response.body().string();
                 }

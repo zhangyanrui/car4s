@@ -96,7 +96,7 @@ public class Tab1Fragment extends BaseFragment implements IBase {
                     break;
                 case R.id.btn_shengqian:
                     mIntent = new Intent(getActivity(), ShengqianActivity.class);
-                    startActivity(mIntent);
+                    startActivityForResult(mIntent, AppConfig.REQUEST_CODE_PAY);
                     break;
                 case R.id.btn_zhengqian:
                     mIntent = new Intent(getActivity(), ZhengqianActivity.class);
@@ -119,6 +119,9 @@ public class Tab1Fragment extends BaseFragment implements IBase {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConfig.REQUEST_CODE_CHOOSE_POS && resultCode == Activity.RESULT_OK) {
             initData();
+        }
+        if (requestCode == AppConfig.REQUEST_CODE_PAY && resultCode == Activity.RESULT_OK) {
+            ((MainTabActivity) getActivity()).changeTotab2();
         }
     }
 

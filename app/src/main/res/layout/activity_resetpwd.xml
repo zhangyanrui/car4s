@@ -34,7 +34,7 @@
 
 
         <EditText style="@style/appstyle_login_edittext"
-                  android:id="@+id/edt_login_tuijianma" android:hint="推荐码(选填)"
+                  android:id="@+id/edt_login_tuijianma" android:hint="推荐码(必填)"
                   android:drawableLeft="@mipmap/ic_loginactivity_pwd"/>
         <LinearLayout style="@style/appstyle_login_horizal_line"></LinearLayout>
 
