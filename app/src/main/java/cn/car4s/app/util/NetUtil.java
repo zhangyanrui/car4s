@@ -52,8 +52,18 @@ public class NetUtil {
             builder.add(entry.getKey(), entry.getValue());
         }
         RequestBody body = builder.build();
-
-        final Request request = new Request.Builder().url(url).post(body).addHeader("Token", UserBean.getLocalUserinfo() == null ? "" : UserBean.getLocalUserinfo().Token).build();
+        UserBean beantemp = UserBean.getLocalUserinfo();
+        String token;
+        if (beantemp == null)
+            token = "";
+        else {
+            token = beantemp.Token;
+            if (token == null) {
+                token = "";
+            }
+        }
+        LogUtil.e("token", "" + token);
+        final Request request = new Request.Builder().url(url).post(body).addHeader("Token", token).build();
 
         Callback asyncCallback = new Callback() {
 
