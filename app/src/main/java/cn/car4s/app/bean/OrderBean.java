@@ -149,6 +149,7 @@ public class OrderBean extends BaseBean {
         if (isJifenSelcted) {
             map.put("PointUseFlag", "T");
             map.put("Point", jifenValue);
+            map.put("Version", "1.0.0.1");
         }
         NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_PRODUCT, map, callback);
     }

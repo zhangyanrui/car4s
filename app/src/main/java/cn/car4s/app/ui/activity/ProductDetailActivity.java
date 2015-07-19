@@ -477,12 +477,12 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
             jifendiqian = jifen * rate;
             jifendiqian = Float.parseFloat(decimalFormat.format(jifendiqian));
             String label;
-            if (jifendiqian < Float.parseFloat(bean.DiscountPrice)) {
+            if (jifendiqian < (Float.parseFloat(bean.DiscountPrice)) / 2.0) {
                 label = "使用卡内" + jifen + "积分抵扣" + jifendiqian + "元(1积分="
                         + rate + "元,可用积分" + bean.AvailablePoint + ",冻结积分" + bean.FreezingPoint + ")";
             } else {
-                jifen = Float.parseFloat(bean.DiscountPrice) / rate;
-                jifendiqian = Float.parseFloat(bean.DiscountPrice);
+                jifen = (float) (Float.parseFloat(bean.DiscountPrice) / 2.0 / rate);
+                jifendiqian = (float) (Float.parseFloat(bean.DiscountPrice) / 2.0);
                 label = "使用卡内" + jifen + "积分抵扣" + decimalFormat.format(jifendiqian) + "元(1积分="
                         + rate + "元,可用积分" + bean.AvailablePoint + ",冻结积分" + bean.FreezingPoint + ")";
             }
