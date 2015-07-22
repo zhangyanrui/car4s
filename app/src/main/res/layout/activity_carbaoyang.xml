@@ -10,13 +10,13 @@
                   android:orientation="vertical" android:background="@color/lighter_gray">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:orientation="horizontal">
-            <TextView style="@style/appstyle_basic_text_black" android:text="三洋大保" android:layout_weight="1"
+            <TextView style="@style/appstyle_basic_text_black" android:text="大保" android:layout_weight="1"
                       android:id="@+id/btn_dabao"
                       android:textStyle="bold"/>
             <LinearLayout android:layout_width="0.5dp" android:layout_height="match_parent"
                           android:orientation="vertical"
                           android:background="@color/darker_gray"></LinearLayout>
-            <TextView style="@style/appstyle_basic_text_black" android:text="三洋小保" android:layout_weight="1"
+            <TextView style="@style/appstyle_basic_text_black" android:text="小保" android:layout_weight="1"
                       android:id="@+id/btn_xiaobao"
                       android:textStyle="bold"/>
         </LinearLayout>
