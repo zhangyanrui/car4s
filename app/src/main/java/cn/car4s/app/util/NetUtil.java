@@ -1,6 +1,7 @@
 package cn.car4s.app.util;
 
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import cn.car4s.app.AppConfig;
 import cn.car4s.app.AppContext;
@@ -49,7 +50,15 @@ public class NetUtil {
     public static void doPostMap(String url, Map<String, String> map, final HttpCallback callback) {
         FormEncodingBuilder builder = new FormEncodingBuilder();
         for (Map.Entry<String, String> entry : map.entrySet()) {
-            builder.add(entry.getKey(), entry.getValue());
+            String key = entry.getKey();
+            String value = entry.getValue();
+            if (key == null) {
+                key = "";
+            }
+            if (value == null) {
+                value = "";
+            }
+            builder.add(key, value);
         }
         RequestBody body = builder.build();
         UserBean beantemp = UserBean.getLocalUserinfo();
@@ -63,8 +72,12 @@ public class NetUtil {
             }
         }
         LogUtil.e("token", "" + token);
-        final Request request = new Request.Builder().url(url).post(body).addHeader("Token", token).build();
-
+        final Request request;
+        if (TextUtils.isEmpty(token)) {
+            request = new Request.Builder().url(url).post(body).build();
+        } else {
+            request = new Request.Builder().url(url).post(body).addHeader("Token", token).build();
+        }
         Callback asyncCallback = new Callback() {
 
 
@@ -96,14 +109,14 @@ public class NetUtil {
                     @Override
                     public void run() {
 //                        ToastUtil.showToastShort(bean.Message);
-                        if ("0".equals(bean.Code)) {
+                        if ("0".equals(bean.Code.toString())) {
                             callback.onResponse(result);
-                        } else if ("-9".equals(bean.Code)) {
-                            ToastUtil.showToastShort(bean.Message);
+                        } else if ("-9".equals(bean.Code.toString())) {
+                            ToastUtil.showToastShort(bean.Message.toString());
                             PreferencesUtil.putPreferences(AppConfig.SP_KEY_USERINFO, "");
                         } else {
-                            if (!"1".equals(bean.Code))
-                                ToastUtil.showToastShort(bean.Message);
+                            if (!"1".equals(bean.Code.toString()))
+                                ToastUtil.showToastShort(bean.Message.toString());
                             else callback.onFailure(request, null);
                         }
                     }

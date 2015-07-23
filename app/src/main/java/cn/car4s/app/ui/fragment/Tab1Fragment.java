@@ -140,12 +140,12 @@ public class Tab1Fragment extends BaseFragment implements IBase {
         @Override
         public void onResponse(String result) {
             Log.e("--->", "" + result);
-            list.clear();
-            list.addAll(UserBean.getData(result));
-            adapter = new IvsPagerAdapter(list, getActivity(), 0, null);
-            viewpager.setAdapter(adapter);
-//            adapter.notifyDataSetChanged();
-
+            if (isAdded() && getActivity() != null) {
+                list.clear();
+                list.addAll(UserBean.getData(result));
+                adapter = new IvsPagerAdapter(list, getActivity(), 0, null);
+                viewpager.setAdapter(adapter);
+            }
         }
     };
 

@@ -8,8 +8,8 @@ package cn.car4s.app.bean;
  */
 public class NetReturnBean extends BaseBean {
 
-    public String Code;
-    public String Message;
+    public Object Code;
+    public Object Message;
     public Object Data;
 
     @Override

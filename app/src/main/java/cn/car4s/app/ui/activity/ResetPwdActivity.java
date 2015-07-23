@@ -122,15 +122,20 @@ public class ResetPwdActivity extends BaseActivity implements IBase {
                     String pwd2 = mEdtPwd2.getText().toString().trim();
                     String yanzhengma = mEdtYanzhengma.getText().toString().trim();
                     String tuijianma = mEdtTuijianma.getText().toString().trim();
-                    if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(pwd) || TextUtils.isEmpty(pwd2) || TextUtils.isEmpty(yanzhengma) || !pwd.equals(pwd2) || TextUtils.isEmpty(tuijianma)) {
-                        ToastUtil.showToastShort("您的输入有误，请重新输入");
-                    } else if (!checkbox.isChecked()) {
-                        ToastUtil.showToastShort("请阅读并同意用户使用协议");
-                    } else {
-                        UserBean bean = new UserBean(phone, pwd, yanzhengma, tuijianma);
-                        if (mType == 0) {
-                            bean.register(callbackRgeister);
+                    if (mType == 0) {
+                        if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(pwd) || TextUtils.isEmpty(pwd2) || TextUtils.isEmpty(yanzhengma) || !pwd.equals(pwd2) || TextUtils.isEmpty(tuijianma)) {
+                            ToastUtil.showToastShort("您的输入有误，请重新输入");
+                        } else if (!checkbox.isChecked()) {
+                            ToastUtil.showToastShort("请阅读并同意用户使用协议");
                         } else {
+                            UserBean bean = new UserBean(phone, pwd, yanzhengma, tuijianma);
+                            bean.register(callbackRgeister);
+                        }
+                    } else {
+                        if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(pwd) || TextUtils.isEmpty(pwd2) || TextUtils.isEmpty(yanzhengma) || !pwd.equals(pwd2)) {
+                            ToastUtil.showToastShort("您的输入有误，请重新输入");
+                        } else {
+                            UserBean bean = new UserBean(phone, pwd, yanzhengma, tuijianma);
                             bean.resetPwd(callbackResetPwd);
                         }
                     }

@@ -51,6 +51,11 @@ public class Tab3Fragment extends BaseFragment implements IBase {
         return rootview;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
     ImageView useravaster;
 
     @Override
@@ -213,7 +218,8 @@ public class Tab3Fragment extends BaseFragment implements IBase {
             PreferencesUtil.putPreferences(AppConfig.SP_KEY_USERINFO, result);
 //            initData();
             mUserbean = UserBean.getLocalUserinfo();
-            initUI();
+            if (isAdded() && getActivity() != null)
+                initUI();
         }
     };
 }
