@@ -23,15 +23,10 @@ import cn.car4s.app.bean.UserBean;
 import cn.car4s.app.ui.adapter.ChoosePositionAdapter;
 import cn.car4s.app.ui.widget.RecyclerItemClickListener;
 import cn.car4s.app.ui.widget.SettingLayoutSmall;
-import cn.car4s.app.util.DialogUtil;
-import cn.car4s.app.util.LogUtil;
-import cn.car4s.app.util.PreferencesUtil;
-import cn.car4s.app.util.ToastUtil;
+import cn.car4s.app.util.*;
 import com.squareup.okhttp.Request;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -267,8 +262,12 @@ public class EditProfileActivity extends BaseActivity implements IBase {
                 dialog.dismiss();
                 String name = dialog_edt.getText().toString().trim();
                 if (!TextUtils.isEmpty(name)) {
-                    mUserbean.UserName = name;
-                    mUserbean.updateProfile(callbackUpdate, mUserbean);
+                    if (StringUtil.length(name) <= 6) {
+                        mUserbean.UserName = name;
+                        mUserbean.updateProfile(callbackUpdate, mUserbean);
+                    } else {
+                        ToastUtil.showToastShort("姓名不能超过三个汉字");
+                    }
                 }
             }
         });
