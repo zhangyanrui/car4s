@@ -20,6 +20,7 @@
         <item name="android:ellipsize">marquee</item>
         <item name="android:singleLine">true</item>
     </style>
+
     <style name="appstyle_rdp_sex">
         <item name="android:gravity">left|center_vertical</item>
         <item name="android:layout_width">fill_parent</item>
@@ -44,9 +45,11 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/textsize_normal</item>
     </style>
+
     <style name="appstyle_basic_text_black" parent="appstyle_basic_text">
         <item name="android:textColor">@android:color/black</item>
     </style>
+
     <style name="appstyle_product_text" parent="appstyle_basic_text_black">
         <item name="android:textSize">@dimen/textsize_small</item>
         <item name="android:minHeight">0dp</item>
@@ -71,6 +74,7 @@
         <item name="android:textColorHint">@android:color/white</item>
         <item name="android:textSize">@dimen/textsize_normal</item>
     </style>
+
     <style name="appstyle_bank_edittext" parent="appstyle_login_edittext">
         <item name="android:background">@drawable/shape_edt_redcorner</item>
         <item name="android:textColor">@android:color/black</item>
@@ -101,4 +105,48 @@
     <style name="PhotoSelectCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/photoselectcheckboxselector</item>
     </style>
+
+
+    <!-- Navigation Header -->
+    <style name="NavPage">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center_horizontal</item>
+        <!-- <item name="android:background">@drawable/nav_page</item> -->
+        <item name="android:background">#FFE1E8EB</item>
+    </style>
+
+    <style name="TitleText">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">#ff000000</item>
+    </style>
+
+    <style name="MMButton">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/mm_btn_text</item>
+        <item name="android:background">@null</item>
+        <item name="android:minHeight">40dp</item>
+        <item name="android:minWidth">40dp</item>
+    </style>
+
+    <style name="MMLineButton" parent="@style/MMButton">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/mm_style_two_btn_text</item>
+    </style>
+
+    <style name="MMLineActionButton" parent="@style/MMLineButton">
+        <item name="android:background">@drawable/btn_style_one</item>
+        <item name="android:textColor">@color/mm_style_one_btn_text</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDy">1.2</item>
+        <item name="android:shadowDx">1.2</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+
 </resources>

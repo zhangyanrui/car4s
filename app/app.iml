@@ -91,6 +91,7 @@
     <orderEntry type="library" exported="" name="MobTools" level="project" />
     <orderEntry type="library" exported="" name="db4o-8.1.302.16154-core-java5" level="project" />
     <orderEntry type="library" exported="" name="okhttp-2.3.0" level="project" />
+    <orderEntry type="library" exported="" name="libammsdk" level="project" />
     <orderEntry type="library" exported="" name="ShareSDK-QQ-2.6.0" level="project" />
     <orderEntry type="library" exported="" name="universal-image-loader-1.9.3" level="project" />
     <orderEntry type="library" exported="" name="ShareSDK-SinaWeibo-2.6.0" level="project" />

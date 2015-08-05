@@ -13,6 +13,7 @@ public class ApiService {
     public static final String INTERFACE_PRODUCT = "Interface_Order.aspx";
     public static final String INTERFACE_TIXIAN = "Interface_Withdrawal.aspx";
     public static final String INTERFACE_ZHIFUBAO = "Interface_AlipayNotify.aspx";
+    public static final String INTERFACE_WEIXINPAY = "Interface_Order_Wx.aspx";
 
 
 }

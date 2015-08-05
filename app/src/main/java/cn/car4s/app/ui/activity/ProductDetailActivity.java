@@ -19,11 +19,10 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
-import cn.car4s.app.alipay.AlipayBean;
-import cn.car4s.app.alipay.AlipayUtil;
 import cn.car4s.app.alipay.PayResult;
 import cn.car4s.app.api.HttpCallback;
 import cn.car4s.app.bean.*;
+import cn.car4s.app.service.WXRequestService;
 import cn.car4s.app.ui.adapter.DialogTimeAdapter;
 import cn.car4s.app.ui.adapter.ProductDetialAdapter;
 import cn.car4s.app.ui.widget.SettingLayoutSmall;
@@ -31,8 +30,12 @@ import cn.car4s.app.util.DeviceUtil;
 import cn.car4s.app.util.DialogUtil;
 import cn.car4s.app.util.LogUtil;
 import cn.car4s.app.util.ToastUtil;
+import cn.car4s.app.wxpay.WXpayBean;
+import cn.car4s.app.wxpay.WxpayUtil;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -211,8 +214,9 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
                         }
                     } else if (mType == 1) {//pay
                         if (UserBean.checkUserLoginStatus()) {
-                            AlipayBean alipayBean = new AlipayBean(orderBean.ProductName, orderBean.Description, orderBean.ReceiveMoney, orderBean.OrderCode, orderBean.LastPaymentTime);
-                            AlipayUtil.pay(ProductDetailActivity.this, mHandler, alipayBean);
+                            WXRequestService.getOrder(callbackGwxorder, orderBean.OrderID);
+//                            AlipayBean alipayBean = new AlipayBean(orderBean.ProductName, orderBean.Description, orderBean.ReceiveMoney, orderBean.OrderCode, orderBean.LastPaymentTime);
+//                            AlipayUtil.pay(ProductDetailActivity.this, mHandler, alipayBean);
                         } else {
                             UserBean.toLogin(ProductDetailActivity.this, AppConfig.REQUEST_CODE_LOGIN);
                         }
@@ -233,6 +237,27 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
             }
         }
     };
+
+    HttpCallback callbackGwxorder = new HttpCallback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+
+        }
+
+        @Override
+        public void onResponse(String result) {
+            LogUtil.e("result", "" + result);
+            try {
+                JSONObject object = new JSONObject(result);
+                WXpayBean bean = new Gson().fromJson(object.get("Data").toString(), WXpayBean.class);
+                WxpayUtil.sendPayReq(ProductDetailActivity.this, bean);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    };
+
     int year, month, day;
     StringBuilder sb;
     private boolean isFirst;

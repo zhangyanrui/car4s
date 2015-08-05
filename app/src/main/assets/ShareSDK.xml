@@ -51,31 +51,31 @@
 			Line           http://media.line.me/zh-hant/
 			Pocket         http://getpocket.com/developer/apps/new
     -->
-    
-    <ShareSDK 
-        AppKey = "7f3faf882a4c"/> <!-- 修改成你在sharesdk后台注册的应用的appkey"-->
-    
+
+    <ShareSDK
+            AppKey="7f3faf882a4c"/>
+    <!-- 修改成你在sharesdk后台注册的应用的appkey"-->
+
     <!-- ShareByAppClient标识是否使用微博客户端分享，默认是false -->
     <!--<SinaWeibo-->
-        <!--Id="1"-->
-        <!--SortId="1"-->
-        <!--AppKey="568898243"-->
-        <!--AppSecret="38a4f8204cc784f81f9f0daaf31e02e3"-->
-        <!--RedirectUrl="http://www.sharesdk.cn"-->
-        <!--ShareByAppClient="false"-->
-        <!--Enable="true" />-->
-
+    <!--Id="1"-->
+    <!--SortId="1"-->
+    <!--AppKey="568898243"-->
+    <!--AppSecret="38a4f8204cc784f81f9f0daaf31e02e3"-->
+    <!--RedirectUrl="http://www.sharesdk.cn"-->
+    <!--ShareByAppClient="false"-->
+    <!--Enable="true" />-->
 
 
     <!--&lt;!&ndash; ShareByAppClient标识是否使用微博客户端分享，默认是false &ndash;&gt;-->
     <!--<QZone-->
-        <!--Id="3"-->
-        <!--SortId="3"-->
-        <!--AppId="100371282"-->
-        <!--AppKey="aed9b0303e3ed1e27bae87c33761161d"-->
-        <!--ShareByAppClient="true"-->
-        <!--Enable="true" />-->
-    
+    <!--Id="3"-->
+    <!--SortId="3"-->
+    <!--AppId="100371282"-->
+    <!--AppKey="aed9b0303e3ed1e27bae87c33761161d"-->
+    <!--ShareByAppClient="true"-->
+    <!--Enable="true" />-->
+
     <!-- 
     	Wechat微信和WechatMoments微信朋友圈的appid是一样的；
     
@@ -89,34 +89,30 @@
 		默认值为false。此外，微信收藏不支持此字段。
 	-->
     <Wechat
-        Id="4"
-        SortId="4"
-        AppId="wx430c43274a9685e5"
-        AppSecret="2f9ab50e1fcb60d57212f5316efa4f7a"
-        BypassApproval="false"
-        Enable="true" />
+            Id="4"
+            SortId="4"
+            AppId="wx193833f1f03b1773"
+            AppSecret="8819d297983b49eb7eadfaa4326e0d62"
+            BypassApproval="false"
+            Enable="true"/>
     <!-- -->
     <!--<WechatMoments-->
-        <!--Id="5"-->
-        <!--SortId="5"-->
-        <!--AppId="wx4868b35061f87885"-->
-        <!--AppSecret="64020361b8ec4c99936c0e3999a9f249"-->
-        <!--BypassApproval="true"-->
-        <!--Enable="true" />-->
-        
-
-    
-	<!-- ShareByAppClient标识是否使用微博客户端分享，默认是false -->
-	<QQ
-        Id="7"
-        SortId="7"
-        AppId="100371282"
-        AppKey="aed9b0303e3ed1e27bae87c33761161d"
-        ShareByAppClient="true"
-        Enable="true" />
-    
+    <!--Id="5"-->
+    <!--SortId="5"-->
+    <!--AppId="wx4868b35061f87885"-->
+    <!--AppSecret="64020361b8ec4c99936c0e3999a9f249"-->
+    <!--BypassApproval="true"-->
+    <!--Enable="true" />-->
 
 
+    <!-- ShareByAppClient标识是否使用微博客户端分享，默认是false -->
+    <QQ
+            Id="7"
+            SortId="7"
+            AppId="100371282"
+            AppKey="aed9b0303e3ed1e27bae87c33761161d"
+            ShareByAppClient="true"
+            Enable="true"/>
 
-    
+
 </DevInfor>

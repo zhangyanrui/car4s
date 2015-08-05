@@ -38,13 +38,13 @@ android {
         debug {
             keyAlias 'car4s'
             keyPassword 'keystore'
-            storeFile file('E:/github/car4s/keystore.jks')
+            storeFile file('./../keystore.jks')
             storePassword 'keystore'
         }
         release {
             keyAlias 'car4s'
             keyPassword 'keystore'
-            storeFile file('E:/github/car4s/keystore.jks')
+            storeFile file('./../keystore.jks')
             storePassword 'keystore'
         }
     }
