@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent" android:orientation="vertical" android:gravity="center_horizontal"
+              android:layout_height="match_parent">
+    <include layout="@layout/common_actionbar"></include>
+
+
+    <TextView style="@style/appstyle_basic_text_black" android:text="支付成功" android:textSize="@dimen/textsize_huge"
+              android:padding="10dp" android:layout_margin="30dp"/>
+
+    <TextView style="@style/appstyle_basic_text" android:text="点击查看订单" android:background="@color/actionbar_red"
+              android:id="@+id/clicktoorder"
+              android:padding="20dp"/>
+</LinearLayout>

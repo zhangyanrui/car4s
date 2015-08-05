@@ -16,4 +16,5 @@ public class WXpayBean {
     String prepayid;
     String timestamp;
 
+
 }

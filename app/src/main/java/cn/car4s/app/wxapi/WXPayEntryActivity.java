@@ -2,10 +2,12 @@ package cn.car4s.app.wxapi;
 
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
+import cn.car4s.app.util.PreferencesUtil;
+import cn.car4s.app.util.ToastUtil;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
@@ -45,10 +47,25 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     public void onResp(BaseResp resp) {
 
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.app_tip);
-            builder.setMessage(getString(R.string.pay_result_callback_msg, resp.errStr + ";code=" + String.valueOf(resp.errCode)));
-            builder.show();
+
+            switch (resp.errCode) {
+                case 0:
+//                    ToastUtil.showToastShort("支付成功");
+                    PreferencesUtil.putPreferences(AppConfig.SP_KEY_WXPAY, true);
+                    break;
+                case -1:
+                    ToastUtil.showToastShort("支付失败");
+                    break;
+                case -2:
+                    ToastUtil.showToastShort("支付取消");
+                    break;
+            }
+            finish();
+
+//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//            builder.setTitle(R.string.app_tip);
+//            builder.setMessage(getString(R.string.pay_result_callback_msg, resp.errStr + ";code=" + String.valueOf(resp.errCode)));
+//            builder.show();
         }
     }
 }

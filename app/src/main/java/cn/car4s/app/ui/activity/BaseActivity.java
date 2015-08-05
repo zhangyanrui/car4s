@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import cn.car4s.app.AppConfig;
 import cn.car4s.app.bean.ProvinceListBean;
 import cn.car4s.app.bean.UserBean;
+import cn.car4s.app.ui.widget.ProgressView;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 
@@ -21,6 +22,18 @@ public class BaseActivity extends FragmentActivity {
     public UserBean mUserbean;
     public ProvinceListBean mProvinceBean;
     public boolean mHasNext;
+
+    public ProgressView pView;
+
+    public void showHud(String content) {
+        pView = new ProgressView(this, content);
+        pView.show();
+    }
+
+    public void disHud() {
+        if (pView != null)
+            pView.dismiss();
+    }
 
 
     @Override

@@ -16,7 +16,7 @@ public class AppConfig {
 
     //offical
     public static final String APP_SERVER = "http://www.syzjcy.com/App_Interface/";
-//    public static final String APP_SERVER = "http://www.siding.cn:6789/App_Interface/";
+    //    public static final String APP_SERVER = "http://www.siding.cn:6789/App_Interface/";
     public static final String DIR_ROOT = "car4s";
     public static final String DIR_IMAGELOADER_CACHE = DIR_ROOT + "/imgcache";
 
@@ -28,6 +28,7 @@ public class AppConfig {
     public static final String SP_KEY_PINGJIA = "sp_key_pingjia";
     public static final String SP_KEY_MOBILE = "sp_key_mobile";
     public static final String SP_KEY_PWD = "sp_key_pwd";
+    public static final String SP_KEY_WXPAY = "sp_key_wxpay";
 
     public static final int REQUEST_CODE_RESETPWD = 100;
     public static final int REQUEST_CODE_REGISTER = 101;

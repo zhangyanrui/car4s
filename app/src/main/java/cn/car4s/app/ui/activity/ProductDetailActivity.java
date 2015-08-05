@@ -19,6 +19,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cn.car4s.app.AppConfig;
 import cn.car4s.app.R;
+import cn.car4s.app.alipay.AlipayBean;
+import cn.car4s.app.alipay.AlipayUtil;
 import cn.car4s.app.alipay.PayResult;
 import cn.car4s.app.api.HttpCallback;
 import cn.car4s.app.bean.*;
@@ -26,10 +28,7 @@ import cn.car4s.app.service.WXRequestService;
 import cn.car4s.app.ui.adapter.DialogTimeAdapter;
 import cn.car4s.app.ui.adapter.ProductDetialAdapter;
 import cn.car4s.app.ui.widget.SettingLayoutSmall;
-import cn.car4s.app.util.DeviceUtil;
-import cn.car4s.app.util.DialogUtil;
-import cn.car4s.app.util.LogUtil;
-import cn.car4s.app.util.ToastUtil;
+import cn.car4s.app.util.*;
 import cn.car4s.app.wxpay.WXpayBean;
 import cn.car4s.app.wxpay.WxpayUtil;
 import com.google.gson.Gson;
@@ -214,7 +213,8 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
                         }
                     } else if (mType == 1) {//pay
                         if (UserBean.checkUserLoginStatus()) {
-                            WXRequestService.getOrder(callbackGwxorder, orderBean.OrderID);
+                            showPayDialog();
+//                            WXRequestService.getOrder(callbackGwxorder, orderBean.OrderID);
 //                            AlipayBean alipayBean = new AlipayBean(orderBean.ProductName, orderBean.Description, orderBean.ReceiveMoney, orderBean.OrderCode, orderBean.LastPaymentTime);
 //                            AlipayUtil.pay(ProductDetailActivity.this, mHandler, alipayBean);
                         } else {
@@ -238,19 +238,58 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
         }
     };
 
+
+    public void showPayDialog() {
+        View view = View.inflate(ProductDetailActivity.this, R.layout.dialog_sex, null);
+        final Dialog dialog = DialogUtil.buildDialog(ProductDetailActivity.this, view, Gravity.CENTER, R.style.BottomDialogAnimation, true);
+        final RadioGroup rap_tab_radiogroup = (RadioGroup) view.findViewById(R.id.rap_tab_radiogroup);
+        final TextView textView = (TextView) view.findViewById(R.id.dialog_sex_title);
+        textView.setText("请选择支付方式");
+        final RadioButton radioButtonnan = (RadioButton) view.findViewById(R.id.rdo_tab_1);
+        radioButtonnan.setText("支付宝");
+        final RadioButton radioButtonnv = (RadioButton) view.findViewById(R.id.rdo_tab_2);
+        radioButtonnv.setText("微信支付");
+        rap_tab_radiogroup.check(R.id.rdo_tab_1);
+        View dialog_upload_sure = view.findViewById(R.id.dialog_upload_sure);
+        dialog_upload_sure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                if (radioButtonnan.isChecked()) {
+                    AlipayBean alipayBean = new AlipayBean(orderBean.ProductName, orderBean.Description, orderBean.ReceiveMoney, orderBean.OrderCode, orderBean.LastPaymentTime);
+                    AlipayUtil.pay(ProductDetailActivity.this, mHandler, alipayBean);
+                } else {
+                    PreferencesUtil.putPreferences(AppConfig.SP_KEY_WXPAY, false);
+                    showHud("操作中");
+                    WXRequestService.getOrder(callbackGwxorder, orderBean.OrderID);
+                }
+            }
+        });
+        View dialog_upload_cancel = view.findViewById(R.id.dialog_upload_cancel);
+        dialog_upload_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+
     HttpCallback callbackGwxorder = new HttpCallback() {
         @Override
         public void onFailure(Request request, IOException e) {
-
+            disHud();
         }
 
         @Override
         public void onResponse(String result) {
+            disHud();
             LogUtil.e("result", "" + result);
             try {
                 JSONObject object = new JSONObject(result);
                 WXpayBean bean = new Gson().fromJson(object.get("Data").toString(), WXpayBean.class);
-                WxpayUtil.sendPayReq(ProductDetailActivity.this, bean);
+                if (bean != null)
+                    new WxpayUtil().sendPayReq(ProductDetailActivity.this, bean);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -587,8 +626,17 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
 
 
     public void paySuccess() {
+        PreferencesUtil.putPreferences(AppConfig.SP_KEY_WXPAY, false);
         Toast.makeText(ProductDetailActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
         setResult(Activity.RESULT_OK);
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (PreferencesUtil.getPreferences(AppConfig.SP_KEY_WXPAY, false)) {
+            paySuccess();
+        }
     }
 }
