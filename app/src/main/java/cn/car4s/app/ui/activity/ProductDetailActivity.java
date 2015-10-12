@@ -33,6 +33,7 @@ import cn.car4s.app.wxpay.WXpayBean;
 import cn.car4s.app.wxpay.WxpayUtil;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
+import com.unionpay.UPPayAssistEx;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -240,7 +241,7 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
 
 
     public void showPayDialog() {
-        View view = View.inflate(ProductDetailActivity.this, R.layout.dialog_sex, null);
+        View view = View.inflate(ProductDetailActivity.this, R.layout.dialog_choosepaytool, null);
         final Dialog dialog = DialogUtil.buildDialog(ProductDetailActivity.this, view, Gravity.CENTER, R.style.BottomDialogAnimation, true);
         final RadioGroup rap_tab_radiogroup = (RadioGroup) view.findViewById(R.id.rap_tab_radiogroup);
         final TextView textView = (TextView) view.findViewById(R.id.dialog_sex_title);
@@ -249,6 +250,8 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
         radioButtonnan.setText("支付宝");
         final RadioButton radioButtonnv = (RadioButton) view.findViewById(R.id.rdo_tab_2);
         radioButtonnv.setText("微信支付");
+        final RadioButton radioButtonYinlian = (RadioButton) view.findViewById(R.id.rdo_tab_3);
+        radioButtonYinlian.setText("银联支付");
         rap_tab_radiogroup.check(R.id.rdo_tab_1);
         View dialog_upload_sure = view.findViewById(R.id.dialog_upload_sure);
         dialog_upload_sure.setOnClickListener(new View.OnClickListener() {
@@ -258,10 +261,13 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
                 if (radioButtonnan.isChecked()) {
                     AlipayBean alipayBean = new AlipayBean(orderBean.ProductName, orderBean.Description, orderBean.ReceiveMoney, orderBean.OrderCode, orderBean.LastPaymentTime);
                     AlipayUtil.pay(ProductDetailActivity.this, mHandler, alipayBean);
-                } else {
+                } else if (radioButtonnv.isChecked()) {
                     PreferencesUtil.putPreferences(AppConfig.SP_KEY_WXPAY, false);
                     showHud("操作中");
                     WXRequestService.getOrder(callbackGwxorder, orderBean.OrderID);
+                } else {
+                    showHud("操作中");
+                    WXRequestService.getOrderYINLIAN(callbackGyinlianOrder, orderBean.OrderID);
                 }
             }
         });
@@ -272,6 +278,32 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
                 dialog.dismiss();
             }
         });
+    }
+
+    HttpCallback callbackGyinlianOrder = new HttpCallback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+            disHud();
+        }
+
+        @Override
+        public void onResponse(String result) {
+            disHud();
+            LogUtil.e("result", "" + result);
+            NetReturnBeanPay bean = new Gson().fromJson(result, NetReturnBeanPay.class);
+            String tradeno = bean.Data;
+            if (!TextUtils.isEmpty(tradeno)) {
+                // “00” – 银联正式环境
+                // “01” – 银联测试环境，该环境中不发生真实交易
+                String serverMode = "00";
+                LogUtil.e("tradeno", "" + tradeno);
+                UPPayAssistEx.startPayByJAR(ProductDetailActivity.this, com.unionpay.uppay.PayActivity.class, null, null, tradeno, serverMode);
+            }
+        }
+    };
+
+    public class NetReturnBeanPay extends BaseBean {
+        public String Data;
     }
 
 
@@ -568,13 +600,32 @@ public class ProductDetailActivity extends BaseActivity implements IBase {
             stationBean = (StationBean) data.getSerializableExtra("bean");
             mlayoutwangdian.getBean().desc = stationBean.StationName;
             mlayoutwangdian.setData(mlayoutwangdian.getBean());
-        }
-
-        if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
+        } else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
             jishiBean = (JishiBean) data.getSerializableExtra("bean");
             mlayoutjishi.getBean().desc = jishiBean.UserName;
             mlayoutjishi.setData(mlayoutjishi.getBean());
+        } else {
+            String msg = "";
+        /*
+         * 支付控件返回字符串:success、fail、cancel 分别代表支付成功，支付失败，支付取消
+         */
+            String str = data.getExtras().getString("pay_result");
+            if (str.equalsIgnoreCase("success")) {
+                msg = "支付成功！";
+                Toast.makeText(ProductDetailActivity.this, msg,
+                        Toast.LENGTH_SHORT).show();
+                paySuccess();
+            } else if (str.equalsIgnoreCase("fail")) {
+                msg = "支付失败！";
+                Toast.makeText(ProductDetailActivity.this, msg,
+                        Toast.LENGTH_SHORT).show();
+            } else if (str.equalsIgnoreCase("cancel")) {
+                msg = "用户取消了支付";
+                Toast.makeText(ProductDetailActivity.this, msg,
+                        Toast.LENGTH_SHORT).show();
+            }
         }
+
     }
 
     @Override

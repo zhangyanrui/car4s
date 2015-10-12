@@ -22,4 +22,12 @@ public class WXRequestService {
         map.put("OrderID", orderId + "");
         NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_WEIXINPAY, map, callback);
     }
+
+
+    public static void getOrderYINLIAN(HttpCallback callback, String orderId) {
+        Map map = new HashMap();
+        map.put("action", "UnifiedOrder");
+        map.put("OrderID", orderId + "");
+        NetUtil.doPostMap(AppConfig.APP_SERVER + ApiService.INTERFACE_YINLIANPAY, map, callback);
+    }
 }

@@ -28,6 +28,8 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-feature android:name="android.hardware.nfc.hce"/>
 
     <!-- 这个权限用于进行网络定位-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
@@ -271,6 +273,10 @@
         <meta-data
                 android:name="TencentMapSDK"
                 android:value="BXIBZ-7MMKD-PGR4H-PTMG4-36MLS-6TBT5"/>
+
+        <activity android:name="com.unionpay.uppay.PayActivity">
+        </activity>
+
     </application>
 
 </manifest>
