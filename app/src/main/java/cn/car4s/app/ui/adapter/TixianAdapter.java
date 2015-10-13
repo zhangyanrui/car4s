@@ -82,7 +82,7 @@ public class TixianAdapter extends BaseAdapter {
             viewholder.desc2.setText("保底积分: " + bean.GuaranteedPoint);
             viewholder.tv_timeshengyu.setText("最低提现额: " + bean.LowestLimit);
             viewholder.tv_timeshengyu2.setText("可提现积分: " + bean.AvailableWithdrawalPoint);
-            viewholder.edit.setText("申请体现");
+            viewholder.edit.setText("申请提现");
             viewholder.edit.setTag(bean);
             viewholder.edit.setOnClickListener(new View.OnClickListener() {
                 @Override
