@@ -110,7 +110,6 @@ public class Tab2Fragment extends BaseFragment implements IBase {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                    LogUtil.e("--->", "handleMessage");
                     long time = new Date().getTime();
                     adapter.settime(time);
                     adapter.notifyDataSetChanged();
@@ -193,7 +192,7 @@ public class Tab2Fragment extends BaseFragment implements IBase {
             Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
             intent.putExtra("type", 1);
             intent.putExtra("orderid", orderBean.OrderID);
-            startActivityForResult(intent, 1001);
+            Tab2Fragment.this.startActivityForResult(intent, 1001);
         }
 
         @Override
@@ -201,7 +200,7 @@ public class Tab2Fragment extends BaseFragment implements IBase {
             Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
             intent.putExtra("type", 2);
             intent.putExtra("orderid", bean.OrderID);
-            startActivityForResult(intent, 1001);
+            Tab2Fragment.this.startActivityForResult(intent, 1001);
         }
 
         @Override

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import cn.car4s.app.R;
 import cn.car4s.app.bean.OrderBean;
 import cn.car4s.app.ui.activity.ProductDetailActivity;
-import cn.car4s.app.util.LogUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -62,7 +61,6 @@ public class OrderAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         Viewholder viewholder;
-        LogUtil.e("--->", "getview");
         if (view == null) {
             viewholder = new Viewholder();
             view = LayoutInflater.from(context).inflate(R.layout.adapter_item_order, null);
